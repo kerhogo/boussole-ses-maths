@@ -1143,7 +1143,7 @@ function dlBar() {
   return `<div class="dl-box"><div class="dl-bar">
       <button type="button" class="btn primary" data-action="pdf">Télécharger en PDF</button>
       <button type="button" class="btn" data-action="html">Télécharger la page HTML</button>
-      ${shareBase() ? `<button type="button" class="btn" data-action="link">Partager le lien</button>` : ""}
+      ${shareBase() ? `<button type="button" class="btn" data-action="link">Partager mon lien</button>` : ""}
     </div><p class="dl-status" aria-live="polite"></p></div>`;
 }
 
@@ -1161,7 +1161,7 @@ function renderResults() {
     ${dlBar()}
     ${resultsCore(R, false)}
     <div class="panel"><h3>Garder une trace</h3>
-      <p class="sub">Le PDF se lit partout et s'imprime bien. La page HTML garde la mise en page du site et toutes les réponses. Les deux peuvent être joints à une conversation avec Claude pour construire la liste de vœux.${shareBase() ? " Le lien, lui, contient tes réponses : la personne qui l'ouvre voit tes pistes, sans compte ni inscription." : ""}</p>
+      <p class="sub">Le PDF se lit partout et s'imprime bien. La page HTML garde la mise en page du site et toutes tes réponses. Tu peux joindre l'un ou l'autre à une conversation avec Claude pour construire ta liste de vœux.${shareBase() ? " Ton lien contient tes réponses : il sert à les retrouver sur un autre appareil, ou à les montrer à qui tu veux. Ne l'envoie qu'à des gens de confiance." : ""}</p>
       ${dlBar()}
       <p class="hint">Sur téléphone, le fichier arrive dans Téléchargements (Android) ou dans l'app Fichiers (iPhone).</p>
       <div class="copy-row"><button class="btn small" type="button" data-go="q">Revoir les réponses</button></div></div>
