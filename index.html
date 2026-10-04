@@ -1,0 +1,1550 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Un questionnaire pour faire le tour des études possibles après un bac avec les spécialités SES et maths : profil, pistes expliquées, questions à se poser et catalogue des formations.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Boussole SES-Maths">
+<meta property="og:description" content="Un questionnaire pour faire le tour des études possibles après un bac avec les spécialités SES et maths : profil, pistes expliquées, questions à se poser et catalogue des formations.">
+<meta name="theme-color" content="#2441c7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13.5' fill='%23fff' stroke='%232441c7' stroke-width='3'/%3E%3Cpath d='M16 5.5 20 16h-8z' fill='%23e0737f'/%3E%3Cpath d='M12 16h8l-4 10.5z' fill='%232441c7'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Boussole SES-Maths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;600&family=Familjen+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: une colonne "copie double" (marge rouge, numéros dans la marge), onglets en haut, cahier Seyès en en-tête. */
+:root {
+  --paper: #f7f8fc;
+  --sheet: #ffffff;
+  --ink: #1a2142;
+  --ink-soft: #5a6383;
+  --rule: #dde2f2;
+  --rule-strong: #c3cbea;
+  --margin: #e0737f;
+  --bic: #2441c7;
+  --bic-ink: #ffffff;
+  --bic-wash: #e8ecfc;
+  --fluo: #fff07a;
+  --good: #16784f;
+  --warn: #9a5a00;
+  --warn-wash: #fff4e0;
+  --font-display: "Familjen Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Print", "Comic Sans MS", cursive;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1328; --sheet: #161b35; --ink: #e7eaf7; --ink-soft: #a2aac8;
+    --rule: #242c50; --rule-strong: #34406e; --margin: #c2606c;
+    --bic: #93a6ff; --bic-ink: #0f1328; --bic-wash: #1f2754;
+    --fluo: #6b6220; --good: #5fd3a0; --warn: #f0b45c; --warn-wash: #2e2414;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1328; --sheet: #161b35; --ink: #e7eaf7; --ink-soft: #a2aac8;
+  --rule: #242c50; --rule-strong: #34406e; --margin: #c2606c;
+  --bic: #93a6ff; --bic-ink: #0f1328; --bic-wash: #1f2754;
+  --fluo: #6b6220; --good: #5fd3a0; --warn: #f0b45c; --warn-wash: #2e2414;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 780px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--bic); outline-offset: 2px; }
+.fluo { background: linear-gradient(transparent 52%, var(--fluo) 52%, var(--fluo) 92%, transparent 92%); padding: 0 2px; }
+.hand { font-family: var(--font-hand); font-size: 1.3em; line-height: 1.2; color: var(--bic); }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+
+/* En-tête cahier Seyès */
+.cahier {
+  margin-inline: -16px; padding: 28px 16px 0;
+  background:
+    linear-gradient(90deg, transparent 31px, var(--margin) 31px, var(--margin) 33px, transparent 33px),
+    repeating-linear-gradient(0deg, transparent 0 31px, var(--rule-strong) 31px 32px),
+    repeating-linear-gradient(0deg, transparent 0 7px, var(--rule) 7px 8px),
+    var(--sheet);
+  border-bottom: 1px solid var(--rule-strong);
+}
+.cahier-inner { max-width: 748px; margin: 0 auto; padding-left: 28px; display: grid; gap: 10px; }
+.cahier h1 { font-size: clamp(30px, 6vw, 44px); font-weight: 700; letter-spacing: -.01em; }
+.lede { max-width: 60ch; color: var(--ink); background: var(--sheet); }
+.meta-line { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--ink-soft); font-size: 14px; }
+.meta-line span { background: var(--sheet); }
+.tabs { display: flex; gap: 4px; margin-top: 14px; overflow-x: auto; }
+.tab {
+  border: 1px solid var(--rule-strong); border-bottom: none; background: var(--paper);
+  padding: 9px 14px; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 15px; white-space: nowrap; color: var(--ink-soft);
+}
+.tab[aria-selected="true"] { background: var(--paper); color: var(--ink); box-shadow: inset 0 3px 0 var(--bic); }
+.tab .count { font-family: var(--font-body); font-size: 12px; margin-left: 6px; padding: 1px 7px; border-radius: 99px; background: var(--bic-wash); color: var(--bic); }
+
+/* Étapes */
+.steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 14px; }
+.step {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px 6px 7px; border-radius: 99px;
+  border: 1px solid var(--rule-strong); background: var(--sheet); cursor: pointer; font-size: 14px; color: var(--ink-soft);
+}
+.step b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--paper); font-size: 12px; font-variant-numeric: tabular-nums; }
+.step.done b { background: var(--bic-wash); color: var(--bic); }
+.step[aria-current="step"] { border-color: var(--bic); color: var(--ink); font-weight: 700; }
+.step[aria-current="step"] b { background: var(--bic); color: var(--bic-ink); }
+.progress { height: 4px; background: var(--rule); border-radius: 4px; overflow: hidden; margin-bottom: 18px; }
+.progress i { display: block; height: 100%; background: var(--bic); width: 0; transition: width .3s; }
+
+/* Copie double */
+.sheet {
+  position: relative; background: var(--sheet); border: 1px solid var(--rule-strong); border-radius: var(--r);
+  padding: 22px 18px 22px 58px;
+}
+.sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 42px; width: 2px; background: var(--margin); opacity: .75; }
+.block-head { display: grid; gap: 6px; margin-bottom: 18px; }
+.block-head h2 { font-size: 26px; font-weight: 700; }
+.block-head p { color: var(--ink-soft); max-width: 62ch; }
+.q { position: relative; display: grid; gap: 10px; padding: 16px 0; border-top: 1px dashed var(--rule-strong); }
+.q:first-of-type { border-top: none; }
+.q-num { position: absolute; left: -50px; top: 17px; width: 34px; text-align: right; font-family: var(--font-hand); font-size: 22px; color: var(--margin); line-height: 1; }
+.q-label { font-weight: 700; font-size: 17px; }
+.q-hint { color: var(--ink-soft); font-size: 14px; margin-top: -4px; }
+.oral { display: flex; gap: 8px; align-items: baseline; color: var(--bic); }
+.oral .hand { font-size: 21px; }
+
+/* Contrôles */
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt {
+  border: 1.5px solid var(--rule-strong); background: var(--sheet); border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  font-size: 15px; line-height: 1.3; text-align: left; transition: border-color .15s, background .15s;
+}
+.opt:hover { border-color: var(--bic); }
+.opt[aria-pressed="true"], .opt[aria-checked="true"] { background: var(--bic); border-color: var(--bic); color: var(--bic-ink); font-weight: 700; }
+.opt.nsp { color: var(--ink-soft); border-style: dashed; }
+.opt.nsp[aria-pressed="true"], .opt.nsp[aria-checked="true"] { background: var(--ink-soft); border-color: var(--ink-soft); color: var(--sheet); }
+.choices { display: grid; gap: 6px; }
+.choices .opt { padding: 10px 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips .opt { border-radius: 99px; padding: 7px 13px; }
+.bip { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.bip .pole { font-size: 14px; color: var(--ink-soft); min-width: 0; }
+.bip .pole.r { text-align: right; }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--rule-strong); background: var(--sheet); cursor: pointer; padding: 0; display: grid; place-items: center; }
+.dot.mid { width: 22px; height: 22px; }
+.dot[aria-checked="true"] { background: var(--bic); border-color: var(--bic); }
+.dot:hover { border-color: var(--bic); }
+.bip-nsp { grid-column: 1 / -1; justify-self: center; }
+.bip-nsp .opt { padding: 4px 10px; font-size: 13px; }
+input[type="text"], textarea, input[type="search"] {
+  width: 100%; font: inherit; color: var(--ink); background: var(--paper); border: 1.5px solid var(--rule-strong); border-radius: 8px; padding: 10px 12px;
+}
+textarea { min-height: 70px; resize: vertical; }
+.limit { font-size: 13px; color: var(--ink-soft); }
+.pager { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.btn { border: 1.5px solid var(--rule-strong); background: var(--sheet); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 700; }
+.btn.primary { background: var(--bic); border-color: var(--bic); color: var(--bic-ink); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.small { padding: 6px 12px; font-size: 14px; }
+@media (max-width: 520px) {
+  .tab { padding: 8px 10px; font-size: 14px; }
+  .tab .count { display: none; }
+  .sheet { padding: 18px 14px 18px 46px; }
+  .sheet::before { left: 34px; }
+  .q-num { left: -42px; width: 28px; font-size: 20px; }
+  .bip { grid-template-columns: 1fr 1fr; }
+  .bip .dots { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+  .dot { width: 34px; height: 34px; }
+  .dot.mid { width: 26px; height: 26px; }
+}
+/* Téléchargements, partage, bannière, remise à zéro */
+.dl-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.dl-status { font-size: 14px; color: var(--ink-soft); min-height: 1.4em; }
+.dl-status.ok { color: var(--good); font-weight: 700; }
+.dl-status.err { color: var(--warn); font-weight: 700; }
+.dl-status input { margin-top: 6px; font-size: 13px; }
+.banner { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; justify-content: space-between; margin-top: 18px; padding: 12px 14px; border-radius: var(--r); background: var(--bic-wash); border: 1px solid var(--bic); }
+.banner p { flex: 1 1 260px; min-width: 0; }
+.banner .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.reset-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 24px; font-size: 14px; color: var(--ink-soft); }
+.linkish { background: none; border: none; padding: 0; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 14px; }
+.btn.danger { border-color: var(--warn); color: var(--warn); }
+.hint { font-size: 13px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<style>
+/* Résultats */
+.res { display: grid; gap: 22px; margin-top: 22px; }
+.res h2 { font-size: 24px; }
+.res h3 { font-size: 19px; }
+.panel { background: var(--sheet); border: 1px solid var(--rule-strong); border-radius: var(--r); padding: 20px 18px; display: grid; gap: 14px; }
+.panel > p.sub { color: var(--ink-soft); }
+.notice { border: 1.5px dashed var(--rule-strong); border-radius: var(--r); padding: 14px 16px; color: var(--ink-soft); display: grid; gap: 10px; }
+.notice.warn { border-color: var(--warn); background: var(--warn-wash); color: var(--ink); }
+.dims { display: grid; gap: 9px; }
+.dim { display: grid; grid-template-columns: minmax(0, 11rem) 1fr; gap: 12px; align-items: center; font-size: 15px; }
+.dim .bar { height: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.dim .bar i { display: block; height: 100%; background: var(--rule-strong); border-radius: 3px; }
+.dim.top .bar i { background: var(--bic); }
+.dim.top span { font-weight: 700; }
+@media (max-width: 520px) { .dim { grid-template-columns: 1fr; gap: 3px; } }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: var(--bic-wash); color: var(--ink); }
+.tag.neg { background: var(--warn-wash); color: var(--ink); border: 1px solid var(--warn); }
+.pistes { display: grid; gap: 12px; }
+.piste { border: 1px solid var(--rule-strong); border-radius: var(--r); padding: 16px; display: grid; gap: 10px; background: var(--sheet); }
+.piste.lead { border-color: var(--bic); border-width: 1.5px; }
+.piste-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.piste-head h3 { font-size: 18px; min-width: 0; }
+.fam { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+.meter { display: inline-flex; gap: 3px; align-items: center; font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+.meter i { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); display: inline-block; }
+.meter i.on { background: var(--bic); }
+.why, .care { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 15px; }
+.why li::marker { content: "+  "; color: var(--good); font-weight: 700; }
+.care li::marker { content: "!  "; color: var(--warn); font-weight: 700; }
+.piste .desc { color: var(--ink-soft); font-size: 15px; }
+.facts { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--ink-soft); }
+.facts b { color: var(--ink); font-weight: 700; }
+details.more { border-top: 1px dashed var(--rule-strong); padding-top: 10px; }
+details.more summary { cursor: pointer; font-weight: 700; color: var(--bic); }
+.talk { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.talk li { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: baseline; }
+.talk li .hand { font-size: 24px; color: var(--margin); }
+.timeline { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; }
+.timeline li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 14px; padding: 10px 0; border-top: 1px dashed var(--rule-strong); }
+.timeline li:first-child { border-top: none; }
+.timeline .when { font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (max-width: 520px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
+.copybox { display: grid; gap: 10px; }
+.copybox textarea { min-height: 160px; font-size: 13px; line-height: 1.45; }
+.copy-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.copied { color: var(--good); font-weight: 700; font-size: 14px; }
+
+/* Catalogue */
+.cat-tools { display: grid; gap: 10px; margin: 22px 0 14px; }
+.cat-intro { color: var(--ink-soft); max-width: 64ch; }
+.cat-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }
+.cat-group { display: grid; gap: 12px; margin-top: 18px; }
+.cat-group > h2 { font-size: 21px; display: flex; align-items: baseline; gap: 10px; }
+.cat-group > h2 small { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); font-weight: 400; }
+.card { border: 1px solid var(--rule-strong); border-radius: var(--r); padding: 15px; background: var(--sheet); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card h3 { font-size: 17px; }
+.card .in { font-size: 12px; font-weight: 700; color: var(--bic); }
+.card p { font-size: 14.5px; }
+.card .after { color: var(--ink-soft); }
+.card .ses { font-size: 13.5px; border-left: 2px solid var(--margin); padding-left: 8px; }
+.hard { border: 1.5px dashed var(--warn); border-radius: var(--r); padding: 16px; display: grid; gap: 8px; background: var(--warn-wash); }
+.empty { color: var(--ink-soft); padding: 20px 0; }
+footer.foot { margin-top: 34px; color: var(--ink-soft); font-size: 13px; display: grid; gap: 4px; }
+footer.foot a { color: var(--bic); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="cahier">
+    <div class="cahier-inner">
+      <span class="eyebrow">Orientation post-bac · Terminale SES + maths</span>
+      <h1>Boussole <span class="fluo">SES-Maths</span></h1>
+      <p class="lede">Un questionnaire pour faire le tour de ce qui existe après le bac et repérer ce qui te ressemble. Il n'y a pas de bonne réponse et pas de verdict à la fin : tu repars avec plusieurs pistes à creuser.</p>
+      <p class="meta-line"><span>≈ 10 minutes</span><span>6 blocs</span><span>« ? » est une vraie réponse</span><span>Tes réponses restent sur cet appareil</span></p>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab" role="tab" id="tab-btn-q" aria-controls="tab-q" aria-selected="true" data-tab="q">Questions</button>
+        <button class="tab" role="tab" id="tab-btn-r" aria-controls="tab-r" aria-selected="false" data-tab="r">Pistes<span class="count" id="count-r" hidden></span></button>
+        <button class="tab" role="tab" id="tab-btn-c" aria-controls="tab-c" aria-selected="false" data-tab="c">Tout ce qui existe<span class="count" id="count-c"></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" role="status" hidden></div>
+    <section id="tab-q" role="tabpanel" aria-labelledby="tab-btn-q">
+      <div class="steps" id="steps"></div>
+      <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+      <div id="block"></div>
+      <div class="pager">
+        <button class="btn" id="prev" type="button">← Précédent</button>
+        <button class="btn primary" id="next" type="button">Suivant →</button>
+      </div>
+      <div class="reset-row">
+        <button class="linkish" id="reset-btn" type="button">Effacer toutes les réponses</button>
+        <span id="reset-confirm" hidden>Tout effacer sur cet appareil ?
+          <button class="btn small danger" id="reset-yes" type="button">Oui, effacer</button>
+          <button class="btn small" id="reset-no" type="button">Annuler</button></span>
+        <span id="reset-msg" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section id="tab-r" role="tabpanel" aria-labelledby="tab-btn-r" hidden>
+      <div id="results"></div>
+    </section>
+
+    <section id="tab-c" role="tabpanel" aria-labelledby="tab-btn-c" hidden>
+      <div class="cat-tools">
+        <p class="cat-intro">Les formations accessibles après un bac général avec SES et maths, regroupées par type. Les noms précis et les places changent selon les villes : c'est une carte du terrain, à compléter avec le moteur de recherche Parcoursup.</p>
+        <input type="search" id="cat-search" placeholder="Chercher : data, droit, alternance, journalisme…" aria-label="Chercher une formation">
+        <div class="chips" id="cat-filters" role="group" aria-label="Filtrer par type"></div>
+      </div>
+      <div id="catalog"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Infos vérifiées début octobre 2026. Les dates, les capacités d'accueil et les attendus de chaque formation se confirment sur <a href="https://www.parcoursup.gouv.fr" target="_blank" rel="noopener">parcoursup.gouv.fr</a> et <a href="https://www.onisep.fr" target="_blank" rel="noopener">onisep.fr</a>.</p>
+    <p>Les pistes sont calculées à partir des réponses : c'est une aide pour discuter, pas un test d'orientation officiel.</p>
+  </footer>
+</div>
+<script>
+/* ===== Dimensions du profil ===== */
+const DIMS = {
+  CHIF: "Chiffres & données",
+  ECO: "Économie & entreprise",
+  SOC: "Société & politique",
+  DROIT: "Droit & institutions",
+  HUM: "Humain, social & soin",
+  COM: "Communication & création",
+  TECH: "Numérique & informatique",
+  INTL: "International & langues"
+};
+
+const SCALE = [
+  { v: "0", label: "Pas du tout", w: -1 },
+  { v: "1", label: "Bof", w: -0.3 },
+  { v: "2", label: "Plutôt", w: 0.6 },
+  { v: "3", label: "Carrément", w: 1.2 },
+  { v: "?", label: "?", w: 0, nsp: true }
+];
+const LEVELS = ["Moins de 10", "10 à 12", "12 à 14", "14 à 16", "16 et plus"];
+
+/* ===== Les 6 blocs ===== */
+const BLOCKS = [
+  {
+    id: "toi", short: "Toi", title: "Pour commencer",
+    intro: "Quelques repères sur où tu en es. Une fourchette suffit, personne ne vérifie.",
+    qs: [
+      { id: "prenom", type: "text", label: "Ton prénom", hint: "Facultatif, c'est juste pour personnaliser la page." },
+      { id: "maths_opt", type: "single", label: "En maths cette année, tu as…", options: [
+        { v: "spe", label: "La spécialité maths seulement" },
+        { v: "expertes", label: "La spécialité + l'option maths expertes" },
+        { v: "?", label: "Je ne sais plus / autre", nsp: true } ] },
+      { id: "moy", type: "single", inline: true, label: "Ta moyenne générale, à peu près", options: LEVELS.map((l, i) => ({ v: String(i), label: l })).concat([{ v: "?", label: "?", nsp: true }]) },
+      { id: "niv_maths", type: "single", inline: true, label: "Ta moyenne en maths", options: LEVELS.map((l, i) => ({ v: String(i), label: l })).concat([{ v: "?", label: "?", nsp: true }]) },
+      { id: "niv_ses", type: "single", inline: true, label: "Ta moyenne en SES", options: LEVELS.map((l, i) => ({ v: String(i), label: l })).concat([{ v: "?", label: "?", nsp: true }]) },
+      { id: "deja", type: "single", label: "Côté orientation, tu en es où ?", options: [
+        { v: "rien", label: "Je n'ai rien regardé" },
+        { v: "peu", label: "J'ai un peu traîné sur Parcoursup ou Onisep" },
+        { v: "idees", label: "J'ai déjà quelques idées" } ],
+        oral: "Si tu as des idées, même floues, dis-les maintenant à voix haute." }
+    ]
+  },
+  {
+    id: "cours", short: "Les cours", title: "Ce que tu aimes en cours",
+    intro: "On parle de ce que tu aimes faire, pas de tes notes. Une matière où tu as 9 peut te plaire, et l'inverse.",
+    qs: [
+      { id: "m_maths", type: "scale", label: "Les maths" },
+      { id: "m_seseco", type: "scale", label: "SES, côté économie", hint: "Marchés, croissance, chômage, entreprises, banque centrale" },
+      { id: "m_sessoc", type: "scale", label: "SES, côté sociologie et science politique", hint: "Inégalités, vote, école, travail, mobilité sociale" },
+      { id: "m_hg", type: "scale", label: "Histoire-géo, géopolitique" },
+      { id: "m_philo", type: "scale", label: "La philo" },
+      { id: "m_fr", type: "scale", label: "Écrire et argumenter", hint: "Dissertations, essais, défendre un point de vue" },
+      { id: "m_lang", type: "scale", label: "L'anglais et les autres langues" },
+      { id: "m_info", type: "scale", label: "L'informatique, le numérique", hint: "Même en dehors des cours : bidouiller, coder, monter des vidéos" },
+      { id: "m_sport", type: "scale", label: "Le sport" },
+      { id: "m_arts", type: "scale", label: "Arts, musique, création", hint: "Même en dehors des cours" }
+    ],
+    oral: "Quel cours tu attends le plus dans la semaine ? C'est grâce au prof ou à la matière ?"
+  },
+  {
+    id: "style", short: "Ta façon de bosser", title: "Ta façon de bosser",
+    intro: "Place le curseur du côté qui te ressemble le plus. Le point du milieu veut dire « les deux me vont ».",
+    qs: [
+      { id: "s_enc", type: "bip", left: "Un cadre, un rythme imposé, des profs qui suivent", right: "Être libre et gérer mon temps seul" },
+      { id: "s_conc", type: "bip", left: "Comprendre la théorie, le pourquoi", right: "Du concret, voir vite à quoi ça sert" },
+      { id: "s_calc", type: "bip", left: "Calculer, chiffrer, résoudre", right: "Écrire, argumenter, débattre" },
+      { id: "s_team", type: "bip", left: "Bosser seul dans mon coin", right: "Bosser en équipe" },
+      { id: "s_eff", type: "bip", left: "Mettre le paquet 2 ans pour ouvrir des portes", right: "Garder du temps pour ma vie à côté" },
+      { id: "s_terr", type: "bip", left: "Bureau, écran, réflexion", right: "Bouger, terrain, contact avec des gens" }
+    ],
+    oral: "Le dernier truc où tu as vraiment bossé dur sans qu'on te force, c'était quoi ?"
+  },
+  {
+    id: "envies", short: "Ce qui t'attire", title: "Ce qui t'attire, ce qui te rebute",
+    intro: "Coche tout ce qui te parle un minimum, même vaguement. Pareil pour ce que tu veux éviter.",
+    qs: [
+      { id: "interets", type: "multi", label: "Ce qui t'intéresse", options: [
+        { v: "finance", label: "L'argent, la bourse, la finance" },
+        { v: "entreprise", label: "Monter ou diriger un projet, une boîte" },
+        { v: "data", label: "Les données, les stats, l'IA" },
+        { v: "dev", label: "Coder, créer des applis ou des sites" },
+        { v: "politique", label: "La politique, l'actu, les débats" },
+        { v: "international", label: "L'international, les langues, voyager" },
+        { v: "droit", label: "Le droit, la justice, les règles" },
+        { v: "aider", label: "Aider, accompagner des gens" },
+        { v: "sante", label: "La santé, le soin" },
+        { v: "enseigner", label: "Expliquer, transmettre, enseigner" },
+        { v: "medias", label: "Les médias, le journalisme" },
+        { v: "communication", label: "La com', la pub, les réseaux" },
+        { v: "vente", label: "Vendre, négocier, convaincre" },
+        { v: "environnement", label: "L'environnement, le climat" },
+        { v: "sport", label: "Le sport" },
+        { v: "culture", label: "Musique, cinéma, jeux vidéo, culture" },
+        { v: "ville", label: "La ville, l'immobilier, l'architecture" },
+        { v: "psycho", label: "Comprendre comment les gens pensent" },
+        { v: "publique", label: "Servir l'État, les institutions" },
+        { v: "logistique", label: "Organiser, faire tourner la machine" } ],
+        oral: "Parmi ce que tu as coché, sur quoi tu pourrais regarder des vidéos pendant une heure ?" },
+      { id: "eviter", type: "multi", label: "Ce que tu veux éviter", options: [
+        { v: "vente", label: "Faire du commercial" },
+        { v: "ecrit", label: "Écrire beaucoup" },
+        { v: "maths", label: "Des maths de plus en plus poussées" },
+        { v: "assis", label: "Être assis toute la journée" },
+        { v: "oral", label: "Parler en public" },
+        { v: "concours", label: "Les concours, la compétition" },
+        { v: "stress", label: "Une grosse pression pendant des années" },
+        { v: "routine", label: "Faire la même chose tous les jours" },
+        { v: "seul", label: "Travailler seul" },
+        { v: "long", label: "Des études longues" } ] }
+    ]
+  },
+  {
+    id: "etudes", short: "Les études", title: "Le genre d'études",
+    intro: "Ce qui compte ici, c'est ton envie du moment. Elle peut changer, c'est normal.",
+    qs: [
+      { id: "e_duree", type: "single", label: "Combien d'années d'études tu te vois faire ?", options: [
+        { v: "court", label: "Court : 2 ou 3 ans, puis bosser" },
+        { v: "b3", label: "Bac+3, et on verra après" },
+        { v: "b5", label: "Bac+5, viser un bon niveau" },
+        { v: "long", label: "Long si ça me passionne" },
+        { v: "?", label: "Aucune idée", nsp: true } ] },
+      { id: "e_prepa", type: "single", label: "Une prépa, ça te fait quoi ?", hint: "2 ans très intenses : beaucoup de cours, des « colles » (petits oraux) chaque semaine, du travail le soir, puis des concours d'écoles.", options: [
+        { v: "envie", label: "Ça me motive" },
+        { v: "peut", label: "Ça me fait peur, mais pourquoi pas" },
+        { v: "non", label: "Non merci" },
+        { v: "?", label: "Je ne vois pas trop ce que c'est", nsp: true } ] },
+      { id: "e_fac", type: "single", label: "La fac : amphis, beaucoup d'autonomie, peu de suivi au début", options: [
+        { v: "ok", label: "Ça me va" }, { v: "bof", label: "Bof" }, { v: "non", label: "Non" }, { v: "?", label: "?", nsp: true } ] },
+      { id: "e_alt", type: "single", label: "L'alternance : une partie du temps en entreprise, payé, formation gratuite", options: [
+        { v: "oui", label: "Ça me tente" }, { v: "peut", label: "Pourquoi pas" }, { v: "non", label: "Non" }, { v: "?", label: "?", nsp: true } ] },
+      { id: "e_mob", type: "single", label: "Pour tes études, tu te vois…", options: [
+        { v: "parents", label: "Rester chez mes parents" },
+        { v: "region", label: "Dans ma région" },
+        { v: "france", label: "N'importe où en France" },
+        { v: "etranger", label: "Pourquoi pas à l'étranger" } ] },
+      { id: "e_budget", type: "single", label: "Une école privée (souvent 8 000 à 15 000 € par an, parfois plus)", options: [
+        { v: "oui", label: "Envisageable" },
+        { v: "aide", label: "Seulement en alternance ou avec une aide" },
+        { v: "non", label: "Non, plutôt le public" },
+        { v: "?", label: "À voir avec les parents", nsp: true } ] },
+      { id: "e_conc", type: "single", label: "Passer un concours ou un oral de sélection juste après le bac", options: [
+        { v: "ok", label: "Pas de souci" }, { v: "bof", label: "Bof" }, { v: "non", label: "Je préfère éviter" } ] },
+      { id: "e_cesure", type: "single", label: "Une année pour souffler, bosser ou voyager avant de reprendre", hint: "Ça s'appelle une césure : on la demande sur Parcoursup et la place est gardée.", options: [
+        { v: "oui", label: "Ça me tente" }, { v: "peut", label: "Peut-être" }, { v: "non", label: "Non, j'enchaîne" } ] }
+    ]
+  },
+  {
+    id: "futur", short: "Dans 10 ans", title: "Dans 10 ans",
+    intro: "Pas besoin d'avoir un métier en tête. On cherche juste à quoi ressemblerait une journée qui te plaît.",
+    qs: [
+      { id: "f_scene", type: "multi", max: 2, label: "Ta journée de boulot idéale ressemble plutôt à… (2 max)", options: [
+        { v: "chiffres", label: "Analyser des chiffres et faire des recommandations" },
+        { v: "reunion", label: "Négocier, convaincre, mener un projet" },
+        { v: "voyage", label: "En déplacement, à l'étranger, en plusieurs langues" },
+        { v: "gens", label: "Avec des gens à accompagner, soigner ou former" },
+        { v: "ecrire", label: "Enquêter, écrire, raconter" },
+        { v: "creer", label: "Créer des contenus, des visuels, des produits" },
+        { v: "coder", label: "Construire des outils, coder" },
+        { v: "institution", label: "Dans une institution : tribunal, ministère, mairie" },
+        { v: "terrain", label: "Sur le terrain, jamais deux jours pareils" },
+        { v: "classe", label: "Devant une classe" } ] },
+      { id: "f_val", type: "multi", max: 3, label: "Ce qui compte le plus dans un futur boulot (3 max)", options: [
+        { v: "argent", label: "Bien gagner ma vie" },
+        { v: "sens", label: "Être utile, que ça ait du sens" },
+        { v: "stabilite", label: "La sécurité de l'emploi" },
+        { v: "liberte", label: "Être libre, mon propre patron" },
+        { v: "reconnaissance", label: "Être reconnu, avoir un statut" },
+        { v: "creativite", label: "Pouvoir créer" },
+        { v: "voyage", label: "Voyager" },
+        { v: "equilibre", label: "Avoir du temps pour moi" },
+        { v: "apprendre", label: "Apprendre tout le temps" },
+        { v: "impact", label: "Peser sur les décisions" } ] },
+      { id: "f_metier", type: "text", label: "Un métier ou un domaine qui t'a déjà intrigué, même vaguement ?", hint: "Une série, un proche, un stage de 3e, une vidéo… tout compte." },
+      { id: "f_flow", type: "text", label: "Un truc que tu fais sans voir le temps passer ?" },
+      { id: "f_non", type: "text", label: "Un métier que tu ne veux surtout pas faire, et pourquoi ?" }
+    ],
+    oral: "Qui, autour de toi, a un boulot qui te paraît pas mal ? Qu'est-ce qui te plaît dedans ?"
+  }
+];
+/* ===== Catalogue des formations =====
+   w : poids sur les dimensions du profil ; kw : centres d'intérêt liés
+   p : enc (encadrement 0-1), conc (concret), intense, maths, ecrit, oral, vente, bureau, terrain,
+       ouvert (garde des portes ouvertes), sortie (années avant un premier diplôme utile),
+       concours, prive, prepa, fac (1 = fac classique, .5 = fac sélective) */
+const FAMS = {
+  prepa: "Prépas (CPGE)",
+  facsel: "Fac sélective et grands établissements",
+  fac: "Université (licences)",
+  but: "IUT (BUT, 3 ans)",
+  bts: "BTS (2 ans)",
+  ecole: "Écoles et diplômes spécialisés",
+  autre: "Autres voies"
+};
+const SELEC = ["", "Accessible", "Sélectif", "Très sélectif"];
+const FAC_COST = "Frais universitaires (gratuit pour les boursiers)";
+
+const F = [];
+function add(fam, list) { list.forEach(x => F.push(Object.assign({ fam }, x))); }
+
+add("prepa", [
+  { id: "ecg", nom: "Prépa ECG (économique et commerciale)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
+    desc: "Maths (appliquées ou approfondies), économie-sociologie-histoire ou géopolitique, culture générale et deux langues. Colles chaque semaine.",
+    apres: "Concours des écoles de commerce (HEC, ESSEC, ESCP, EDHEC…) et de certaines écoles de statistique. Les crédits permettent de rejoindre une licence si on change d'avis.",
+    ses: "La voie classique après SES + maths. L'option maths expertes est un plus pour viser maths approfondies.",
+    w: { ECO: 1, CHIF: .6, SOC: .4, INTL: .4 }, kw: ["finance", "entreprise", "international"],
+    p: { enc: 1, conc: .3, intense: 1, maths: .8, ecrit: .6, oral: .6, vente: .1, bureau: .7, ouvert: .9, sortie: 5, concours: 1, prepa: 1 } },
+  { id: "bl", nom: "Prépa B/L (lettres et sciences sociales)", duree: "2 ans", sel: 3, cout: "Gratuit en lycée public", alt: 0,
+    desc: "La prépa la plus généraliste : maths, sociologie, économie, histoire, philo, lettres et langues. Beaucoup de lecture et d'écrit.",
+    apres: "ENS, écoles de commerce, IEP, écoles de statistique, CELSA, écoles de journalisme, ou entrée en 3e année de licence.",
+    ses: "Pensée pour les profils SES + maths qui aiment aussi lire et écrire.",
+    w: { SOC: 1, ECO: .6, CHIF: .5, COM: .4 }, kw: ["politique", "enseigner", "medias"],
+    p: { enc: 1, conc: .1, intense: 1, maths: .6, ecrit: 1, oral: .6, bureau: .8, ouvert: 1, sortie: 5, concours: 1, prepa: 1 } },
+  { id: "d1", nom: "Prépa D1 (droit, économie)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
+    desc: "Une prépa adossée à une licence de droit : on valide la fac en parallèle, avec beaucoup plus d'encadrement.",
+    apres: "Concours de l'ENS Rennes, IEP, écoles de commerce, magistères, ou poursuite en droit.",
+    ses: "Si le droit te tente mais que tu veux un cadre plus serré que la fac.",
+    w: { DROIT: 1, ECO: .5, SOC: .4 }, kw: ["droit", "publique", "politique"],
+    p: { enc: .9, conc: .3, intense: .9, maths: .2, ecrit: .9, oral: .5, bureau: .8, ouvert: .8, sortie: 3, concours: 1, prepa: 1 } },
+  { id: "d2", nom: "Prépa D2 (économie, gestion)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
+    desc: "Économie, gestion, maths et droit, avec une licence d'économie-gestion validée en parallèle.",
+    apres: "Concours de l'ENS Paris-Saclay, écoles de commerce, IEP, écoles de statistique, magistères.",
+    ses: "Très proche de la partie éco de la SES, avec des maths au service de l'économie.",
+    w: { ECO: 1, CHIF: .6, DROIT: .3 }, kw: ["finance", "entreprise"],
+    p: { enc: .9, conc: .4, intense: .9, maths: .6, ecrit: .6, oral: .4, bureau: .8, ouvert: .9, sortie: 3, concours: 1, prepa: 1 } }
+]);
+
+add("facsel", [
+  { id: "dl", nom: "Doubles licences et licences renforcées", duree: "3 ans", sel: 3, cout: FAC_COST, alt: 0,
+    desc: "Deux disciplines en même temps (éco-maths, droit-éco, droit-langues, éco-histoire…) ou un parcours renforcé (magistère, collège de droit). Petits effectifs, grosse charge de travail. On en trouve dans la plupart des grandes universités, et à Paris Dauphine-PSL.",
+    apres: "Les masters les plus demandés, des écoles sur dossier, les concours de la fonction publique.",
+    ses: "Éco-maths est taillée pour SES + maths, mais demande un bon dossier.",
+    w: { ECO: .8, CHIF: .5, DROIT: .5, SOC: .4 }, kw: ["finance", "droit", "politique", "data"],
+    p: { enc: .6, conc: .3, intense: .8, maths: .6, ecrit: .6, oral: .4, bureau: .8, ouvert: 1, sortie: 3, fac: .5 } },
+  { id: "cpes", nom: "CPES et CUPGE (cycles pluridisciplinaires)", duree: "3 ans", sel: 3, cout: FAC_COST, alt: 0,
+    desc: "Un mélange de prépa et de fac : petits groupes, plusieurs disciplines au début (éco, maths, sciences sociales…), puis on se spécialise. Pas de concours couperet à la fin.",
+    apres: "Masters, grandes écoles sur dossier, ENS.",
+    ses: "Le niveau d'une prépa sans le stress des concours.",
+    w: { SOC: .7, ECO: .7, CHIF: .6, INTL: .3 }, kw: ["politique", "data", "enseigner"],
+    p: { enc: .8, conc: .2, intense: .8, maths: .6, ecrit: .7, oral: .4, bureau: .8, ouvert: 1, sortie: 3, fac: .5 } },
+  { id: "iep", nom: "Sciences Po Paris et IEP", duree: "5 ans (grade master)", sel: 3, cout: "Frais selon les revenus des parents", alt: 0,
+    desc: "Science politique, histoire, éco, droit, sociologie et langues, avec une 3e année à l'étranger. Sur Parcoursup : dossier et oral pour Sciences Po Paris, concours écrit commun au printemps pour plusieurs IEP de région.",
+    apres: "Fonction publique, journalisme, communication, international, conseil, ONG.",
+    ses: "La partie socio et science po de la SES est au cœur du programme.",
+    w: { SOC: 1, INTL: .7, DROIT: .5, COM: .4, ECO: .4 }, kw: ["politique", "international", "publique", "medias"],
+    p: { enc: .6, conc: .2, intense: .7, maths: .2, ecrit: 1, oral: .8, bureau: .7, ouvert: .8, sortie: 5, concours: 1 } }
+]);
+
+add("fac", [
+  { id: "eco", nom: "Licence Économie-gestion", duree: "3 ans", sel: 1, cout: FAC_COST, alt: .2,
+    desc: "Micro et macroéconomie, gestion, maths et statistiques, un peu de droit. On se spécialise petit à petit (finance, économie, gestion).",
+    apres: "Masters en économie, finance, banque, management ou data, puis entreprises, banques, institutions.",
+    ses: "Le prolongement direct de la SES éco. Les maths y pèsent plus qu'on ne le croit.",
+    w: { ECO: 1, CHIF: .6, SOC: .3 }, kw: ["finance", "entreprise"],
+    p: { enc: .2, conc: .3, intense: .4, maths: .6, ecrit: .4, oral: .2, bureau: .8, ouvert: .8, sortie: 3, fac: 1 } },
+  { id: "aes", nom: "Licence AES (administration économique et sociale)", duree: "3 ans", sel: 1, cout: FAC_COST, alt: .2,
+    desc: "Un mélange d'économie, de droit, de gestion et de sociologie. Plus généraliste et moins matheux que la licence d'éco.",
+    apres: "RH, administration, collectivités, gestion d'entreprise, concours de la fonction publique.",
+    ses: "Le programme ressemble beaucoup à celui de la SES.",
+    w: { ECO: .6, DROIT: .6, SOC: .6, HUM: .3 }, kw: ["publique", "entreprise", "aider"],
+    p: { enc: .2, conc: .4, intense: .3, maths: .3, ecrit: .5, oral: .3, bureau: .8, ouvert: .8, sortie: 3, fac: 1 } },
+  { id: "miashs", nom: "Licence MIASHS", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
+    desc: "Maths et informatique appliquées aux sciences humaines et sociales : statistiques, programmation, plus une discipline au choix (éco, socio, psycho, géo…).",
+    apres: "Data analyst, statisticien, chargé d'études, actuariat ou économie quantitative après un master.",
+    ses: "Exactement le croisement SES + maths. Il faut aimer les maths pour de vrai.",
+    w: { CHIF: 1, TECH: .6, SOC: .5, ECO: .4 }, kw: ["data", "dev"],
+    p: { enc: .3, conc: .4, intense: .5, maths: .9, ecrit: .3, oral: .2, bureau: .9, ouvert: .9, sortie: 3, fac: 1 } },
+  { id: "maths", nom: "Licence Mathématiques", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Analyse, algèbre, probabilités, un peu d'informatique. Très théorique au début.",
+    apres: "Masters en maths appliquées, actuariat, data, finance quantitative, enseignement.",
+    ses: "Accessible sans physique-chimie, mais seulement si les maths sont vraiment ta matière préférée. Les maths expertes aident beaucoup.",
+    w: { CHIF: 1, TECH: .3 }, kw: ["data", "enseigner"],
+    p: { enc: .2, conc: .1, intense: .6, maths: 1, ecrit: .1, oral: .1, bureau: .9, ouvert: .7, sortie: 3, fac: 1 } },
+  { id: "info", nom: "Licence Informatique", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .2,
+    desc: "Programmation, algorithmique, bases de données, réseaux. Les maths sont là, surtout la logique.",
+    apres: "Développeur, data, cybersécurité, chef de projet après un master.",
+    ses: "Possible sans NSI, à condition de s'y mettre dès maintenant (cours en ligne, petits projets).",
+    w: { TECH: 1, CHIF: .6 }, kw: ["dev", "data"],
+    p: { enc: .2, conc: .5, intense: .5, maths: .7, ecrit: .1, oral: .1, bureau: 1, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "droit", nom: "Licence de droit", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Droit civil, constitutionnel, pénal, institutions. Beaucoup de par cœur et d'écrit ; la première année est exigeante.",
+    apres: "Avocat, juriste d'entreprise, notaire, magistrat, commissaire de police, administration, en général après un master.",
+    ses: "Aucune spé exigée. La SES et la philo aident pour raisonner.",
+    w: { DROIT: 1, SOC: .4, ECO: .2 }, kw: ["droit", "publique", "politique"],
+    p: { enc: .2, conc: .2, intense: .6, maths: .05, ecrit: 1, oral: .5, bureau: .8, ouvert: .7, sortie: 5, fac: 1 } },
+  { id: "socio", nom: "Licence Sociologie ou Science politique", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Enquêtes, statistiques, entretiens, théories sociales ou politiques. Beaucoup de lecture.",
+    apres: "Chargé d'études, collectivités, associations, journalisme, recherche, concours.",
+    ses: "La suite logique de la partie socio de la SES.",
+    w: { SOC: 1, HUM: .5, COM: .3 }, kw: ["politique", "aider", "psycho", "environnement"],
+    p: { enc: .2, conc: .3, intense: .4, maths: .3, ecrit: .9, oral: .3, bureau: .7, ouvert: .7, sortie: 3, fac: 1 } },
+  { id: "lea", nom: "Licence LEA (langues étrangères appliquées)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
+    desc: "Deux langues au même niveau, plus de l'économie, du droit, du marketing et du commerce international.",
+    apres: "Commerce international, traduction spécialisée, tourisme, communication.",
+    ses: "Bien si tu es à l'aise en langues ; la SES donne de l'avance en éco.",
+    w: { INTL: 1, ECO: .4, COM: .4 }, kw: ["international", "vente"],
+    p: { enc: .3, conc: .5, intense: .4, maths: .1, ecrit: .6, oral: .6, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "psycho", nom: "Licence Psychologie", duree: "3 ans (5 pour être psychologue)", sel: 2, cout: FAC_COST, alt: 0,
+    desc: "Psychologie sociale, cognitive, clinique, du développement… et beaucoup de statistiques.",
+    apres: "Psychologue après un master (places limitées), RH, études, social.",
+    ses: "Les maths servent en stats, la SES socio aussi.",
+    w: { HUM: 1, SOC: .5, CHIF: .3 }, kw: ["psycho", "aider", "sante"],
+    p: { enc: .2, conc: .3, intense: .5, maths: .4, ecrit: .7, oral: .3, bureau: .7, ouvert: .6, sortie: 5, fac: 1 } },
+  { id: "geo", nom: "Licence Géographie et aménagement", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Territoires, villes, environnement, cartographie et données géographiques.",
+    apres: "Urbanisme, environnement, aménagement, collectivités, cartographie.",
+    ses: "Un bon choix si l'environnement et la ville t'intéressent.",
+    w: { SOC: .7, CHIF: .3, INTL: .2 }, kw: ["environnement", "ville"],
+    p: { enc: .2, conc: .5, intense: .3, maths: .3, ecrit: .6, oral: .3, bureau: .5, terrain: .5, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "staps", nom: "Licence STAPS", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
+    desc: "Sciences du sport (physiologie, sociologie, pratique), puis un parcours : management du sport, entraînement, activité physique adaptée, enseignement.",
+    apres: "Management du sport, coach, éducateur sportif, prof d'EPS (concours).",
+    ses: "Pas besoin de spé scientifique ; le niveau sportif et la motivation comptent.",
+    w: { HUM: .6, ECO: .2, SOC: .2 }, kw: ["sport", "enseigner", "sante"],
+    p: { enc: .3, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .4, bureau: .2, terrain: 1, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "infocom", nom: "Licence Information-communication", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
+    desc: "Médias, communication des organisations, culture numérique, analyse des messages.",
+    apres: "Communication, relations presse, contenus, journalisme (souvent via une école ensuite).",
+    ses: "La SES socio aide à analyser les médias et les publics.",
+    w: { COM: 1, SOC: .5 }, kw: ["medias", "communication", "culture"],
+    p: { enc: .3, conc: .4, intense: .4, maths: .1, ecrit: .8, oral: .5, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "lpe", nom: "Licence Professorat des écoles", duree: "3 ans + 2 ans de master payé", sel: 2, cout: FAC_COST, alt: 0,
+    desc: "Nouvelle licence ouverte sur Parcoursup depuis la rentrée 2026 pour devenir prof des écoles. Ses diplômés sont dispensés des épreuves écrites du concours.",
+    apres: "Professeur des écoles. En master, on est élève fonctionnaire et rémunéré.",
+    ses: "Formation polyvalente (français, maths, sciences, sport, arts) : la SES ne gêne en rien.",
+    w: { HUM: 1, SOC: .4, CHIF: .2 }, kw: ["enseigner", "aider"],
+    p: { enc: .5, conc: .5, intense: .5, maths: .4, ecrit: .6, oral: .7, bureau: .3, terrain: .7, ouvert: .2, sortie: 5, fac: 1 } },
+  { id: "las", nom: "Études de santé (PASS ou LAS)", duree: "1 an, puis filière santé", sel: 3, cout: FAC_COST, alt: 0,
+    desc: "PASS : une année santé avec une mineure. LAS : une licence (droit, éco, psycho…) avec une option santé. Une partie des étudiants accède ensuite à médecine, pharmacie, dentaire, sage-femme ou kiné.",
+    apres: "Métiers médicaux et paramédicaux ; sinon on poursuit la licence.",
+    ses: "Possible sans SVT ni physique-chimie, mais le rattrapage scientifique est lourd. À bien peser.",
+    w: { HUM: 1, CHIF: .2 }, kw: ["sante", "aider"],
+    p: { enc: .4, conc: .2, intense: 1, maths: .5, ecrit: .3, oral: .2, bureau: .6, ouvert: .4, sortie: 6, concours: 1, fac: 1 } }
+]);
+const BUT_COST = "Frais universitaires, gratuit en alternance";
+add("but", [
+  { id: "but_sd", nom: "BUT Science des données", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
+    desc: "Statistiques, programmation, bases de données, avec de l'économie et de la gestion. Beaucoup de projets et des stages.",
+    apres: "Data analyst, chargé d'études statistiques, ou poursuite en master ou en école d'ingénieurs.",
+    ses: "Un débouché très direct pour SES + maths, si coder un peu ne te fait pas peur.",
+    w: { CHIF: 1, TECH: .7, ECO: .3 }, kw: ["data", "dev"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .8, ecrit: .2, oral: .3, bureau: .9, ouvert: .6, sortie: 3 } },
+  { id: "but_gea", nom: "BUT GEA (gestion des entreprises et des administrations)", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
+    desc: "Comptabilité, contrôle de gestion, finance, ressources humaines, droit, avec un parcours à choisir.",
+    apres: "Gestion, comptabilité, RH, contrôle de gestion ; poursuite en master ou en école.",
+    ses: "Le profil type SES + maths ; la SES aide pour l'éco et la gestion.",
+    w: { ECO: 1, CHIF: .5, DROIT: .3 }, kw: ["entreprise", "finance", "logistique"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .4, ecrit: .3, oral: .4, bureau: .9, ouvert: .6, sortie: 3 } },
+  { id: "but_tc", nom: "BUT Techniques de commercialisation", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
+    desc: "Marketing, vente, négociation, communication commerciale, beaucoup de projets en groupe.",
+    apres: "Commercial, chef de produit, business developer, marketing digital ; poursuite en école de commerce.",
+    ses: "Pour ceux qui aiment convaincre et bosser en équipe.",
+    w: { ECO: .8, COM: .6 }, kw: ["vente", "entreprise", "communication"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .2, ecrit: .3, oral: .8, vente: 1, bureau: .5, terrain: .5, ouvert: .5, sortie: 3 } },
+  { id: "but_info", nom: "BUT Informatique", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .7,
+    desc: "Développement, bases de données, réseaux, gestion de projet.",
+    apres: "Développeur, administrateur systèmes, ou poursuite en école d'ingénieurs.",
+    ses: "Accessible avec maths ; montrer un intérêt concret pour l'info (projets perso) aide beaucoup.",
+    w: { TECH: 1, CHIF: .5 }, kw: ["dev", "data"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .6, ecrit: .1, oral: .2, bureau: 1, ouvert: .5, sortie: 3 } },
+  { id: "but_mmi", nom: "BUT MMI (métiers du multimédia et de l'internet)", duree: "3 ans", sel: 3, cout: BUT_COST, alt: .7,
+    desc: "Web, design graphique, vidéo, communication numérique, développement.",
+    apres: "Développeur web, UX/UI designer, chargé de com digitale, création de contenus.",
+    ses: "Très demandé : un portfolio ou des projets perso font la différence.",
+    w: { COM: .9, TECH: .7 }, kw: ["communication", "culture", "dev", "medias"],
+    p: { enc: .9, conc: .9, intense: .5, maths: .2, ecrit: .3, oral: .4, bureau: .8, ouvert: .5, sortie: 3 } },
+  { id: "but_infocom", nom: "BUT Information-communication", duree: "3 ans", sel: 3, cout: BUT_COST, alt: .6,
+    desc: "Un parcours au choix : journalisme, communication des organisations, publicité, métiers du livre, information numérique.",
+    apres: "Chargé de communication, journaliste, chef de publicité, bibliothécaire.",
+    ses: "La SES et l'écrit sont des atouts. Les parcours journalisme sont très sélectifs.",
+    w: { COM: 1, SOC: .4 }, kw: ["medias", "communication", "culture"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .1, ecrit: .8, oral: .5, bureau: .6, ouvert: .5, sortie: 3 } },
+  { id: "but_cj", nom: "BUT Carrières juridiques", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .7,
+    desc: "Du droit appliqué : entreprise, banque, assurance, immobilier, administration.",
+    apres: "Assistant juridique, conseiller en banque ou en assurance, gestionnaire en collectivité.",
+    ses: "Du droit concret, plus encadré qu'à la fac.",
+    w: { DROIT: 1, ECO: .4 }, kw: ["droit", "publique", "finance"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .1, ecrit: .7, oral: .4, bureau: .9, ouvert: .5, sortie: 3 } },
+  { id: "but_mlt", nom: "BUT MLT (management de la logistique et des transports)", duree: "3 ans", sel: 1, cout: BUT_COST, alt: .9,
+    desc: "Organiser les flux de marchandises et de personnes : transport, achats, entrepôts, international.",
+    apres: "Logisticien, affréteur, responsable d'entrepôt, supply chain.",
+    ses: "Souvent plus de places qu'ailleurs, beaucoup d'alternance, des débouchés solides.",
+    w: { ECO: .6, INTL: .4, CHIF: .4 }, kw: ["logistique", "international"],
+    p: { enc: .9, conc: .9, intense: .4, maths: .4, ecrit: .2, oral: .4, bureau: .5, terrain: .6, ouvert: .5, sortie: 3 } },
+  { id: "but_cs", nom: "BUT Carrières sociales", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .5,
+    desc: "Éducation spécialisée, animation sociale et socioculturelle, gestion urbaine, services à la personne.",
+    apres: "Animateur, coordinateur de projets sociaux, gestionnaire en collectivité.",
+    ses: "La SES socio donne des bases utiles.",
+    w: { HUM: 1, SOC: .6 }, kw: ["aider", "ville"],
+    p: { enc: .9, conc: .8, intense: .4, maths: .1, ecrit: .5, oral: .6, bureau: .3, terrain: .9, ouvert: .5, sortie: 3 } }
+]);
+
+const BTS_COST = "Gratuit en lycée public";
+add("bts", [
+  { id: "bts_cg", nom: "BTS Comptabilité et gestion (CG)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .8,
+    desc: "Comptabilité, fiscalité, paie, contrôle de gestion, outils numériques.",
+    apres: "Assistant comptable, gestionnaire de paie ; ou DCG pour viser l'expertise comptable.",
+    ses: "Les maths aident, la SES aussi pour l'éco.",
+    w: { ECO: .7, CHIF: .7 }, kw: ["finance", "entreprise"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .4, ecrit: .2, oral: .2, bureau: 1, ouvert: .3, sortie: 2 } },
+  { id: "bts_banque", nom: "BTS Banque ou Assurance", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
+    desc: "Relation client, produits bancaires ou contrats d'assurance, droit, économie. Très souvent en alternance.",
+    apres: "Conseiller clientèle ; poursuite en licence pro ou bachelor.",
+    ses: "La SES donne de l'avance sur l'éco et la monnaie.",
+    w: { ECO: .8, HUM: .3, DROIT: .2 }, kw: ["finance", "vente"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .2, ecrit: .2, oral: .6, vente: .7, bureau: .8, ouvert: .3, sortie: 2 } },
+  { id: "bts_ci", nom: "BTS Commerce international", duree: "2 ans", sel: 2, cout: BTS_COST, alt: .6,
+    desc: "Prospection à l'étranger, import-export, deux langues vivantes, stage à l'étranger.",
+    apres: "Assistant export, achats internationaux ; poursuite en école ou en licence.",
+    ses: "Pour les profils langues + éco.",
+    w: { INTL: 1, ECO: .6 }, kw: ["international", "vente", "logistique"],
+    p: { enc: 1, conc: .8, intense: .4, maths: .2, ecrit: .3, oral: .6, vente: .6, bureau: .6, ouvert: .3, sortie: 2 } },
+  { id: "bts_vente", nom: "BTS NDRC ou MCO (vente, relation client, management)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
+    desc: "Négociation, vente, relation client, gestion d'une équipe ou d'un magasin.",
+    apres: "Commercial, manager en magasin, chargé de clientèle ; poursuite en bachelor.",
+    ses: "Pour ceux qui aiment le contact et le challenge.",
+    w: { ECO: .6, COM: .4, HUM: .2 }, kw: ["vente", "entreprise"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .2, oral: .8, vente: 1, bureau: .3, terrain: .7, ouvert: .2, sortie: 2 } },
+  { id: "bts_sio", nom: "BTS SIO (services informatiques aux organisations)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .7,
+    desc: "Option développement d'applications ou option réseaux et cybersécurité.",
+    apres: "Développeur, technicien réseau ; poursuite en licence pro ou en école.",
+    ses: "Accessible sans NSI si la motivation est là.",
+    w: { TECH: 1, CHIF: .3 }, kw: ["dev"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .4, ecrit: .1, oral: .2, bureau: 1, ouvert: .3, sortie: 2 } },
+  { id: "bts_com", nom: "BTS Communication", duree: "2 ans", sel: 2, cout: BTS_COST, alt: .6,
+    desc: "Stratégie de communication, création de contenus, relation avec les agences et les médias.",
+    apres: "Chargé de communication, assistant en agence ; poursuite en bachelor.",
+    ses: "La SES aide à comprendre les publics.",
+    w: { COM: 1, ECO: .2 }, kw: ["communication", "medias", "culture"],
+    p: { enc: 1, conc: .8, intense: .4, maths: .1, ecrit: .6, oral: .6, bureau: .7, ouvert: .3, sortie: 2 } },
+  { id: "bts_pi", nom: "BTS Professions immobilières", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .8,
+    desc: "Transaction, gestion locative, copropriété, droit de l'immobilier.",
+    apres: "Agent immobilier, gestionnaire locatif, syndic de copropriété.",
+    ses: "Un mélange de droit, d'éco et de commercial.",
+    w: { ECO: .5, DROIT: .5, HUM: .2 }, kw: ["ville", "vente", "droit"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .2, ecrit: .3, oral: .6, vente: .7, bureau: .4, terrain: .6, ouvert: .2, sortie: 2 } },
+  { id: "bts_tour", nom: "BTS Tourisme", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .6,
+    desc: "Conception de voyages, accueil, deux langues, outils numériques.",
+    apres: "Agent de voyage, conseiller en séjour, office de tourisme.",
+    ses: "Pour les profils langues et contact.",
+    w: { INTL: .9, HUM: .4, COM: .3 }, kw: ["international", "culture"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .3, oral: .7, vente: .5, bureau: .4, terrain: .6, ouvert: .2, sortie: 2 } }
+]);
+
+add("ecole", [
+  { id: "dcg", nom: "DCG (diplôme de comptabilité et de gestion)", duree: "3 ans", sel: 2, cout: "Gratuit en lycée public, ou en alternance", alt: .8,
+    desc: "Comptabilité, droit, gestion, finance, économie : la première étape de la filière expertise comptable.",
+    apres: "Comptable, contrôleur de gestion, puis DSCG et expertise comptable.",
+    ses: "Une filière où l'on trouve du travail facilement.",
+    w: { ECO: .8, CHIF: .7, DROIT: .5 }, kw: ["finance", "entreprise"],
+    p: { enc: .9, conc: .7, intense: .6, maths: .4, ecrit: .4, oral: .2, bureau: 1, ouvert: .4, sortie: 3 } },
+  { id: "ecole_com", nom: "Écoles de commerce post-bac", duree: "3 à 5 ans", sel: 2, cout: "Souvent 8 000 à 15 000 €/an, parfois plus", alt: .6,
+    desc: "Bachelors en 3 ou 4 ans, ou programmes grande école en 5 ans, recrutés via des concours communs (Sésame, Accès…) sur Parcoursup.",
+    apres: "Marketing, finance, commerce, management, souvent à l'international.",
+    ses: "Aucune spé exigée ; la SES et les langues aident. Vérifier les labels (visa, grade de licence ou de master).",
+    w: { ECO: 1, INTL: .6, COM: .5 }, kw: ["entreprise", "international", "vente", "finance"],
+    p: { enc: .7, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .8, vente: .5, bureau: .7, ouvert: .5, sortie: 3, concours: 1, prive: 1 } },
+  { id: "archi", nom: "Écoles d'architecture (ENSA)", duree: "5 ans", sel: 3, cout: "Frais d'école publique", alt: 0,
+    desc: "Projet, dessin, histoire de l'art, urbanisme, construction. Sélection sur dossier, souvent avec un entretien.",
+    apres: "Architecte, urbaniste, scénographe, design d'espace.",
+    ses: "Ouvert à tous les bacs ; il faut une vraie fibre créative et de la curiosité pour la ville.",
+    w: { COM: .8, SOC: .4, CHIF: .3 }, kw: ["ville", "culture"],
+    p: { enc: .6, conc: .7, intense: .9, maths: .3, ecrit: .4, oral: .5, bureau: .6, ouvert: .4, sortie: 5 } },
+  { id: "dnmade", nom: "DN MADE (métiers d'art et design)", duree: "3 ans", sel: 3, cout: "Gratuit en lycée public", alt: 0,
+    desc: "Design graphique, d'objet, d'espace, mode, numérique… surtout en lycée public.",
+    apres: "Designer, graphiste, directeur artistique ; poursuite en DSAA ou en master.",
+    ses: "Sélection sur dossier et projets perso : à envisager si tu crées déjà.",
+    w: { COM: 1, TECH: .3 }, kw: ["culture", "communication"],
+    p: { enc: .8, conc: .9, intense: .6, maths: .1, ecrit: .3, oral: .4, bureau: .6, ouvert: .3, sortie: 3 } },
+  { id: "social", nom: "Diplômes d'État du travail social", duree: "3 ans (grade licence)", sel: 2, cout: "Variable selon l'école (souvent prise en charge par la région)", alt: .4,
+    desc: "Éducateur spécialisé, assistant de service social, éducateur de jeunes enfants… Beaucoup de stages sur le terrain.",
+    apres: "Protection de l'enfance, handicap, insertion, hôpitaux, collectivités.",
+    ses: "La SES socio est un vrai atout pour comprendre les situations.",
+    w: { HUM: 1, SOC: .6 }, kw: ["aider", "psycho"],
+    p: { enc: .8, conc: .9, intense: .5, maths: .1, ecrit: .5, oral: .6, bureau: .2, terrain: 1, ouvert: .3, sortie: 3 } },
+  { id: "ifsi", nom: "Soins infirmiers (IFSI)", duree: "3 ans", sel: 2, cout: "Frais universitaires", alt: 0,
+    desc: "Formation d'infirmier : la moitié du temps en cours, l'autre en stage à l'hôpital ou en libéral.",
+    apres: "Infirmier, puis spécialisations (bloc, puériculture, anesthésie).",
+    ses: "Pas de spé scientifique obligatoire ; la motivation et le dossier comptent.",
+    w: { HUM: 1, CHIF: .1 }, kw: ["sante", "aider"],
+    p: { enc: .9, conc: 1, intense: .8, maths: .3, ecrit: .3, oral: .4, bureau: 0, terrain: 1, ouvert: .2, sortie: 3 } }
+]);
+
+add("autre", [
+  { id: "cesure", nom: "Année de césure", duree: "6 mois à 1 an", sel: 1, cout: "Selon le projet", alt: 0,
+    desc: "Tu demandes la césure sur Parcoursup avec tes vœux. Ta place est gardée pendant que tu fais un service civique, un job, un voyage ou un projet.",
+    apres: "Tu reprends dans la formation acceptée, souvent avec des idées plus claires.",
+    ses: "Ce n'est pas une année perdue si elle est construite.",
+    w: {}, kw: [],
+    p: { enc: .2, conc: 1, intense: .2, ouvert: .8, sortie: 1 } },
+  { id: "etranger", nom: "Étudier à l'étranger dès le bac", duree: "3 ans le plus souvent", sel: 2, cout: "Très variable, de presque gratuit à très cher", alt: 0,
+    desc: "Bachelors en anglais en Belgique, aux Pays-Bas, en Espagne, au Canada… Candidatures hors Parcoursup, avec leurs propres calendriers.",
+    apres: "Masters en France ou à l'étranger.",
+    ses: "Il faut un bon niveau d'anglais et préparer les dossiers dès l'automne.",
+    w: { INTL: 1, ECO: .3, SOC: .3 }, kw: ["international"],
+    p: { enc: .4, conc: .4, intense: .5, maths: .3, ecrit: .5, oral: .5, bureau: .6, ouvert: .6, sortie: 3 } },
+  { id: "securite", nom: "Sécurité et défense (police, gendarmerie, armées, douanes)", duree: "Concours puis formation payée", sel: 2, cout: "Formation rémunérée", alt: 0,
+    desc: "Concours accessibles avec le bac (gardien de la paix, sous-officier de gendarmerie, contrôleur des douanes…), ou écoles d'officiers après une prépa ou une licence.",
+    apres: "Carrière dans la fonction publique, avec des concours internes pour évoluer.",
+    ses: "La SES et le droit aident aux épreuves écrites ; il y a aussi des épreuves sportives.",
+    w: { DROIT: .8, HUM: .4, SOC: .3 }, kw: ["publique", "droit", "sport"],
+    p: { enc: 1, conc: .9, intense: .7, maths: .2, ecrit: .4, oral: .5, bureau: .3, terrain: 1, ouvert: .2, sortie: 1, concours: 1 } }
+]);
+
+const HARD = [
+  { t: "Prépas scientifiques et écoles d'ingénieurs post-bac", d: "MPSI, PCSI, MP2I et la plupart des écoles d'ingénieurs demandent physique-chimie (ou NSI). Avec SES + maths, ce n'est pas la voie naturelle. Par contre, beaucoup d'écoles d'ingénieurs recrutent après un BUT Science des données ou Informatique, ou une licence de maths, d'info ou MIASHS." },
+  { t: "Prépa ECT", d: "Réservée aux élèves de STMG. La version pour un bac général, c'est l'ECG." }
+];
+/* ===== Calcul du profil et des pistes (fonctions pures) ===== */
+const SUBJ = {
+  m_maths: { CHIF: 1, TECH: .3, ECO: .2 }, m_seseco: { ECO: 1, CHIF: .2 }, m_sessoc: { SOC: 1, HUM: .3 },
+  m_hg: { SOC: .6, INTL: .3, DROIT: .2 }, m_philo: { SOC: .5, DROIT: .3, COM: .2, HUM: .2 },
+  m_fr: { COM: .6, DROIT: .4, SOC: .3 }, m_lang: { INTL: 1 }, m_info: { TECH: 1, CHIF: .3 },
+  m_sport: { HUM: .3 }, m_arts: { COM: .8 }
+};
+const SUBJ_KW = { m_sport: "sport", m_arts: "culture", m_info: "dev", m_lang: "international" };
+const INT = {
+  finance: { ECO: .8, CHIF: .6 }, entreprise: { ECO: 1, COM: .2 }, data: { CHIF: 1, TECH: .5 }, dev: { TECH: 1, CHIF: .3 },
+  politique: { SOC: 1, DROIT: .3, INTL: .2 }, international: { INTL: 1 }, droit: { DROIT: 1 }, aider: { HUM: 1 },
+  sante: { HUM: 1 }, enseigner: { HUM: .7, SOC: .2 }, medias: { COM: 1, SOC: .4 }, communication: { COM: 1, ECO: .2 },
+  vente: { ECO: .6, COM: .4 }, environnement: { SOC: .5, CHIF: .2 }, sport: { HUM: .4 }, culture: { COM: .7 },
+  ville: { SOC: .4, ECO: .3 }, psycho: { HUM: .7, SOC: .4 }, publique: { DROIT: .6, SOC: .5 }, logistique: { ECO: .6, CHIF: .3 }
+};
+const SCENE = {
+  chiffres: [{ CHIF: 1, ECO: .4 }, ["data", "finance"]], reunion: [{ ECO: .8, COM: .3 }, ["entreprise", "vente"]],
+  voyage: [{ INTL: 1 }, ["international"]], gens: [{ HUM: 1 }, ["aider", "sante"]], ecrire: [{ COM: .8, SOC: .4 }, ["medias"]],
+  creer: [{ COM: 1, TECH: .2 }, ["culture", "communication"]], coder: [{ TECH: 1, CHIF: .3 }, ["dev"]],
+  institution: [{ DROIT: .8, SOC: .5 }, ["publique", "droit"]], terrain: [{ HUM: .4 }, []], classe: [{ HUM: .8 }, ["enseigner"]]
+};
+const VAL = {
+  argent: [{ ECO: .5, CHIF: .3 }, ["finance"]], sens: [{ HUM: .5, SOC: .3 }, []], stabilite: [{ DROIT: .2 }, ["publique"]],
+  liberte: [{ ECO: .3 }, ["entreprise"]], reconnaissance: [{}, []], creativite: [{ COM: .6 }, ["culture"]],
+  voyage: [{ INTL: .6 }, ["international"]], equilibre: [{}, []], apprendre: [{}, []], impact: [{ SOC: .4, DROIT: .2 }, ["politique"]]
+};
+
+function qById(id) { for (const b of BLOCKS) for (const q of b.qs) if (q.id === id) return q; return null; }
+function optLabel(id, v) { const q = qById(id); const o = q && q.options && q.options.find(o => o.v === v); return o ? o.label : ""; }
+function arr(x) { return Array.isArray(x) ? x : []; }
+
+function computeProfile(A) {
+  const raw = {}; Object.keys(DIMS).forEach(d => raw[d] = 0);
+  const kwW = {};
+  const addW = (map, k) => { for (const d in map) raw[d] += map[d] * k; };
+  const addKw = (k, w) => { kwW[k] = Math.max(kwW[k] || 0, w); };
+  let nsp = 0, answered = 0, total = 0;
+  for (const b of BLOCKS) for (const q of b.qs) {
+    if (q.type === "text") continue;
+    total++;
+    const v = A[q.id];
+    if (q.type === "multi") { if (arr(v).length) answered++; continue; }
+    if (v === undefined || v === null || v === "") continue;
+    answered++;
+    if (v === "?") nsp++;
+  }
+  for (const id in SUBJ) {
+    const v = A[id]; if (v === undefined || v === "?") continue;
+    const s = SCALE.find(s => s.v === v); if (!s) continue;
+    addW(SUBJ[id], s.w);
+    if (SUBJ_KW[id] && Number(v) >= (id === "m_info" || id === "m_lang" ? 3 : 2)) addKw(SUBJ_KW[id], .5);
+  }
+  arr(A.interets).forEach(k => { if (INT[k]) addW(INT[k], 1); addKw(k, 1); });
+  arr(A.f_scene).forEach(k => { const s = SCENE[k]; if (!s) return; addW(s[0], 1.2); s[1].forEach(x => addKw(x, .8)); });
+  arr(A.f_val).forEach(k => { const s = VAL[k]; if (!s) return; addW(s[0], .5); s[1].forEach(x => addKw(x, .5)); });
+  const av = arr(A.eviter);
+  if (av.includes("maths")) addW({ CHIF: -.8 }, 1);
+  if (av.includes("ecrit")) addW({ COM: -.3, DROIT: -.3, SOC: -.2 }, 1);
+  const M = Math.max(1.5, ...Object.values(raw).map(Math.abs));
+  const dn = {}; for (const d in raw) dn[d] = raw[d] / M;
+  const bip = id => { const v = A[id]; return (v === undefined || v === "?") ? 0 : Number(v) / 2; };
+  const style = { enc: -bip("s_enc"), conc: bip("s_conc"), calc: -bip("s_calc"), team: bip("s_team"), eff: -bip("s_eff"), terr: bip("s_terr") };
+  return { raw, dn, kwW, style, nsp, answered, total, nspRatio: answered ? nsp / answered : 0 };
+}
+
+function lvl(A, id) { const v = A[id]; return (v === undefined || v === "?") ? null : Number(v); }
+
+function scoreFormation(f, A, P) {
+  const p = Object.assign({ enc: .5, conc: .5, intense: .5, maths: .3, ecrit: .3, oral: .3, vente: 0, bureau: .5, terrain: 0, ouvert: .5, sortie: 3 }, f.p);
+  const S = P.style, av = arr(A.eviter), why = [], care = [];
+  let wsum = 0, fit = 0;
+  for (const d in f.w) { wsum += f.w[d]; fit += f.w[d] * P.dn[d]; }
+  let s = wsum ? fit / wsum : 0;
+  // centres d'intérêt
+  let kb = 0; const hit = [];
+  f.kw.forEach(k => { if (P.kwW[k]) { kb += .18 * P.kwW[k]; if (arr(A.interets).includes(k)) hit.push(k); } });
+  s += Math.min(kb, .5);
+  // style de travail
+  s += .22 * S.enc * (2 * p.enc - 1) + .18 * S.conc * (2 * p.conc - 1) + .2 * S.calc * (p.maths - p.ecrit);
+  s += .15 * S.terr * (p.terrain - p.bureau) + .1 * S.team * (p.oral - .4) + .2 * S.eff * (p.intense - .5);
+  // études
+  const du = A.e_duree;
+  if (du === "court") s += p.sortie <= 3 ? .25 : -.3;
+  else if (du === "b3") s += p.sortie <= 3 ? .1 : -.1;
+  else if (du === "b5" || du === "long") s += (p.sortie >= 5 || p.ouvert >= .8) ? .12 : 0;
+  else if (du === "?") s += .25 * (p.ouvert - .5);
+  if (p.prepa) s += { envie: .35, peut: 0, non: -.6, "?": -.05 }[A.e_prepa] || 0;
+  if (p.fac) s += p.fac * ({ ok: .12, bof: -.12, non: -.45 }[A.e_fac] || 0);
+  s += f.alt * ({ oui: .35, peut: .12 }[A.e_alt] || 0);
+  if (p.prive) s += { aide: -.15, non: -.6, "?": -.15 }[A.e_budget] || 0;
+  if (p.concours) s += ({ ok: .05, bof: -.1, non: -.3 }[A.e_conc] || 0) + (av.includes("concours") ? -.25 : 0);
+  if (f.id === "etranger") s += { etranger: .3, parents: -.4, region: -.2 }[A.e_mob] || 0;
+  const lm = lvl(A, "niv_maths"), lg = lvl(A, "moy");
+  if (p.maths >= .7 && lm !== null) s += lm <= 1 ? -.35 : lm === 2 ? -.1 : .08;
+  if (p.maths >= .8 && A.maths_opt === "expertes") s += .08;
+  if (f.sel === 3 && lg !== null) s += lg <= 1 ? -.3 : lg === 2 ? -.1 : lg >= 4 ? .08 : 0;
+  // ce qu'il veut éviter
+  if (av.includes("vente")) s -= .45 * p.vente;
+  if (av.includes("ecrit")) s -= .45 * Math.max(0, p.ecrit - .3);
+  if (av.includes("maths")) s -= .45 * Math.max(0, p.maths - .3);
+  if (av.includes("assis")) s -= .3 * Math.max(0, p.bureau - .5);
+  if (av.includes("oral")) s -= .3 * Math.max(0, p.oral - .4);
+  if (av.includes("stress")) s -= .35 * Math.max(0, p.intense - .5);
+  if (av.includes("routine")) s -= .2 * Math.max(0, p.bureau - .7);
+  if (av.includes("long") && p.sortie >= 5) s -= .35;
+
+  // pourquoi
+  Object.keys(f.w).filter(d => f.w[d] >= .5 && P.dn[d] >= .35).sort((a, b) => f.w[b] * P.dn[b] - f.w[a] * P.dn[a]).slice(0, 2)
+    .forEach(d => why.push("Ton côté « " + DIMS[d] + " » ressort"));
+  if (hit.length) why.push("Tu as coché " + hit.slice(0, 2).map(k => "« " + optLabel("interets", k) + " »").join(" et "));
+  const sc = arr(A.f_scene).find(k => SCENE[k] && SCENE[k][1].some(x => f.kw.includes(x)));
+  if (sc) why.push("Ta journée idéale : « " + optLabel("f_scene", sc) + " »");
+  if (S.enc >= .5 && p.enc >= .8) why.push("Tu veux un cadre : c'est très encadré");
+  if (S.enc <= -.5 && p.enc <= .3) why.push("Tu veux de l'autonomie : c'est le principe");
+  if (S.conc >= .5 && p.conc >= .8) why.push("Tu veux du concret : projets et stages");
+  if (S.conc <= -.5 && p.conc <= .3) why.push("Tu aimes comprendre le pourquoi : c'est théorique");
+  if (S.calc >= .5 && p.maths >= .7) why.push("Tu préfères calculer : il y a pas mal de maths");
+  if (S.calc <= -.5 && p.ecrit >= .8) why.push("Tu préfères écrire et argumenter : c'est le cœur du programme");
+  if (S.terr >= .5 && p.terrain >= .8) why.push("Du terrain et du contact");
+  if (A.e_alt === "oui" && f.alt >= .6) why.push("Faisable en alternance");
+  if (du === "court" && p.sortie <= 3) why.push("Un diplôme en " + p.sortie + " ans");
+  if ((du === "?" || P.nspRatio >= .3) && p.ouvert >= .9) why.push("Garde beaucoup de portes ouvertes");
+  if (A.e_prepa === "envie" && p.prepa) why.push("Tu as envie de tenter une prépa");
+  if (A.e_mob === "etranger" && f.id === "etranger") why.push("Tu te vois partir à l'étranger");
+
+  // points d'attention
+  if (f.id === "las") care.push("Sans SVT ni physique-chimie, c'est un pari");
+  if (p.prepa && A.e_prepa === "non") care.push("Tu as dit non à la prépa");
+  if (p.prepa && S.eff <= -.5) care.push("Rythme très soutenu, peu de temps à côté");
+  if (p.fac === 1 && A.e_fac === "non") care.push("Tu n'es pas fan de la fac");
+  else if (p.fac === 1 && S.enc >= .5) care.push("Peu d'encadrement : il faut s'organiser seul");
+  if (p.prive && A.e_budget !== "oui") care.push("Payant : " + f.cout.toLowerCase());
+  if (p.concours && (A.e_conc === "non" || av.includes("concours"))) care.push("Sélection par concours ou oral");
+  if (p.maths >= .7 && lm !== null && lm <= 1) care.push("Demande un bon niveau en maths");
+  else if (p.maths >= .6 && av.includes("maths")) care.push("Beaucoup de maths");
+  if (p.ecrit >= .8 && (av.includes("ecrit") || S.calc >= .5)) care.push("Beaucoup d'écrit");
+  if (p.vente >= .6 && av.includes("vente")) care.push("Beaucoup de commercial");
+  if (f.sel === 3 && lg !== null && lg <= 2) care.push("Très sélectif : il faut un dossier solide");
+  if (p.sortie >= 5 && (du === "court" || av.includes("long"))) care.push("Des études longues");
+  if (p.oral >= .7 && av.includes("oral")) care.push("Beaucoup d'oral");
+  if (p.intense >= .8 && av.includes("stress")) care.push("Grosse pression");
+  if (f.id === "etranger" && (A.e_mob === "parents" || A.e_mob === "region")) care.push("Il faut partir loin");
+  if (p.bureau >= .9 && av.includes("assis")) care.push("Beaucoup de temps assis");
+
+  return { f, s, why: why.slice(0, 3), care: care.slice(0, 3) };
+}
+
+function computeResults(A) {
+  const P = computeProfile(A);
+  const scored = F.filter(f => f.id !== "cesure").map(f => scoreFormation(f, A, P)).sort((a, b) => b.s - a.s);
+  const hi = scored[0].s, lo = scored[scored.length - 1].s;
+  scored.forEach(r => r.dots = Math.max(1, Math.min(5, 1 + Math.round(4 * (r.s - lo) / ((hi - lo) || 1)))));
+  const lead = scored.slice(0, 5), also = scored.slice(5, 12);
+  const showOpen = P.nspRatio >= .25 || A.e_duree === "?";
+  const lg = lvl(A, "moy");
+  const open = showOpen ? scored.filter(r => (r.f.p.ouvert || 0) >= .8 && !lead.includes(r) && !(r.f.sel === 3 && lg !== null && lg <= 1)).slice(0, 3) : [];
+  const topDims = Object.keys(P.raw).filter(d => P.raw[d] > 0).sort((a, b) => P.raw[b] - P.raw[a]);
+  return { P, scored, lead, also, open, topDims };
+}
+/* ===== Interface ===== */
+const KEY = "boussole-ses-maths-v1";
+let A = {}, cur = 0, tab = "q", famFilter = "all", lastRes = null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const reduce = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ A, cur })); } catch (e) {} }
+function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d && d.A) { A = d.A; cur = Math.min(d.cur || 0, BLOCKS.length - 1); } } catch (e) {} }
+
+function blockAnswered(b) { return b.qs.some(q => q.type === "multi" ? arr(A[q.id]).length : (A[q.id] !== undefined && A[q.id] !== "")); }
+
+/* --- Questionnaire --- */
+function renderSteps() {
+  $("steps").innerHTML = BLOCKS.map((b, i) =>
+    `<button type="button" class="step${blockAnswered(b) ? " done" : ""}" data-step="${i}"${i === cur ? ' aria-current="step"' : ""}><b>${i + 1}</b>${esc(b.short)}</button>`).join("");
+  const P = computeProfile(A);
+  $("progress-bar").style.width = Math.round(100 * P.answered / P.total) + "%";
+}
+
+function optBtn(q, o, role) {
+  const val = A[q.id];
+  const on = q.type === "multi" ? arr(val).includes(o.v) : val === o.v;
+  const attr = role === "radio" ? `role="radio" aria-checked="${on}"` : `aria-pressed="${on}"`;
+  return `<button type="button" class="opt${o.nsp ? " nsp" : ""}" data-q="${q.id}" data-v="${esc(o.v)}" ${attr}>${esc(o.label)}</button>`;
+}
+
+function renderQ(q, n) {
+  let ctl = "";
+  if (q.type === "text") {
+    ctl = `<input type="text" id="q-${q.id}" data-text="${q.id}" value="${esc(A[q.id] || "")}" autocomplete="off">`;
+  } else if (q.type === "scale") {
+    ctl = `<div class="seg" role="radiogroup" aria-label="${esc(q.label)}">${SCALE.map(o => optBtn(q, o, "radio")).join("")}</div>`;
+  } else if (q.type === "single") {
+    ctl = `<div class="${q.inline ? "seg" : "choices"}" role="radiogroup" aria-label="${esc(q.label)}">${q.options.map(o => optBtn(q, o, "radio")).join("")}</div>`;
+  } else if (q.type === "multi") {
+    const c = arr(A[q.id]).length;
+    ctl = `<div class="chips" role="group" aria-label="${esc(q.label)}">${q.options.map(o => optBtn(q, o)).join("")}</div>` +
+      (q.max ? `<p class="limit" id="lim-${q.id}">${c}/${q.max} choisis</p>` : "");
+  } else if (q.type === "bip") {
+    const pos = [-2, -1, 0, 1, 2], names = ["Tout à fait à gauche", "Plutôt à gauche", "Les deux", "Plutôt à droite", "Tout à fait à droite"];
+    ctl = `<div class="bip" role="radiogroup" aria-label="${esc(q.left)} ou ${esc(q.right)}">
+      <span class="pole">${esc(q.left)}</span>
+      <span class="dots">${pos.map((p, i) => `<button type="button" class="dot${p === 0 ? " mid" : ""}" role="radio" aria-label="${names[i]}" aria-checked="${A[q.id] === String(p)}" data-q="${q.id}" data-v="${p}"></button>`).join("")}</span>
+      <span class="pole r">${esc(q.right)}</span>
+      <span class="bip-nsp">${optBtn(q, { v: "?", label: "? Je ne sais pas", nsp: true }, "radio")}</span></div>`;
+  }
+  const label = q.type === "bip" ? "" : `<label class="q-label"${q.type === "text" ? ` for="q-${q.id}"` : ""}>${esc(q.label)}</label>`;
+  return `<div class="q" data-qwrap="${q.id}"><span class="q-num" aria-hidden="true">${n}.</span>${label}
+    ${q.hint ? `<p class="q-hint">${esc(q.hint)}</p>` : ""}${ctl}
+    ${q.oral ? `<p class="oral"><span class="hand">À l'oral :</span><span>${esc(q.oral)}</span></p>` : ""}</div>`;
+}
+
+function renderBlock() {
+  const b = BLOCKS[cur];
+  $("block").innerHTML = `<div class="sheet"><div class="block-head"><span class="eyebrow">Bloc ${cur + 1} sur ${BLOCKS.length}</span>
+    <h2>${esc(b.title)}</h2><p>${esc(b.intro)}</p></div>
+    ${b.qs.map((q, i) => renderQ(q, i + 1)).join("")}
+    ${b.oral ? `<p class="oral" style="margin-top:14px"><span class="hand">À l'oral :</span><span>${esc(b.oral)}</span></p>` : ""}</div>`;
+  $("prev").disabled = cur === 0;
+  $("next").textContent = cur === BLOCKS.length - 1 ? "Voir les pistes →" : "Suivant →";
+  renderSteps();
+}
+
+function pick(qid, v) {
+  const q = qById(qid); if (!q) return;
+  const wrap = document.querySelector(`[data-qwrap="${qid}"]`);
+  if (q.type === "multi") {
+    let a = arr(A[qid]).slice();
+    if (a.includes(v)) a = a.filter(x => x !== v);
+    else { if (q.max && a.length >= q.max) { const l = $("lim-" + qid); if (l) l.textContent = `${q.max} maximum : retire un choix d'abord`; return; } a.push(v); }
+    A[qid] = a;
+    wrap.querySelectorAll("[data-v]").forEach(b => b.setAttribute("aria-pressed", a.includes(b.dataset.v)));
+    const l = $("lim-" + qid); if (l) l.textContent = `${a.length}/${q.max} choisis`;
+  } else {
+    A[qid] = A[qid] === v ? undefined : v;
+    wrap.querySelectorAll("[data-v]").forEach(b => b.setAttribute(b.hasAttribute("aria-pressed") ? "aria-pressed" : "aria-checked", A[qid] === b.dataset.v));
+  }
+  save(); renderSteps(); updateCounts();
+}
+
+function goBlock(i) {
+  cur = Math.max(0, Math.min(BLOCKS.length - 1, i)); save(); renderBlock();
+  const top = $("steps").getBoundingClientRect().top;
+  if (top < 0) $("steps").scrollIntoView({ block: "start", behavior: reduce() ? "auto" : "smooth" });
+}
+
+function setTab(t) {
+  tab = t;
+  ["q", "r", "c"].forEach(x => { $("tab-" + x).hidden = x !== t; $("tab-btn-" + x).setAttribute("aria-selected", x === t); });
+  if (t === "r") renderResults();
+  if (t === "c") renderCatalog();
+  const h = document.querySelector(".tabs"); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ block: "start" });
+}
+
+function updateCounts() {
+  const P = computeProfile(A);
+  const c = $("count-r");
+  if (P.answered >= 8) { c.hidden = false; c.textContent = "prêt"; } else c.hidden = true;
+  $("count-c").textContent = F.length;
+}
+/* --- Résultats --- */
+const STYLE_TAGS = [
+  ["enc", "Besoin d'un cadre", "Autonome"], ["conc", "Concret", "Théorique"], ["calc", "Plutôt chiffres", "Plutôt écrit"],
+  ["team", "En équipe", "En solo"], ["eff", "Prêt à charbonner", "Veut garder du temps"], ["terr", "Terrain", "Bureau"]
+];
+function styleTags(P) { return STYLE_TAGS.map(([k, a, b]) => P.style[k] >= .5 ? a : P.style[k] <= -.5 ? b : null).filter(Boolean); }
+function avoidTags() { return arr(A.eviter).map(v => optLabel("eviter", v)); }
+function altLabel(f) { return f.alt >= .6 ? "Alternance fréquente" : f.alt >= .3 ? "Alternance possible" : ""; }
+function dotsHtml(n) { return `<span class="meter" title="Affinité ${n} sur 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`; }
+function facts(f) {
+  const alt = altLabel(f);
+  return `<p class="facts"><span><b>${esc(f.duree)}</b></span><span>${SELEC[f.sel]}</span><span>${esc(f.cout)}</span>${alt ? `<span>${alt}</span>` : ""}</p>`;
+}
+function pisteCard(r, lead, open) {
+  const f = r.f;
+  return `<article class="piste${lead ? " lead" : ""}">
+    <div class="piste-head"><div><p class="fam">${esc(FAMS[f.fam])}</p><h3>${esc(f.nom)}</h3></div>${dotsHtml(r.dots)}</div>
+    ${r.why.length ? `<ul class="why">${r.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
+    ${r.care.length ? `<ul class="care">${r.care.map(w => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
+    <p class="desc">${esc(f.desc)}</p>${facts(f)}
+    <details class="more"${open ? " open" : ""}><summary>Débouchés et accès avec SES + maths</summary>
+      <p class="desc" style="margin-top:8px"><b>Après :</b> ${esc(f.apres)}</p><p class="desc" style="margin-top:6px"><b>Avec SES + maths :</b> ${esc(f.ses)}</p></details>
+  </article>`;
+}
+
+function talkList(R) {
+  const P = R.P, out = [], has = id => R.lead.concat(R.also).some(r => r.f.id === id);
+  if (P.nspRatio >= .3) out.push("Beaucoup de « ? » : est-ce que tu ne connais pas ces trucs, ou est-ce que rien ne t'emballe vraiment ? Ce n'est pas la même chose.");
+  if (R.topDims[0]) out.push(`C'est le côté « ${DIMS[R.topDims[0]]} » qui ressort le plus. Qu'est-ce qui te plaît dedans : les sujets, ou la façon de réfléchir ?`);
+  if (A.e_prepa === "non" && (has("dl") || has("cpes"))) out.push("Tu ne veux pas de prépa, mais une double licence ou un CPES a un rythme proche, sans concours. Qu'est-ce qui te refroidit : la charge de travail ou la compétition ?");
+  else if (A.e_prepa === "envie") out.push("La prépa te tente : tu te vois tenir le rythme pendant 2 ans ? Qu'est-ce qui te motive : les écoles derrière, ou le défi ?");
+  if (A.e_duree === "court" && (A.e_alt === "oui" || A.e_alt === "peut")) out.push("Études courtes + alternance : un BTS ou un BUT en alternance ne coûte rien et paie. Tu te vois en entreprise dès 18 ans ?");
+  if (arr(A.interets).includes("data") && ((lvl(A, "niv_maths") !== null && lvl(A, "niv_maths") <= 1) || arr(A.eviter).includes("maths"))) out.push("La data t'attire mais les maths te pèsent : c'est les chiffres eux-mêmes qui te plaisent, ou ce qu'on peut en tirer ?");
+  if (A.f_metier) out.push(`Tu as cité « ${A.f_metier} » : qu'est-ce qui t'attire là-dedans ? On peut chercher ensemble la formation qui y mène.`);
+  if (A.f_non) out.push(`Tu ne veux surtout pas : « ${A.f_non} ». C'est le métier lui-même, ou l'ambiance que tu imagines ?`);
+  if (arr(A.f_val).includes("argent") && arr(A.f_val).includes("sens")) out.push("Bien gagner sa vie et être utile : quand les deux tirent dans des sens opposés, lequel gagne ?");
+  if (A.e_mob === "parents") out.push("Rester chez les parents réduit la carte des formations. C'est un choix ou une contrainte (budget, envie) ?");
+  out.push("Si tu pouvais faire un stage d'une semaine n'importe où, ce serait où ?");
+  out.push("Qu'est-ce que tes profs disent de toi en conseil de classe ? Tu es d'accord avec eux ?");
+  return out.slice(0, 6);
+}
+
+const TIMELINE = [
+  ["D'ici décembre", "Explorer : le catalogue ici, les fiches formations sur Parcoursup et Onisep, les salons d'orientation, les premières journées portes ouvertes."],
+  ["17 déc. 2026", "Ouverture du site d'information Parcoursup 2027 et de son moteur de recherche des formations."],
+  ["19 janv. – 12 mars 2027", "Inscription et vœux : jusqu'à 10 vœux, plus 10 en apprentissage, avec des sous-vœux. C'est aussi la période des immersions en fac et en IUT."],
+  ["Jusqu'au 1er avril 2027", "Compléter chaque dossier (projet de formation motivé) et confirmer les vœux."],
+  ["À partir du 2 juin 2027", "Premières réponses des formations. La phase complémentaire ouvre le 11 juin."]
+];
+const TIMELINE_NOTE = "Dates du calendrier annoncé pour 2027, à revérifier sur parcoursup.gouv.fr. Les études à l'étranger et quelques écoles se candidatent hors Parcoursup, souvent dès l'automne.";
+
+/* Le cœur des résultats, partagé par l'onglet Pistes et la page HTML téléchargée */
+function resultsCore(R, open) {
+  const P = R.P, maxRaw = Math.max(...R.topDims.map(d => P.raw[d]), .01);
+  const dims = Object.keys(DIMS).sort((a, b) => P.raw[b] - P.raw[a]);
+  const st = styleTags(P), av = avoidTags();
+  const ces = (A.e_cesure === "oui" || A.e_cesure === "peut") ? F.find(f => f.id === "cesure") : null;
+  return `${P.nspRatio >= .3 ? `<div class="notice warn"><p>Beaucoup de « ? » dans les réponses. C'est normal à ce stade : les voies qui gardent des portes ouvertes remontent un peu plus dans la liste.</p></div>` : ""}
+    <div class="panel"><h3>Ton profil</h3>
+      <div class="dims">${dims.map((d, i) => `<div class="dim${i < 3 && P.raw[d] > 0 ? " top" : ""}"><span>${esc(DIMS[d])}</span><span class="bar"><i style="width:${Math.round(100 * Math.max(0, P.raw[d]) / maxRaw)}%"></i></span></div>`).join("")}</div>
+      ${st.length ? `<div class="tags">${st.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
+      ${av.length ? `<div class="tags">${av.map(t => `<span class="tag neg">Éviter : ${esc(t)}</span>`).join("")}</div>` : ""}</div>
+    <div class="pistes"><h2>Ce qui coche le plus de cases</h2>${R.lead.map(r => pisteCard(r, true, open)).join("")}</div>
+    <div class="pistes"><h2>À creuser aussi</h2>${R.also.map(r => pisteCard(r, false, open)).join("")}</div>
+    ${R.open.length ? `<div class="pistes"><h2>Si tu ne sais vraiment pas encore</h2><p class="desc">Ces voies retardent le moment de choisir sans rien fermer.</p>${R.open.map(r => pisteCard(r, false, open)).join("")}</div>` : ""}
+    ${ces ? `<div class="notice"><p><b>Et la césure ?</b> ${esc(ces.desc)} ${esc(ces.ses)}</p></div>` : ""}
+    <div class="panel"><h3>À discuter à deux</h3><ol class="talk">${talkList(R).map((t, i) => `<li><span class="hand">${i + 1}.</span><span>${esc(t)}</span></li>`).join("")}</ol></div>
+    <div class="panel"><h3>Les prochaines étapes</h3><ol class="timeline">${TIMELINE.map(([w, t]) => `<li><span class="when">${esc(w)}</span><span>${esc(t)}</span></li>`).join("")}</ol>
+      <p class="sub">${esc(TIMELINE_NOTE)}</p></div>`;
+}
+
+function dlBar() {
+  return `<div class="dl-box"><div class="dl-bar">
+      <button type="button" class="btn primary" data-action="pdf">Télécharger en PDF</button>
+      <button type="button" class="btn" data-action="html">Télécharger la page HTML</button>
+      ${shareBase() ? `<button type="button" class="btn" data-action="link">Partager le lien</button>` : ""}
+    </div><p class="dl-status" aria-live="polite"></p></div>`;
+}
+
+function renderResults() {
+  const P = computeProfile(A);
+  if (P.answered < 8) {
+    $("results").innerHTML = `<div class="res"><div class="notice"><p><b>Pas encore assez de réponses.</b> Il en faut au moins 8 pour que les pistes veuillent dire quelque chose (tu en as ${P.answered}). Les blocs « Les cours » et « Ce qui t'attire » sont les plus utiles.</p>
+      <div class="copy-row"><button class="btn primary small" type="button" data-go="q">Reprendre le questionnaire</button><button class="btn small" type="button" data-go="c">Parcourir tout ce qui existe</button></div></div></div>`;
+    return;
+  }
+  const R = lastRes = computeResults(A);
+  $("results").innerHTML = `<div class="res">
+    <div class="block-head"><span class="eyebrow">${P.answered} réponses sur ${P.total}</span><h2>${A.prenom ? "Les pistes de " + esc(A.prenom) : "Tes pistes"}</h2>
+      <p>Classées par affinité avec tes réponses. Ce n'est pas un verdict : regarde surtout le « pourquoi », et ce qui te fait réagir, en bien comme en mal.</p></div>
+    ${dlBar()}
+    ${resultsCore(R, false)}
+    <div class="panel"><h3>Garder une trace</h3>
+      <p class="sub">Le PDF se lit partout et s'imprime bien. La page HTML garde la mise en page du site et toutes les réponses. Les deux peuvent être joints à une conversation avec Claude pour construire la liste de vœux.${shareBase() ? " Le lien, lui, contient tes réponses : la personne qui l'ouvre voit tes pistes, sans compte ni inscription." : ""}</p>
+      ${dlBar()}
+      <p class="hint">Sur téléphone, le fichier arrive dans Téléchargements (Android) ou dans l'app Fichiers (iPhone).</p>
+      <div class="copy-row"><button class="btn small" type="button" data-go="q">Revoir les réponses</button></div></div>
+  </div>`;
+}
+/* ===== Exports : page HTML, PDF, lien de partage =====
+   PUBLIC_URL : adresse de la version en ligne (GitHub Pages), ex. "https://kerhogo.github.io/boussole/".
+   Vide = détection automatique quand la page est servie en http(s) hors de Claude. */
+const PUBLIC_URL = "";
+const FONTS_URL = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;600&family=Familjen+Grotesk:wght@500;600;700&display=swap";
+const PDF_BASE = "https://cdn.jsdelivr.net/npm/pdfmake@0.2.23/build/";
+
+function inClaude() { return !!(window.claude && typeof window.claude.use === "function"); }
+function shareBase() {
+  if (PUBLIC_URL) return PUBLIC_URL;
+  if (inClaude()) return "";
+  return /^https?:$/.test(location.protocol) ? location.origin + location.pathname : "";
+}
+
+/* --- Réponses lisibles --- */
+function qLabel(q) { return q.type === "bip" ? `${q.left} / ${q.right}` : q.label; }
+function answerText(q) {
+  const v = A[q.id];
+  if (q.type === "text") return (v || "").trim() || "—";
+  if (q.type === "multi") { const a = arr(v); return a.length ? a.map(x => optLabel(q.id, x) || x).join(", ") : "—"; }
+  if (v === undefined || v === null || v === "") return "—";
+  if (q.type === "scale") return v === "?" ? "Je ne sais pas" : (SCALE.find(s => s.v === v) || {}).label || v;
+  if (q.type === "bip") {
+    if (v === "?") return "Je ne sais pas";
+    const n = Number(v);
+    return n === 0 ? "Les deux" : (Math.abs(n) === 2 ? "Tout à fait : " : "Plutôt : ") + (n < 0 ? q.left : q.right);
+  }
+  const l = optLabel(q.id, v);
+  return !l || l === "?" ? (v === "?" ? "Je ne sais pas" : v) : l;
+}
+function todayFr() { return new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); }
+function slug(s) { return norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30); }
+function isoDate() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function fileBase() { const n = slug(A.prenom || ""); return "boussole-" + (n ? n + "-" : "") + isoDate(); }
+
+/* --- Page HTML autonome --- */
+const REPORT_CSS = `
+.report-head { padding-bottom: 18px; }
+.lede-note { color: var(--ink-soft); max-width: 62ch; }
+.ans { gap: 4px; }
+.ans dl { margin: 0; display: grid; }
+.ans dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; padding: 8px 0; border-top: 1px dashed var(--rule-strong); }
+.ans dl > div:first-child { border-top: none; }
+.ans dt { color: var(--ink-soft); font-size: 14px; }
+.ans dd { margin: 0; font-weight: 700; font-size: 14px; }
+@media (max-width: 520px) { .ans dl > div { grid-template-columns: 1fr; } }
+@media print {
+  :root, :root[data-theme] { --paper: #fff; --sheet: #fff; --ink: #1a2142; --ink-soft: #4d5677; --rule: #dde2f2; --rule-strong: #c3cbea;
+    --margin: #e0737f; --bic: #2441c7; --bic-ink: #fff; --bic-wash: #e8ecfc; --fluo: #fff07a; --good: #16784f; --warn: #9a5a00; --warn-wash: #fff4e0; color-scheme: light; }
+  .no-print { display: none !important; }
+  .piste, .panel, .notice, .ans dl > div { break-inside: avoid; }
+  .pistes > h2, .res h2 { break-after: avoid; }
+  details.more summary { display: none; }
+}`;
+function reportHTML(R) {
+  const name = (A.prenom || "").trim(), date = todayFr();
+  const css = Array.from(document.querySelectorAll("style")).map(s => s.textContent).join("\n");
+  const data = JSON.stringify({ v: 1, date: new Date().toISOString(), answers: A }).replace(/</g, "\\u003c");
+  const answers = BLOCKS.map(b => `<section class="panel ans"><h3>${esc(b.title)}</h3><dl>${b.qs.map(q =>
+    `<div><dt>${esc(qLabel(q))}</dt><dd>${esc(answerText(q))}</dd></div>`).join("")}</dl></section>`).join("");
+  const title = (name ? "Les pistes de " + name : "Mes pistes") + " · Boussole SES-Maths";
+  return `<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<link rel="stylesheet" href="${FONTS_URL}">
+<style>${css}
+${REPORT_CSS}</style></head><body>
+<div class="wrap">
+<header class="cahier"><div class="cahier-inner report-head">
+  <span class="eyebrow">Boussole SES-Maths · Résultats</span>
+  <h1>${name ? `Les pistes de <span class="fluo">${esc(name)}</span>` : `Mes <span class="fluo">pistes</span>`}</h1>
+  <p class="meta-line"><span>Rempli le ${esc(date)}</span><span>${R.P.answered} réponses sur ${R.P.total}</span><span>Terminale SES + maths</span></p>
+  <p class="no-print"><button class="btn small" type="button" onclick="window.print()">Imprimer ou enregistrer en PDF</button></p>
+</div></header>
+<main class="res">
+<p class="lede-note">Les formations sont classées par affinité avec les réponses. Ce n'est pas un verdict : le plus utile, c'est le « pourquoi » de chaque piste et ce qui fait réagir, en bien comme en mal.</p>
+${resultsCore(R, true)}
+<section class="pistes"><h2>Toutes les réponses</h2>${answers}</section>
+</main>
+<footer class="foot"><p>Généré avec Boussole SES-Maths le ${esc(date)}. Infos vérifiées début octobre 2026 : dates, places et attendus se confirment sur parcoursup.gouv.fr et onisep.fr.</p></footer>
+</div>
+<script type="application/json" id="boussole-data">${data}<\/script>
+</body></html>`;
+}
+
+/* --- PDF (pdfmake, chargé à la demande) --- */
+function loadScript(src) {
+  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("load")); document.head.appendChild(s); });
+}
+let pdfLoading = null;
+function loadPdfLib() {
+  if (window.pdfMake && window.pdfMake.vfs && window.pdfMake.vfs["Roboto-Regular.ttf"]) return Promise.resolve();
+  if (!pdfLoading) pdfLoading = loadScript(PDF_BASE + "pdfmake.min.js").then(() => loadScript(PDF_BASE + "vfs_fonts.js"))
+    .catch(e => { pdfLoading = null; e.code = "pdf_load"; throw e; });
+  return pdfLoading;
+}
+const PC = { ink: "#1a2142", soft: "#5a6383", rule: "#dde2f2", strong: "#c3cbea", margin: "#e0737f", bic: "#2441c7", good: "#16784f", warn: "#9a5a00", warnWash: "#fff4e0", fluo: "#fff07a" };
+const pt = s => String(s == null ? "" : s).replace(/→/g, "–");
+function pMark(mark, color, text) { return { columns: [{ text: mark, width: 10, bold: true, color }, { text: pt(text), width: "*" }], columnGap: 2, margin: [0, 2, 0, 0] }; }
+function pDots(n) { return { canvas: [0, 1, 2, 3, 4].map(i => ({ type: "ellipse", x: 4 + i * 10.5, y: 5, r1: 3.4, r2: 3.4, color: i < n ? PC.bic : PC.rule })) }; }
+function pFacts(f) { return { text: [pt(f.duree), SELEC[f.sel], pt(f.cout), altLabel(f)].filter(Boolean).join("   ·   "), fontSize: 8, color: PC.soft, margin: [0, 6, 0, 0] }; }
+function pBox(stack, color, fill) {
+  return { table: { widths: ["*"], dontBreakRows: true, body: [[{ stack, fillColor: fill }]] }, margin: [0, 0, 0, 8],
+    layout: { hLineWidth: () => .8, vLineWidth: () => .8, hLineColor: () => color, vLineColor: () => color,
+      paddingLeft: () => 11, paddingRight: () => 11, paddingTop: () => 9, paddingBottom: () => 10 } };
+}
+function pPiste(r, lead) {
+  const f = r.f;
+  const s = [{ columns: [
+    { width: "*", stack: [{ text: pt(FAMS[f.fam]).toUpperCase(), style: "eyebrow" }, { text: pt(f.nom), style: lead ? "pLead" : "pName" }] },
+    { width: 56, stack: [pDots(r.dots), { text: "affinité " + r.dots + "/5", fontSize: 7, color: PC.soft, margin: [0, 3, 0, 0] }] }], columnGap: 8 }];
+  r.why.forEach(w => s.push(pMark("+", PC.good, w)));
+  r.care.forEach(w => s.push(pMark("!", PC.warn, w)));
+  s.push({ text: pt(f.desc), color: PC.soft, margin: [0, 6, 0, 0] });
+  if (lead) {
+    s.push({ text: [{ text: "Après : ", bold: true, color: PC.ink }, pt(f.apres)], color: PC.soft, margin: [0, 4, 0, 0] });
+    s.push({ text: [{ text: "Avec SES + maths : ", bold: true, color: PC.ink }, pt(f.ses)], color: PC.soft, margin: [0, 4, 0, 0] });
+  }
+  s.push(pFacts(f));
+  return pBox(s, lead ? PC.bic : PC.strong);
+}
+function pRules(widths, body) {
+  return { table: { widths, body, dontBreakRows: true }, layout: {
+    hLineWidth: (i, node) => (i === 0 || i === node.table.body.length) ? 0 : .6, vLineWidth: () => 0,
+    hLineColor: () => PC.strong, hLineStyle: () => ({ dash: { length: 2, space: 2 } }),
+    paddingLeft: (i) => i === 0 ? 0 : 8, paddingRight: () => 0, paddingTop: () => 5, paddingBottom: () => 5 } };
+}
+function pProfile(P) {
+  const dims = Object.keys(DIMS).sort((a, b) => P.raw[b] - P.raw[a]), maxRaw = Math.max(...dims.map(d => P.raw[d]), .01), W = 220;
+  return { table: { widths: [140, W], body: dims.map((d, i) => {
+    const top = i < 3 && P.raw[d] > 0, w = Math.max(0, P.raw[d]) / maxRaw * W;
+    return [{ text: DIMS[d], bold: top, margin: [0, 1, 0, 1] },
+      { canvas: [{ type: "rect", x: 0, y: 3, w: W, h: 8, r: 2, color: PC.rule }].concat(w > .5 ? [{ type: "rect", x: 0, y: 3, w, h: 8, r: 2, color: top ? PC.bic : PC.strong }] : []) }];
+  }) }, layout: "noBorders" };
+}
+function pdfDoc(R) {
+  const P = R.P, name = (A.prenom || "").trim(), date = todayFr(), st = styleTags(P), av = avoidTags();
+  const ces = (A.e_cesure === "oui" || A.e_cesure === "peut") ? F.find(f => f.id === "cesure") : null;
+  const h2 = text => ({ text, style: "h2" });
+  const keep = (head, node) => ({ stack: [head, node], unbreakable: true });
+  const group = (title, list, lead, intro) => list.length ? [keep(intro ? { stack: [h2(title), intro] } : h2(title), pPiste(list[0], lead)), ...list.slice(1).map(r => pPiste(r, lead))] : [];
+  const answers = BLOCKS.map((b, i) => {
+    const head = { text: pt(b.title), style: "h3" };
+    return keep(i === 0 ? { stack: [h2("Toutes les réponses"), head] } : head,
+      pRules(["46%", "*"], b.qs.map(q => [{ text: pt(qLabel(q)), color: PC.soft }, { text: pt(answerText(q)), bold: true }])));
+  });
+  const content = [
+    { text: "BOUSSOLE SES-MATHS · RÉSULTATS", style: "eyebrow" },
+    { text: name ? ["Les pistes de ", { text: " " + pt(name) + " ", background: PC.fluo }] : "Mes pistes", style: "h1" },
+    { text: `Rempli le ${date}   ·   ${P.answered} réponses sur ${P.total}   ·   Terminale SES + maths`, fontSize: 8.5, color: PC.soft, margin: [0, 5, 0, 12] },
+    { text: "Les formations sont classées par affinité avec les réponses. Ce n'est pas un verdict : le plus utile, c'est le « pourquoi » de chaque piste et ce qui fait réagir, en bien comme en mal.", color: PC.soft },
+    P.nspRatio >= .3 ? pBox([{ text: "Beaucoup de « ? » dans les réponses. C'est normal à ce stade : les voies qui gardent des portes ouvertes remontent un peu plus dans la liste." }], PC.warn, PC.warnWash) : null,
+    keep(h2("Ton profil"), { stack: [pProfile(P),
+      st.length ? { text: [{ text: "Façon de bosser : ", bold: true }, st.join(" · ")], margin: [0, 8, 0, 0] } : null,
+      av.length ? { text: [{ text: "À éviter : ", bold: true, color: PC.warn }, av.join(" · ")], margin: [0, 4, 0, 0] } : null].filter(Boolean) }),
+    ...group("Ce qui coche le plus de cases", R.lead, true),
+    ...group("À creuser aussi", R.also, false),
+    ...group("Si tu ne sais vraiment pas encore", R.open, false, { text: "Ces voies retardent le moment de choisir sans rien fermer.", color: PC.soft, margin: [0, 0, 0, 6] }),
+    ces ? pBox([{ text: [{ text: "Et la césure ? ", bold: true }, pt(ces.desc) + " " + pt(ces.ses)] }], PC.strong) : null,
+    keep(h2("À discuter à deux"), { ol: talkList(R).map(t => ({ text: pt(t), margin: [0, 0, 0, 5] })), markerColor: PC.margin }),
+    keep(h2("Les prochaines étapes"), { stack: [
+      pRules([112, "*"], TIMELINE.map(([w, t]) => [{ text: pt(w), bold: true }, { text: pt(t) }])),
+      { text: pt(TIMELINE_NOTE), fontSize: 8, color: PC.soft, margin: [0, 6, 0, 0] }] }),
+    ...answers
+  ];
+  return {
+    pageSize: "A4", pageMargins: [64, 48, 44, 54],
+    info: { title: (name ? "Les pistes de " + name : "Mes pistes") + " · Boussole SES-Maths", author: "Boussole SES-Maths", subject: "Pistes d'orientation post-bac" },
+    background: (page, size) => ({ canvas: [{ type: "line", x1: 48, y1: 0, x2: 48, y2: size.height, lineWidth: 1, lineColor: PC.margin }] }),
+    footer: (cur, total) => ({ columns: [{ text: "Boussole SES-Maths" + (name ? " · " + pt(name) : "") + " · " + date }, { text: cur + " / " + total, alignment: "right" }], margin: [64, 22, 44, 0], fontSize: 7.5, color: PC.soft }),
+    content: content.filter(Boolean),
+    defaultStyle: { font: "Roboto", fontSize: 9.5, lineHeight: 1.22, color: PC.ink },
+    styles: {
+      eyebrow: { fontSize: 7, bold: true, color: PC.soft, characterSpacing: .6 },
+      h1: { fontSize: 24, bold: true, margin: [0, 4, 0, 0] },
+      h2: { fontSize: 14, bold: true, margin: [0, 18, 0, 8] },
+      h3: { fontSize: 11, bold: true, margin: [0, 12, 0, 2] },
+      pLead: { fontSize: 12, bold: true, margin: [0, 2, 0, 3] },
+      pName: { fontSize: 10.5, bold: true, margin: [0, 2, 0, 2] }
+    }
+  };
+}
+function makePdf(R) {
+  return loadPdfLib().then(() => new Promise((res, rej) => {
+    try { window.pdfMake.createPdf(pdfDoc(R)).getBlob(res); } catch (e) { rej(e); }
+  }));
+}
+
+/* --- Enregistrement : capacité downloads dans Claude, lien natif ailleurs --- */
+async function saveFile(name, data, mime) {
+  if (inClaude()) {
+    const dl = await window.claude.use("downloads");
+    if (!dl) throw { code: "unavailable" };
+    return (await dl.save({ filename: name, data })).status;
+  }
+  const blob = data instanceof Blob ? data : new Blob([data], { type: mime });
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  return "saved";
+}
+function setStatus(box, msg, cls) {
+  const el = box && box.querySelector(".dl-status"); if (!el) return;
+  el.className = "dl-status" + (cls ? " " + cls : ""); el.textContent = msg;
+}
+function errMsg(e, kind) {
+  const c = e && e.code;
+  if (c === "declined") return ["Téléchargement annulé.", ""];
+  if (c === "rate_limited") return ["Une demande de confirmation est déjà ouverte : réponds-y d'abord.", "err"];
+  if (c === "extension_not_enabled" || c === "rejected_extension") return ["Ce format n'est pas disponible ici. Essaie l'autre.", "err"];
+  if (c === "pdf_load") return ["Impossible de charger l'outil PDF (connexion ?). Réessaie, ou télécharge la page HTML.", "err"];
+  if (["unavailable", "not_granted", "capability_disabled", "capability_removed"].includes(c))
+    return ["Le téléchargement n'est pas disponible dans cette vue." + (PUBLIC_URL ? " Ouvre la version en ligne : " + PUBLIC_URL : ""), "err"];
+  return [kind === "pdf" ? "La création du PDF a échoué. Essaie la page HTML." : "Le téléchargement a échoué.", "err"];
+}
+let busy = false;
+async function doDownload(kind, box) {
+  if (busy) return; busy = true;
+  const R = computeResults(A);
+  try {
+    let status;
+    if (kind === "pdf") {
+      setStatus(box, "Préparation du PDF…");
+      status = await saveFile(fileBase() + ".pdf", await makePdf(R), "application/pdf");
+    } else {
+      status = await saveFile(fileBase() + ".html", reportHTML(R), "text/html;charset=utf-8");
+    }
+    setStatus(box, status === "saved" ? (kind === "pdf" ? "PDF téléchargé." : "Page HTML téléchargée.") : "", status === "saved" ? "ok" : "");
+  } catch (e) { const [m, c] = errMsg(e, kind); setStatus(box, m, c); }
+  finally { busy = false; }
+}
+
+/* --- Lien de partage : les réponses voyagent dans le fragment de l'URL (#…), jamais envoyé au serveur --- */
+const ORDER = BLOCKS.flatMap(b => b.qs.map(q => q.id));
+function b64url(str) { const bytes = new TextEncoder().encode(str); let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function unb64url(s) { const b = s.replace(/-/g, "+").replace(/_/g, "/"); const bin = atob(b + "=".repeat((4 - b.length % 4) % 4)); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
+function encodeAnswers(ans) {
+  const vals = ORDER.map(id => { const v = ans[id]; return v === undefined || v === "" || (Array.isArray(v) && !v.length) ? 0 : v; });
+  while (vals.length && vals[vals.length - 1] === 0) vals.pop();
+  return "r1." + b64url(JSON.stringify([1].concat(vals)));
+}
+function decodeAnswers(token) {
+  if (!/^r1\.[A-Za-z0-9_-]{4,}$/.test(token)) return null;
+  try {
+    const list = JSON.parse(unb64url(token.slice(3)));
+    if (!Array.isArray(list) || list[0] !== 1) return null;
+    const out = {};
+    ORDER.forEach((id, i) => {
+      const v = list[i + 1], q = qById(id);
+      if (v === 0 || v === undefined || v === null) return;
+      if (q.type === "text") { if (typeof v === "string") out[id] = v.slice(0, 300); return; }
+      if (q.type === "multi") { if (Array.isArray(v)) { const ok = v.filter(x => q.options.some(o => o.v === x)); if (ok.length) out[id] = ok.slice(0, q.max || 99); } return; }
+      const allowed = q.type === "scale" ? SCALE.map(s => s.v) : q.type === "bip" ? ["-2", "-1", "0", "1", "2", "?"] : q.options.map(o => o.v);
+      if (allowed.includes(v)) out[id] = v;
+    });
+    return Object.keys(out).length ? out : null;
+  } catch (e) { return null; }
+}
+async function shareLink(box) {
+  const base = shareBase(); if (!base) return;
+  const url = base + "#" + encodeAnswers(A);
+  const title = "Boussole SES-Maths : " + (A.prenom ? "les pistes de " + A.prenom : "mes pistes");
+  const touch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  if (navigator.share && touch) {
+    try { await navigator.share({ title, url }); setStatus(box, "Lien partagé.", "ok"); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  try { await navigator.clipboard.writeText(url); setStatus(box, "Lien copié : colle-le dans un message.", "ok"); }
+  catch (e) {
+    setStatus(box, "Copie le lien ci-dessous :");
+    const el = box.querySelector(".dl-status"), inp = document.createElement("input");
+    inp.type = "text"; inp.readOnly = true; inp.value = url; inp.id = "share-url"; inp.setAttribute("aria-label", "Lien de partage");
+    el.appendChild(inp); inp.focus(); inp.select();
+  }
+}
+/* --- Catalogue --- */
+function selDots(n) { return `<span class="meter" title="${SELEC[n]}">${[1, 2, 3].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")} ${SELEC[n]}</span>`; }
+function renderCatalogFilters() {
+  const opts = [["all", "Tout"]].concat(Object.keys(FAMS).map(k => [k, FAMS[k].replace(/ \(.*\)$/, "")]));
+  $("cat-filters").innerHTML = opts.map(([k, l]) => `<button type="button" class="opt" data-fam="${k}" aria-pressed="${famFilter === k}">${esc(l)}</button>`).join("");
+}
+function renderCatalog() {
+  renderCatalogFilters();
+  const qn = norm($("cat-search").value.trim());
+  const P = computeProfile(A);
+  const RR = P.answered >= 8 ? computeResults(A) : null;
+  const mine = new Set(RR ? RR.lead.concat(RR.also).map(r => r.f.id) : []);
+  const intLabels = f => qById("interets").options.filter(o => f.kw.includes(o.v)).map(o => o.label).join(" ");
+  const match = f => !qn || norm([f.nom, f.desc, f.apres, f.ses, f.duree, f.cout, FAMS[f.fam], intLabels(f), f.alt >= .3 ? "alternance" : ""].join(" ")).includes(qn);
+  let html = "";
+  Object.keys(FAMS).forEach(k => {
+    if (famFilter !== "all" && famFilter !== k) return;
+    const list = F.filter(f => f.fam === k && match(f));
+    if (!list.length) return;
+    html += `<section class="cat-group"><h2>${esc(FAMS[k])} <small>${list.length}</small></h2><div class="cat-grid">${list.map(f => `
+      <article class="card">${mine.has(f.id) ? `<span class="in">Dans tes pistes</span>` : ""}<h3>${esc(f.nom)}</h3>
+        <p class="facts"><span><b>${esc(f.duree)}</b></span>${selDots(f.sel)}</p>
+        <p>${esc(f.desc)}</p><p class="after"><b>Après :</b> ${esc(f.apres)}</p>
+        <p class="facts"><span>${esc(f.cout)}</span>${altLabel(f) ? `<span>${altLabel(f)}</span>` : ""}</p>
+        <p class="ses"><b>Avec SES + maths :</b> ${esc(f.ses)}</p></article>`).join("")}</div></section>`;
+  });
+  if ((famFilter === "all" || famFilter === "autre") && (!qn || norm(HARD.map(h => h.t + h.d).join(" ")).includes(qn)))
+    html += `<section class="cat-group"><h2>Plus compliqué avec SES + maths</h2><div class="cat-grid">${HARD.map(h => `<div class="hard"><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join("")}</div></section>`;
+  $("catalog").innerHTML = html || `<p class="empty">Rien ne correspond à « ${esc($("cat-search").value)} ». Essaie un mot plus court, ou « Tout ».</p>`;
+}
+
+/* --- Bannière (lien partagé) --- */
+let bannerActs = [];
+function showBanner(msg, acts) {
+  bannerActs = acts || [];
+  const b = $("banner");
+  b.innerHTML = `<p>${esc(msg)}</p><div class="acts">${bannerActs.map((a, i) => `<button type="button" class="btn small${i === 0 ? " primary" : ""}" data-banner="${i}">${esc(a[0])}</button>`).join("")}</div>`;
+  b.hidden = false;
+}
+function hideBanner() { $("banner").hidden = true; bannerActs = []; }
+function hasOwnAnswers() { return Object.keys(A).some(k => Array.isArray(A[k]) ? A[k].length : (A[k] !== undefined && A[k] !== "")); }
+function clearHash() { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
+function adoptShared(shared) {
+  A = shared; cur = 0; save(); renderBlock(); updateCounts(); setTab("r");
+  showBanner(`Réponses ${shared.prenom ? "de " + shared.prenom + " " : ""}ouvertes depuis un lien. Elles sont maintenant enregistrées sur cet appareil.`, [["Fermer", hideBanner]]);
+}
+function handleSharedHash() {
+  const h = (location.hash || "").slice(1);
+  if (!h.startsWith("r1.")) return false;
+  const shared = decodeAnswers(h);
+  clearHash();
+  if (!shared) { showBanner("Ce lien de résultats est incomplet : il a peut-être été coupé en le copiant.", [["Fermer", hideBanner]]); return true; }
+  if (!hasOwnAnswers() || JSON.stringify(A) === JSON.stringify(shared)) { adoptShared(shared); return true; }
+  const who = shared.prenom ? "de " + shared.prenom : "de quelqu'un";
+  showBanner(`Ce lien contient les réponses ${who}. Les afficher remplace les réponses déjà enregistrées sur cet appareil.`,
+    [["Afficher ces réponses", () => adoptShared(shared)], ["Garder les miennes", hideBanner]]);
+  return true;
+}
+
+/* --- Remise à zéro --- */
+function askReset(show) { $("reset-confirm").hidden = !show; $("reset-btn").hidden = show; $("reset-msg").textContent = ""; }
+function doReset() {
+  A = {}; cur = 0; save(); renderBlock(); updateCounts(); askReset(false);
+  $("reset-msg").textContent = "Réponses effacées.";
+}
+
+/* --- Démarrage --- */
+function bind() {
+  $("block").addEventListener("click", e => { const b = e.target.closest("[data-q][data-v]"); if (b) pick(b.dataset.q, b.dataset.v); });
+  $("block").addEventListener("input", e => { const id = e.target.dataset && e.target.dataset.text; if (id) { A[id] = e.target.value; save(); } });
+  $("steps").addEventListener("click", e => { const b = e.target.closest("[data-step]"); if (b) goBlock(Number(b.dataset.step)); });
+  $("prev").addEventListener("click", () => goBlock(cur - 1));
+  $("next").addEventListener("click", () => cur === BLOCKS.length - 1 ? setTab("r") : goBlock(cur + 1));
+  document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) setTab(b.dataset.tab); });
+  $("results").addEventListener("click", e => {
+    const act = e.target.closest("[data-action]");
+    if (act) {
+      const box = act.closest(".dl-box"), k = act.dataset.action;
+      if (k === "link") shareLink(box); else doDownload(k, box);
+      return;
+    }
+    const g = e.target.closest("[data-go]"); if (g) setTab(g.dataset.go);
+  });
+  $("banner").addEventListener("click", e => { const b = e.target.closest("[data-banner]"); if (b && bannerActs[b.dataset.banner]) bannerActs[b.dataset.banner][1](); });
+  $("reset-btn").addEventListener("click", () => askReset(true));
+  $("reset-no").addEventListener("click", () => askReset(false));
+  $("reset-yes").addEventListener("click", doReset);
+  $("cat-filters").addEventListener("click", e => { const b = e.target.closest("[data-fam]"); if (b) { famFilter = b.dataset.fam; renderCatalog(); } });
+  $("cat-search").addEventListener("input", renderCatalog);
+}
+function start(data) {
+  if (data && data.A) { A = data.A; cur = data.cur || 0; } else load();
+  bind(); renderBlock(); updateCounts();
+  if (handleSharedHash()) return;
+  const h = (location.hash || "").replace("#", "");
+  if (h === "pistes") setTab("r"); else if (h === "catalogue") setTab("c");
+  if (data && data.tab && data.tab !== "q") setTab(data.tab);
+}
+if (typeof document !== "undefined") {
+  if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ A, cur, tab }));
+  if (window.claude && window.claude.hot && window.claude.hot.ready) window.claude.hot.ready(start);
+  else start((window.claude && window.claude.hot && window.claude.hot.data) || {});
+}
+</script>
+</body>
+</html>
