@@ -807,6 +807,27 @@ const HARD = [
   { t: "Prépas scientifiques et écoles d'ingénieurs post-bac", d: "MPSI, PCSI, MP2I et la plupart des écoles d'ingénieurs demandent physique-chimie (ou NSI). Avec SES + maths, ce n'est pas la voie naturelle. Par contre, beaucoup d'écoles d'ingénieurs recrutent après un BUT Science des données ou Informatique, ou une licence de maths, d'info ou MIASHS." },
   { t: "Prépa ECT", d: "Réservée aux élèves de STMG. La version pour un bac général, c'est l'ECG." }
 ];
+
+add("fac", [
+  { id: "llcer", nom: "Licence LLCER (langues, littératures et civilisations étrangères)", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Une langue (anglais, espagnol, allemand, italien…) étudiée en profondeur : langue, littérature, histoire et culture du pays. Beaucoup de lecture et d'écrit.",
+    apres: "Enseignement (master MEEF), traduction, édition, médiation culturelle, métiers de l'international.",
+    ses: "Un bon niveau dans la langue choisie est attendu ; les maths et la SES comptent peu ici. Un séjour à l'étranger est possible en cours de licence.",
+    w: { INTL: 1, COM: .5, SOC: .2 }, kw: ["international", "culture", "enseigner"],
+    p: { enc: .2, conc: .1, intense: .4, maths: .05, ecrit: .9, oral: .4, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "arts", nom: "Licence Arts (cinéma, spectacle, musicologie, arts plastiques)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: 0,
+    desc: "Histoire, analyse et pratique d'un art au choix : cinéma et audiovisuel, spectacle vivant, musicologie, arts plastiques.",
+    apres: "Médiation et gestion culturelle, enseignement, production, métiers de l'audiovisuel, via un master ou une école.",
+    ses: "La SES aide pour l'approche sociale de la culture ; le dossier et la motivation comptent plus que les spécialités.",
+    w: { COM: 1, SOC: .4 }, kw: ["culture", "communication", "medias"],
+    p: { enc: .2, conc: .4, intense: .4, maths: .05, ecrit: .7, oral: .4, bureau: .6, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "educ", nom: "Licence Sciences de l'éducation", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Apprentissage, école, formation des adultes, éducation spécialisée : sociologie, psychologie et histoire de l'éducation.",
+    apres: "Enseignement (master MEEF), formation, éducation spécialisée, ressources humaines, après un master.",
+    ses: "La SES socio donne de bonnes bases. Un bon complément si l'idée de professeur des écoles te tente.",
+    w: { HUM: 1, SOC: .6 }, kw: ["enseigner", "aider", "psycho"],
+    p: { enc: .2, conc: .4, intense: .4, maths: .2, ecrit: .7, oral: .5, bureau: .5, terrain: .4, ouvert: .5, sortie: 3, fac: 1 } }
+]);
 /* ===== Calcul du profil et des pistes (fonctions pures) ===== */
 const SUBJ = {
   m_maths: { CHIF: 1, TECH: .3, ECO: .2 }, m_seseco: { ECO: 1, CHIF: .2 }, m_sessoc: { SOC: 1, HUM: .3 },
@@ -891,7 +912,7 @@ function scoreFormation(f, A, P) {
   const du = A.e_duree;
   if (du === "court") s += p.sortie <= 3 ? .25 : -.3;
   else if (du === "b3") s += p.sortie <= 3 ? .1 : -.1;
-  else if (du === "b5" || du === "long") s += (p.sortie >= 5 || p.ouvert >= .8) ? .12 : 0;
+  else if (du === "b5" || du === "long") s += p.sortie >= 5 ? .2 : p.sortie <= 2 ? -.3 : (p.ouvert >= .8 ? .1 : 0);
   else if (du === "?") s += .25 * (p.ouvert - .5);
   if (p.prepa) s += { envie: .35, peut: 0, non: -.6, "?": -.05 }[A.e_prepa] || 0;
   if (p.fac) s += p.fac * ({ ok: .12, bof: -.12, non: -.45 }[A.e_fac] || 0);
@@ -899,6 +920,7 @@ function scoreFormation(f, A, P) {
   if (p.prive) s += { aide: -.15, non: -.6, "?": -.15 }[A.e_budget] || 0;
   if (p.concours) s += ({ ok: .05, bof: -.1, non: -.3 }[A.e_conc] || 0) + (av.includes("concours") ? -.25 : 0);
   if (f.id === "etranger") s += { etranger: .3, parents: -.4, region: -.2 }[A.e_mob] || 0;
+  else if (A.e_mob === "etranger" && f.kw.includes("international")) s += .15;
   const lm = lvl(A, "niv_maths"), lg = lvl(A, "moy");
   if (p.maths >= .7 && lm !== null) s += lm <= 1 ? -.35 : lm === 2 ? -.1 : .08;
   if (p.maths >= .8 && A.maths_opt === "expertes") s += .08;
@@ -931,6 +953,8 @@ function scoreFormation(f, A, P) {
   if ((du === "?" || P.nspRatio >= .3) && p.ouvert >= .9) why.push("Garde beaucoup de portes ouvertes");
   if (A.e_prepa === "envie" && p.prepa) why.push("Tu as envie de tenter une prépa");
   if (A.e_mob === "etranger" && f.id === "etranger") why.push("Tu te vois partir à l'étranger");
+  else if (A.e_mob === "etranger" && f.kw.includes("international")) why.push("Tu te vois partir à l'étranger : parcours tourné vers l'international");
+  if ((du === "b5" || du === "long") && p.sortie >= 5) why.push("Tu vises bac+5 : ce parcours y mène directement");
 
   // points d'attention
   if (f.id === "las") care.push("Sans SVT ni physique-chimie, c'est un pari");
@@ -946,12 +970,13 @@ function scoreFormation(f, A, P) {
   if (p.vente >= .6 && av.includes("vente")) care.push("Beaucoup de commercial");
   if (f.sel === 3 && lg !== null && lg <= 2) care.push("Très sélectif : il faut un dossier solide");
   if (p.sortie >= 5 && (du === "court" || av.includes("long"))) care.push("Des études longues");
+  if (p.sortie <= 2 && (du === "b5" || du === "long")) care.push("Diplôme en 2 ans : il faudra poursuivre pour viser bac+5");
   if (p.oral >= .7 && av.includes("oral")) care.push("Beaucoup d'oral");
   if (p.intense >= .8 && av.includes("stress")) care.push("Grosse pression");
   if (f.id === "etranger" && (A.e_mob === "parents" || A.e_mob === "region")) care.push("Il faut partir loin");
   if (p.bureau >= .9 && av.includes("assis")) care.push("Beaucoup de temps assis");
 
-  return { f, s, why: why.slice(0, 3), care: care.slice(0, 3) };
+  return { f, s, why: why.slice(0, 4), care: care.slice(0, 3) };
 }
 
 function computeResults(A) {
@@ -1186,7 +1211,7 @@ function qLabel(q) { return q.type === "bip" ? `${q.left} / ${q.right}` : q.labe
 function answerText(q) {
   const v = A[q.id];
   if (q.type === "text") return (v || "").trim() || "—";
-  if (q.type === "multi") { const a = arr(v); return a.length ? a.map(x => optLabel(q.id, x) || x).join(", ") : "—"; }
+  if (q.type === "multi") { const a = arr(v); return a.length ? a.map(x => optLabel(q.id, x) || x).join("  ·  ") : "—"; }
   if (v === undefined || v === null || v === "") return "—";
   if (q.type === "scale") return v === "?" ? "Je ne sais pas" : (SCALE.find(s => s.v === v) || {}).label || v;
   if (q.type === "bip") {

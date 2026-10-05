@@ -2,7 +2,7 @@
 
 **En ligne : https://kerhogo.github.io/boussole-ses-maths/**
 
-Un questionnaire d'orientation post-bac pensé pour un profil précis : un élève de terminale avec les spécialités SES et maths. Il donne un profil, des pistes de formations expliquées (ce qui colle, les points d'attention), des questions à se poser et un catalogue de 47 formations accessibles avec ces spécialités.
+Un questionnaire d'orientation post-bac pensé pour un profil précis : un élève de terminale avec les spécialités SES et maths. Il donne un profil, des pistes de formations expliquées (ce qui colle, les points d'attention), des questions à se poser et un catalogue de 50 formations accessibles avec ces spécialités.
 
 Tout tient dans `index.html` : pas de compilation, pas de serveur, rien à installer.
 
