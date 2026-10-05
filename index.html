@@ -193,6 +193,15 @@ textarea { min-height: 70px; resize: vertical; }
 .dim.top .bar i { background: var(--bic); }
 .dim.top span { font-weight: 700; }
 @media (max-width: 520px) { .dim { grid-template-columns: 1fr; gap: 3px; } }
+.portrait { font-size: 16.5px; max-width: 62ch; }
+details.dims-more { border-top: none; padding-top: 0; }
+details.dims-more summary { font-size: 14px; }
+details.dims-more .dims { margin-top: 9px; }
+.tension { border-left: 3px solid var(--margin); padding: 2px 0 2px 12px; display: grid; gap: 6px; }
+.tension h4 { font-family: var(--font-display); font-size: 16px; margin: 0; }
+.tension ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15px; }
+.tension li::marker { color: var(--margin); }
+a.src { color: var(--bic); font-weight: 700; text-underline-offset: 3px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: var(--bic-wash); color: var(--ink); }
 .tag.neg { background: var(--warn-wash); color: var(--ink); border: 1px solid var(--warn); }
@@ -286,7 +295,7 @@ footer.foot a { color: var(--bic); }
 
     <section id="tab-c" role="tabpanel" aria-labelledby="tab-btn-c" hidden>
       <div class="cat-tools">
-        <p class="cat-intro">Les formations accessibles après un bac général avec SES et maths, regroupées par type. Les noms précis et les places changent selon les villes : c'est une carte du terrain, à compléter avec le moteur de recherche Parcoursup.</p>
+        <p class="cat-intro">Les formations accessibles après un bac général avec SES et maths, regroupées par type. Les noms précis et les places changent selon les villes : c'est une carte du terrain, à compléter avec le moteur de recherche Parcoursup. Chaque fiche renvoie vers une source officielle, le plus souvent Onisep.</p>
         <input type="search" id="cat-search" placeholder="Chercher : data, droit, alternance, journalisme…" aria-label="Chercher une formation">
         <div class="chips" id="cat-filters" role="group" aria-label="Filtrer par type"></div>
       </div>
@@ -339,7 +348,7 @@ const BLOCKS = [
         { v: "rien", label: "Je n'ai rien regardé" },
         { v: "peu", label: "J'ai un peu traîné sur Parcoursup ou Onisep" },
         { v: "idees", label: "J'ai déjà quelques idées" } ],
-        oral: "Si tu as des idées, même floues, dis-les maintenant à voix haute." }
+        oral: "Si tu as des idées, même floues, note-les dans un coin : tu pourras les comparer aux pistes à la fin." }
     ]
   },
   {
@@ -355,7 +364,17 @@ const BLOCKS = [
       { id: "m_lang", type: "scale", label: "L'anglais et les autres langues" },
       { id: "m_info", type: "scale", label: "L'informatique, le numérique", hint: "Même en dehors des cours : bidouiller, coder, monter des vidéos" },
       { id: "m_sport", type: "scale", label: "Le sport" },
-      { id: "m_arts", type: "scale", label: "Arts, musique, création", hint: "Même en dehors des cours" }
+      { id: "m_arts", type: "scale", label: "Arts, musique, création", hint: "Même en dehors des cours" },
+      { id: "spe3", type: "single", label: "La spécialité que tu as arrêtée en fin de première", hint: "Elle dit aussi quelque chose de tes goûts.", options: [
+        { v: "hggsp", label: "Histoire-géo, géopolitique et sciences politiques (HGGSP)" },
+        { v: "hlp", label: "Humanités, littérature et philosophie (HLP)" },
+        { v: "langue", label: "Une langue (LLCER ou anglais monde contemporain)" },
+        { v: "svt", label: "SVT" },
+        { v: "pc", label: "Physique-chimie" },
+        { v: "nsi", label: "NSI (informatique)" },
+        { v: "arts", label: "Arts" },
+        { v: "autre", label: "Une autre" } ] },
+      { id: "spe3_gout", type: "scale", label: "Et cette spécialité, elle te plaisait ?" }
     ],
     oral: "Quel cours tu attends le plus dans la semaine ? C'est grâce au prof ou à la matière ?"
   },
@@ -383,6 +402,7 @@ const BLOCKS = [
         { v: "dev", label: "Coder, créer des applis ou des sites" },
         { v: "politique", label: "La politique, l'actu, les débats" },
         { v: "international", label: "L'international, les langues, voyager" },
+        { v: "tourisme", label: "Le tourisme, l'hôtellerie, l'accueil" },
         { v: "droit", label: "Le droit, la justice, les règles" },
         { v: "aider", label: "Aider, accompagner des gens" },
         { v: "sante", label: "La santé, le soin" },
@@ -390,9 +410,11 @@ const BLOCKS = [
         { v: "medias", label: "Les médias, le journalisme" },
         { v: "communication", label: "La com', la pub, les réseaux" },
         { v: "vente", label: "Vendre, négocier, convaincre" },
+        { v: "luxe", label: "La mode, le luxe, les belles marques" },
         { v: "environnement", label: "L'environnement, le climat" },
         { v: "sport", label: "Le sport" },
         { v: "culture", label: "Musique, cinéma, jeux vidéo, culture" },
+        { v: "evenement", label: "Organiser des événements, des concerts, des festivals" },
         { v: "ville", label: "La ville, l'immobilier, l'architecture" },
         { v: "psycho", label: "Comprendre comment les gens pensent" },
         { v: "publique", label: "Servir l'État, les institutions" },
@@ -483,7 +505,11 @@ const BLOCKS = [
    w : poids sur les dimensions du profil ; kw : centres d'intérêt liés
    p : enc (encadrement 0-1), conc (concret), intense, maths, ecrit, oral, vente, bureau, terrain,
        ouvert (garde des portes ouvertes), sortie (années avant un premier diplôme utile),
-       concours, prive, prepa, fac (1 = fac classique, .5 = fac sélective) */
+       niv (niveau bac+N de ce premier diplôme, si différent de sortie),
+       concours, prive, prepa, fac (1 = fac classique, .5 = fac sélective)
+   selNote : précise la sélectivité affichée ; side : voie moins connue, proposée « à côté » ;
+   core : thèmes sans lesquels la voie a peu de sens (aucun signal d'intérêt = elle descend) ;
+   src : lien officiel (voir e_links.js). Infos vérifiées début octobre 2026. */
 const FAMS = {
   prepa: "Prépas (CPGE)",
   facsel: "Fac sélective et grands établissements",
@@ -494,33 +520,34 @@ const FAMS = {
   autre: "Autres voies"
 };
 const SELEC = ["", "Accessible", "Sélectif", "Très sélectif"];
-const FAC_COST = "Frais universitaires (gratuit pour les boursiers)";
+const FAC_COST = "Environ 280 €/an avec la CVEC (0 € si boursier)";
+const PREPA_COST = "Lycée public : environ 280 €/an d'inscription à la fac partenaire (0 € si boursier)";
 
 const F = [];
 function add(fam, list) { list.forEach(x => F.push(Object.assign({ fam }, x))); }
 
 add("prepa", [
-  { id: "ecg", nom: "Prépa ECG (économique et commerciale)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
+  { id: "ecg", nom: "Prépa ECG (économique et commerciale)", duree: "2 ans", sel: 2, cout: PREPA_COST, alt: 0,
     desc: "Maths (appliquées ou approfondies), économie-sociologie-histoire ou géopolitique, culture générale et deux langues. Colles chaque semaine.",
-    apres: "Concours des écoles de commerce (HEC, ESSEC, ESCP, EDHEC…) et de certaines écoles de statistique. Les crédits permettent de rejoindre une licence si on change d'avis.",
+    apres: "Concours des écoles de commerce (HEC, ESSEC, ESCP, EDHEC…) et des écoles de statistique (ENSAE, ENSAI). Les crédits permettent de rejoindre une licence si tu changes d'avis.",
     ses: "La voie classique après SES + maths. L'option maths expertes est un plus pour viser maths approfondies.",
     w: { ECO: 1, CHIF: .6, SOC: .4, INTL: .4 }, kw: ["finance", "entreprise", "international"],
     p: { enc: 1, conc: .3, intense: 1, maths: .8, ecrit: .6, oral: .6, vente: .1, bureau: .7, ouvert: .9, sortie: 5, concours: 1, prepa: 1 } },
-  { id: "bl", nom: "Prépa B/L (lettres et sciences sociales)", duree: "2 ans", sel: 3, cout: "Gratuit en lycée public", alt: 0,
+  { id: "bl", nom: "Prépa B/L (lettres et sciences sociales)", duree: "2 ans", sel: 3, cout: PREPA_COST, alt: 0,
     desc: "La prépa la plus généraliste : maths, sociologie, économie, histoire, philo, lettres et langues. Beaucoup de lecture et d'écrit.",
-    apres: "ENS, écoles de commerce, IEP, écoles de statistique, CELSA, écoles de journalisme, ou entrée en 3e année de licence.",
+    apres: "ENS, écoles de commerce, ENSAE, ENSAI, IEP, CELSA, écoles de journalisme, ou entrée en 3e année de licence.",
     ses: "Pensée pour les profils SES + maths qui aiment aussi lire et écrire.",
     w: { SOC: 1, ECO: .6, CHIF: .5, COM: .4 }, kw: ["politique", "enseigner", "medias"],
     p: { enc: 1, conc: .1, intense: 1, maths: .6, ecrit: 1, oral: .6, bureau: .8, ouvert: 1, sortie: 5, concours: 1, prepa: 1 } },
-  { id: "d1", nom: "Prépa D1 (droit, économie)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
-    desc: "Une prépa adossée à une licence de droit : on valide la fac en parallèle, avec beaucoup plus d'encadrement.",
-    apres: "Concours de l'ENS Rennes, IEP, écoles de commerce, magistères, ou poursuite en droit.",
+  { id: "d1", nom: "Prépa D1 (droit, économie)", duree: "2 ans", sel: 2, cout: PREPA_COST, alt: 0,
+    desc: "Une prépa adossée à une licence, le plus souvent de droit : tu valides la fac en parallèle, avec beaucoup plus d'encadrement.",
+    apres: "Le concours de l'ENS Rennes offre très peu de places : la plupart continuent en 3e année de licence, en magistère, en école de commerce (admissions parallèles) ou en IEP.",
     ses: "Si le droit te tente mais que tu veux un cadre plus serré que la fac.",
     w: { DROIT: 1, ECO: .5, SOC: .4 }, kw: ["droit", "publique", "politique"],
     p: { enc: .9, conc: .3, intense: .9, maths: .2, ecrit: .9, oral: .5, bureau: .8, ouvert: .8, sortie: 3, concours: 1, prepa: 1 } },
-  { id: "d2", nom: "Prépa D2 (économie, gestion)", duree: "2 ans", sel: 2, cout: "Gratuit en lycée public", alt: 0,
+  { id: "d2", nom: "Prépa D2 (économie, gestion)", duree: "2 ans", sel: 2, cout: PREPA_COST, alt: 0,
     desc: "Économie, gestion, maths et droit, avec une licence d'économie-gestion validée en parallèle.",
-    apres: "Concours de l'ENS Paris-Saclay, écoles de commerce, IEP, écoles de statistique, magistères.",
+    apres: "Concours de l'ENS Paris-Saclay et de l'ENSAI, écoles de commerce, IEP, magistères, ou 3e année de licence.",
     ses: "Très proche de la partie éco de la SES, avec des maths au service de l'économie.",
     w: { ECO: 1, CHIF: .6, DROIT: .3 }, kw: ["finance", "entreprise"],
     p: { enc: .9, conc: .4, intense: .9, maths: .6, ecrit: .6, oral: .4, bureau: .8, ouvert: .9, sortie: 3, concours: 1, prepa: 1 } }
@@ -528,21 +555,21 @@ add("prepa", [
 
 add("facsel", [
   { id: "dl", nom: "Doubles licences et licences renforcées", duree: "3 ans", sel: 3, cout: FAC_COST, alt: 0,
-    desc: "Deux disciplines en même temps (éco-maths, droit-éco, droit-langues, éco-histoire…) ou un parcours renforcé (magistère, collège de droit). Petits effectifs, grosse charge de travail. On en trouve dans la plupart des grandes universités, et à Paris Dauphine-PSL.",
-    apres: "Les masters les plus demandés, des écoles sur dossier, les concours de la fonction publique.",
+    desc: "Deux disciplines en même temps (éco-maths, droit-éco, droit-langues, éco-histoire…) ou un parcours renforcé (collège de droit, cursus d'excellence). Petits effectifs, grosse charge de travail. On en trouve dans la plupart des grandes universités, et à Paris Dauphine-PSL.",
+    apres: "Les masters les plus demandés, des magistères, des écoles sur dossier, les concours de la fonction publique.",
     ses: "Éco-maths est taillée pour SES + maths, mais demande un bon dossier.",
     w: { ECO: .8, CHIF: .5, DROIT: .5, SOC: .4 }, kw: ["finance", "droit", "politique", "data"],
     p: { enc: .6, conc: .3, intense: .8, maths: .6, ecrit: .6, oral: .4, bureau: .8, ouvert: 1, sortie: 3, fac: .5 } },
-  { id: "cpes", nom: "CPES et CUPGE (cycles pluridisciplinaires)", duree: "3 ans", sel: 3, cout: FAC_COST, alt: 0,
-    desc: "Un mélange de prépa et de fac : petits groupes, plusieurs disciplines au début (éco, maths, sciences sociales…), puis on se spécialise. Pas de concours couperet à la fin.",
+  { id: "cpes", nom: "CPES (cycle pluridisciplinaire d'études supérieures)", duree: "3 ans", sel: 3, cout: FAC_COST, alt: 0,
+    desc: "Entre prépa et fac, en petits groupes, monté par un lycée et une université : plusieurs disciplines au début (éco, maths, sciences sociales, humanités…), puis on se spécialise. Pas de concours couperet : on sort avec une licence.",
     apres: "Masters, grandes écoles sur dossier, ENS.",
-    ses: "Le niveau d'une prépa sans le stress des concours.",
+    ses: "Le niveau d'une prépa sans le stress des concours. À ne pas confondre avec les CUPGE, des cycles universitaires surtout scientifiques (maths, physique).",
     w: { SOC: .7, ECO: .7, CHIF: .6, INTL: .3 }, kw: ["politique", "data", "enseigner"],
     p: { enc: .8, conc: .2, intense: .8, maths: .6, ecrit: .7, oral: .4, bureau: .8, ouvert: 1, sortie: 3, fac: .5 } },
-  { id: "iep", nom: "Sciences Po Paris et IEP", duree: "5 ans (grade master)", sel: 3, cout: "Frais selon les revenus des parents", alt: 0,
-    desc: "Science politique, histoire, éco, droit, sociologie et langues, avec une 3e année à l'étranger. Sur Parcoursup : dossier et oral pour Sciences Po Paris, concours écrit commun au printemps pour plusieurs IEP de région.",
+  { id: "iep", nom: "Sciences Po Paris et IEP", duree: "5 ans (grade master)", sel: 3, cout: "Selon les revenus des parents : de 0 à environ 15 000 €/an à Paris, beaucoup moins en région", alt: 0,
+    desc: "Science politique, histoire, éco, droit, sociologie et langues, avec une 3e année à l'étranger. Sur Parcoursup : dossier et oral pour Sciences Po Paris ; concours écrit commun le 24 avril 2027 pour 7 IEP (Aix, Lille, Lyon, Rennes, Saint-Germain-en-Laye, Strasbourg, Toulouse) ; Bordeaux et Grenoble ont leur propre sélection.",
     apres: "Fonction publique, journalisme, communication, international, conseil, ONG.",
-    ses: "La partie socio et science po de la SES est au cœur du programme.",
+    ses: "La partie socio et science po de la SES est au cœur du programme. À Sciences Po Paris en 2027, le dossier compte pour la moitié de la note et l'oral pour l'autre moitié ; dans le dossier, les seules notes retenues sont celles des épreuves anticipées de 1re (français et maths), avec les appréciations de tes profs.",
     w: { SOC: 1, INTL: .7, DROIT: .5, COM: .4, ECO: .4 }, kw: ["politique", "international", "publique", "medias"],
     p: { enc: .6, conc: .2, intense: .7, maths: .2, ecrit: 1, oral: .8, bureau: .7, ouvert: .8, sortie: 5, concours: 1 } }
 ]);
@@ -560,7 +587,7 @@ add("fac", [
     ses: "Le programme ressemble beaucoup à celui de la SES.",
     w: { ECO: .6, DROIT: .6, SOC: .6, HUM: .3 }, kw: ["publique", "entreprise", "aider"],
     p: { enc: .2, conc: .4, intense: .3, maths: .3, ecrit: .5, oral: .3, bureau: .8, ouvert: .8, sortie: 3, fac: 1 } },
-  { id: "miashs", nom: "Licence MIASHS", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
+  { id: "miashs", nom: "Licence MIASHS", duree: "3 ans", sel: 2, selNote: "Variable : très demandée dans les grandes villes", cout: FAC_COST, alt: .1,
     desc: "Maths et informatique appliquées aux sciences humaines et sociales : statistiques, programmation, plus une discipline au choix (éco, socio, psycho, géo…).",
     apres: "Data analyst, statisticien, chargé d'études, actuariat ou économie quantitative après un master.",
     ses: "Exactement le croisement SES + maths. Il faut aimer les maths pour de vrai.",
@@ -572,87 +599,135 @@ add("fac", [
     ses: "Accessible sans physique-chimie, mais seulement si les maths sont vraiment ta matière préférée. Les maths expertes aident beaucoup.",
     w: { CHIF: 1, TECH: .3 }, kw: ["data", "enseigner"],
     p: { enc: .2, conc: .1, intense: .6, maths: 1, ecrit: .1, oral: .1, bureau: .9, ouvert: .7, sortie: 3, fac: 1 } },
-  { id: "info", nom: "Licence Informatique", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .2,
+  { id: "info", nom: "Licence Informatique", duree: "3 ans", sel: 2, selNote: "Variable : très demandée dans les grandes villes", cout: FAC_COST, alt: .2,
     desc: "Programmation, algorithmique, bases de données, réseaux. Les maths sont là, surtout la logique.",
     apres: "Développeur, data, cybersécurité, chef de projet après un master.",
     ses: "Possible sans NSI, à condition de s'y mettre dès maintenant (cours en ligne, petits projets).",
     w: { TECH: 1, CHIF: .6 }, kw: ["dev", "data"],
     p: { enc: .2, conc: .5, intense: .5, maths: .7, ecrit: .1, oral: .1, bureau: 1, ouvert: .6, sortie: 3, fac: 1 } },
-  { id: "droit", nom: "Licence de droit", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+  { id: "droit", nom: "Licence de droit", duree: "3 ans", sel: 1, selNote: "Accessible, mais très demandée dans les grandes villes", cout: FAC_COST, alt: 0,
     desc: "Droit civil, constitutionnel, pénal, institutions. Beaucoup de par cœur et d'écrit ; la première année est exigeante.",
     apres: "Avocat, juriste d'entreprise, notaire, magistrat, commissaire de police, administration, en général après un master.",
     ses: "Aucune spé exigée. La SES et la philo aident pour raisonner.",
     w: { DROIT: 1, SOC: .4, ECO: .2 }, kw: ["droit", "publique", "politique"],
     p: { enc: .2, conc: .2, intense: .6, maths: .05, ecrit: 1, oral: .5, bureau: .8, ouvert: .7, sortie: 5, fac: 1 } },
-  { id: "socio", nom: "Licence Sociologie ou Science politique", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
-    desc: "Enquêtes, statistiques, entretiens, théories sociales ou politiques. Beaucoup de lecture.",
+  { id: "scpo", nom: "Licence Science politique", duree: "3 ans", sel: 2, selNote: "Très demandée dans les grandes villes", cout: FAC_COST, alt: 0,
+    desc: "Institutions, vie politique, relations internationales, sociologie politique et histoire des idées, avec des méthodes d'enquête. Beaucoup de lecture et d'écrit.",
+    apres: "Concours de la fonction publique, collectivités, journalisme, communication politique, ONG ; masters de science politique ou de relations internationales.",
+    ses: "La partie science politique de la SES est au cœur du programme. Une alternative aux IEP, sans concours, mais à la fac.",
+    w: { SOC: 1, DROIT: .4, INTL: .4 }, kw: ["politique", "international", "publique", "medias"],
+    p: { enc: .2, conc: .2, intense: .5, maths: .2, ecrit: 1, oral: .4, bureau: .8, ouvert: .7, sortie: 3, fac: 1 } },
+  { id: "socio", nom: "Licence Sociologie", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Enquêtes, statistiques, entretiens, théories sociales. Beaucoup de lecture.",
     apres: "Chargé d'études, collectivités, associations, journalisme, recherche, concours.",
     ses: "La suite logique de la partie socio de la SES.",
     w: { SOC: 1, HUM: .5, COM: .3 }, kw: ["politique", "aider", "psycho", "environnement"],
     p: { enc: .2, conc: .3, intense: .4, maths: .3, ecrit: .9, oral: .3, bureau: .7, ouvert: .7, sortie: 3, fac: 1 } },
-  { id: "lea", nom: "Licence LEA (langues étrangères appliquées)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
-    desc: "Deux langues au même niveau, plus de l'économie, du droit, du marketing et du commerce international.",
-    apres: "Commerce international, traduction spécialisée, tourisme, communication.",
-    ses: "Bien si tu es à l'aise en langues ; la SES donne de l'avance en éco.",
-    w: { INTL: 1, ECO: .4, COM: .4 }, kw: ["international", "vente"],
-    p: { enc: .3, conc: .5, intense: .4, maths: .1, ecrit: .6, oral: .6, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
-  { id: "psycho", nom: "Licence Psychologie", duree: "3 ans (5 pour être psychologue)", sel: 2, cout: FAC_COST, alt: 0,
-    desc: "Psychologie sociale, cognitive, clinique, du développement… et beaucoup de statistiques.",
-    apres: "Psychologue après un master (places limitées), RH, études, social.",
-    ses: "Les maths servent en stats, la SES socio aussi.",
-    w: { HUM: 1, SOC: .5, CHIF: .3 }, kw: ["psycho", "aider", "sante"],
-    p: { enc: .2, conc: .3, intense: .5, maths: .4, ecrit: .7, oral: .3, bureau: .7, ouvert: .6, sortie: 5, fac: 1 } },
+  { id: "histoire", nom: "Licence Histoire", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Histoire ancienne, médiévale, moderne et contemporaine, un peu de géographie, analyse de documents. Beaucoup de lecture, de dissertations et de commentaires.",
+    apres: "Enseignement (concours en 3e année de licence, puis 2 ans de master), patrimoine, archives, journalisme, concours administratifs, IEP ou masters de relations internationales.",
+    ses: "Si l'histoire-géo est ta matière préférée et que lire ne te fait pas peur. La SES aide pour l'histoire économique et sociale.",
+    w: { SOC: .9, INTL: .3, COM: .3 }, kw: ["politique", "culture", "enseigner"],
+    p: { enc: .2, conc: .2, intense: .4, maths: .05, ecrit: 1, oral: .3, bureau: .8, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "philo", nom: "Licence Philosophie", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Grands auteurs, morale et politique, logique, philosophie des sciences et de l'art. Beaucoup de lecture et de dissertations.",
+    apres: "Enseignement (concours en 3e année de licence, puis 2 ans de master), édition, journalisme, concours administratifs, ou masters de science politique, d'éthique ou de communication.",
+    ses: "Si les cours de philo te passionnent. La SES apporte des exemples concrets, et la logique des maths aide plus qu'on ne croit.",
+    w: { SOC: .7, COM: .4, DROIT: .3, HUM: .3 }, kw: ["politique", "enseigner", "psycho"],
+    p: { enc: .2, conc: .05, intense: .5, maths: .1, ecrit: 1, oral: .4, bureau: .9, ouvert: .5, sortie: 3, fac: 1 } },
   { id: "geo", nom: "Licence Géographie et aménagement", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
     desc: "Territoires, villes, environnement, cartographie et données géographiques.",
     apres: "Urbanisme, environnement, aménagement, collectivités, cartographie.",
     ses: "Un bon choix si l'environnement et la ville t'intéressent.",
     w: { SOC: .7, CHIF: .3, INTL: .2 }, kw: ["environnement", "ville"],
     p: { enc: .2, conc: .5, intense: .3, maths: .3, ecrit: .6, oral: .3, bureau: .5, terrain: .5, ouvert: .6, sortie: 3, fac: 1 } },
-  { id: "staps", nom: "Licence STAPS", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
-    desc: "Sciences du sport (physiologie, sociologie, pratique), puis un parcours : management du sport, entraînement, activité physique adaptée, enseignement.",
-    apres: "Management du sport, coach, éducateur sportif, prof d'EPS (concours).",
-    ses: "Pas besoin de spé scientifique ; le niveau sportif et la motivation comptent.",
-    w: { HUM: .6, ECO: .2, SOC: .2 }, kw: ["sport", "enseigner", "sante"],
-    p: { enc: .3, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .4, bureau: .2, terrain: 1, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "psycho", nom: "Licence Psychologie", duree: "3 ans (5 pour être psychologue)", sel: 2, selNote: "Très demandée : les dossiers sont classés", cout: FAC_COST, alt: 0,
+    desc: "Psychologie sociale, cognitive, clinique, du développement… et beaucoup de statistiques.",
+    apres: "Psychologue après un master (places limitées), RH, études, social.",
+    ses: "Les maths servent en stats, la SES socio aussi.",
+    w: { HUM: 1, SOC: .5, CHIF: .3 }, kw: ["psycho", "aider", "sante"],
+    p: { enc: .2, conc: .3, intense: .5, maths: .4, ecrit: .7, oral: .3, bureau: .7, ouvert: .6, sortie: 5, fac: 1 } },
+  { id: "educ", nom: "Licence Sciences de l'éducation et de la formation", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Apprentissage, école, formation des adultes, éducation spécialisée : sociologie, psychologie et histoire de l'éducation. Selon les universités, elle commence en 1re année ou seulement en 2e ou 3e année.",
+    apres: "Formation, éducation spécialisée, ressources humaines, enseignement (concours en 3e année de licence, puis 2 ans de master).",
+    ses: "La SES socio donne de bonnes bases. Pour devenir prof des écoles, la voie la plus directe est désormais la licence Professorat des écoles.",
+    w: { HUM: 1, SOC: .6 }, kw: ["enseigner", "aider", "psycho"],
+    p: { enc: .2, conc: .4, intense: .4, maths: .2, ecrit: .7, oral: .5, bureau: .5, terrain: .4, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "lpe", nom: "Licence Professorat des écoles", duree: "3 ans, puis 2 ans de master (payé si tu réussis le concours)", sel: 2, cout: FAC_COST, alt: 0,
+    desc: "Nouvelle licence ouverte sur Parcoursup depuis la rentrée 2026 pour devenir prof des écoles, avec au moins 10 semaines de stage en école. Le concours se passe en fin de 3e année ; si tu as validé ta 1re et ta 2e année, tu peux, sous certaines conditions, être dispensé des épreuves écrites.",
+    apres: "Professeur des écoles. Une fois le concours réussi, tu fais ton master en étant rémunéré.",
+    ses: "Formation polyvalente (français, maths, sciences, sport, arts) : la SES ne gêne en rien.",
+    w: { HUM: 1, SOC: .4, CHIF: .2 }, kw: ["enseigner", "aider"],
+    p: { enc: .5, conc: .5, intense: .5, maths: .4, ecrit: .6, oral: .7, bureau: .3, terrain: .7, ouvert: .2, sortie: 5, fac: 1 } },
+  { id: "lea", nom: "Licence LEA (langues étrangères appliquées)", duree: "3 ans", sel: 1, selNote: "Accessible, mais très demandée à Paris", cout: FAC_COST, alt: .1,
+    desc: "Deux langues au même niveau, plus de l'économie, du droit, du marketing et du commerce international.",
+    apres: "Commerce international, traduction spécialisée, tourisme, communication.",
+    ses: "Bien si tu es à l'aise en langues ; la SES donne de l'avance en éco.",
+    w: { INTL: 1, ECO: .4, COM: .4 }, kw: ["international", "vente", "tourisme"],
+    p: { enc: .3, conc: .5, intense: .4, maths: .1, ecrit: .6, oral: .6, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
+  { id: "llcer", nom: "Licence LLCER (langues, littératures et civilisations étrangères)", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
+    desc: "Une langue (anglais, espagnol, allemand, italien…) étudiée en profondeur : langue, littérature, histoire et culture du pays. Beaucoup de lecture et d'écrit.",
+    apres: "Enseignement (concours en 3e année de licence, puis 2 ans de master), traduction, édition, médiation culturelle, métiers de l'international.",
+    ses: "Un bon niveau dans la langue choisie est attendu ; les maths et la SES comptent peu ici. Un séjour à l'étranger est possible en cours de licence.",
+    w: { INTL: 1, COM: .5, SOC: .2 }, kw: ["international", "culture", "enseigner"],
+    p: { enc: .2, conc: .1, intense: .4, maths: .05, ecrit: .9, oral: .4, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
   { id: "infocom", nom: "Licence Information-communication", duree: "3 ans", sel: 2, cout: FAC_COST, alt: .1,
     desc: "Médias, communication des organisations, culture numérique, analyse des messages.",
     apres: "Communication, relations presse, contenus, journalisme (souvent via une école ensuite).",
     ses: "La SES socio aide à analyser les médias et les publics.",
     w: { COM: 1, SOC: .5 }, kw: ["medias", "communication", "culture"],
     p: { enc: .3, conc: .4, intense: .4, maths: .1, ecrit: .8, oral: .5, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
-  { id: "lpe", nom: "Licence Professorat des écoles", duree: "3 ans + 2 ans de master payé", sel: 2, cout: FAC_COST, alt: 0,
-    desc: "Nouvelle licence ouverte sur Parcoursup depuis la rentrée 2026 pour devenir prof des écoles. Ses diplômés sont dispensés des épreuves écrites du concours.",
-    apres: "Professeur des écoles. En master, on est élève fonctionnaire et rémunéré.",
-    ses: "Formation polyvalente (français, maths, sciences, sport, arts) : la SES ne gêne en rien.",
-    w: { HUM: 1, SOC: .4, CHIF: .2 }, kw: ["enseigner", "aider"],
-    p: { enc: .5, conc: .5, intense: .5, maths: .4, ecrit: .6, oral: .7, bureau: .3, terrain: .7, ouvert: .2, sortie: 5, fac: 1 } },
-  { id: "las", nom: "Études de santé (PASS ou LAS)", duree: "1 an, puis filière santé", sel: 3, cout: FAC_COST, alt: 0,
-    desc: "PASS : une année santé avec une mineure. LAS : une licence (droit, éco, psycho…) avec une option santé. Une partie des étudiants accède ensuite à médecine, pharmacie, dentaire, sage-femme ou kiné.",
-    apres: "Métiers médicaux et paramédicaux ; sinon on poursuit la licence.",
+  { id: "arts", nom: "Licences artistiques (cinéma, spectacle, musicologie, arts plastiques, médiation culturelle)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: 0,
+    desc: "Histoire, analyse et pratique d'un art. Selon la licence et l'université : cinéma et audiovisuel, spectacle vivant, musicologie, arts plastiques, ou un parcours de médiation culturelle.",
+    apres: "Médiation et gestion culturelle, enseignement, production, métiers de l'audiovisuel, via un master ou une école.",
+    ses: "La SES aide pour l'approche sociale de la culture ; le dossier et la motivation comptent plus que les spécialités. En musicologie, une pratique musicale et des bases de solfège sont attendues.",
+    w: { COM: 1, SOC: .4 }, kw: ["culture", "communication", "medias", "evenement"],
+    p: { enc: .2, conc: .4, intense: .4, maths: .05, ecrit: .7, oral: .4, bureau: .6, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "tourisme_lic", core: ["tourisme", "international"], nom: "Licence Tourisme (Angers ou Toulouse)", duree: "3 ans", sel: 2, selNote: "Deux universités seulement, très demandée", cout: FAC_COST, alt: .3, side: true,
+    desc: "Économie et géographie du tourisme, marketing, gestion, revenue management et deux langues vivantes, avec deux stages de 3 mois et un semestre à l'étranger possible. À Angers, des parcours hospitalité (hôtellerie) existent dès la 1re année.",
+    apres: "Tourisme, hôtellerie, agences de voyage, offices de tourisme, événementiel ; masters en tourisme ou en management.",
+    ses: "SES avec une spé langue est la combinaison la plus fréquente chez les admis, et les langues comptent beaucoup. Il faut partir à l'ESTHUA de l'université d'Angers (sites d'Angers, Saumur ou Les Sables-d'Olonne) ou à l'ISTHIA à Toulouse.",
+    w: { INTL: .9, ECO: .5, SOC: .4 }, kw: ["tourisme", "international", "culture"],
+    p: { enc: .3, conc: .6, intense: .4, maths: .2, ecrit: .5, oral: .6, vente: .3, bureau: .4, terrain: .5, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "staps", core: ["sport"], nom: "Licence STAPS", duree: "3 ans", sel: 2, selNote: "Très demandée : plus de 10 candidats par place en moyenne", cout: FAC_COST, alt: .1,
+    desc: "Sciences du sport (physiologie, biomécanique, sociologie, pratique), puis un parcours : management du sport, entraînement, activité physique adaptée, enseignement.",
+    apres: "Management du sport, coach, éducateur sportif, prof d'EPS (concours).",
+    ses: "Aucune spé imposée, mais la 1re année comprend de la physiologie et de la biomécanique : sans SVT, il faudra t'accrocher. Ta pratique sportive et ton engagement (club, arbitrage, encadrement) comptent.",
+    w: { HUM: .6, ECO: .2, SOC: .2 }, kw: ["sport", "enseigner", "sante"],
+    p: { enc: .3, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .4, bureau: .2, terrain: 1, ouvert: .5, sortie: 3, fac: 1 } },
+  { id: "las", nom: "Études de santé (nouvelle 1re année, fin de PASS et LAS)", duree: "1 ou 2 ans pour tenter la filière santé", sel: 3, cout: FAC_COST, alt: 0,
+    desc: "À la rentrée 2027, PASS et LAS sont remplacés par une voie unique : une 1re année avec un bloc santé, un bloc disciplinaire (droit, éco, psycho, biologie… selon les facs) et un bloc transversal. Tu peux tenter médecine, pharmacie, dentaire, sage-femme ou kiné à la fin de la 1re et de la 2e année, avec un seul redoublement possible.",
+    apres: "Les métiers médicaux ; sinon tu continues dans la licence de ton bloc disciplinaire. Les modalités précises de la réforme se publient en ce moment.",
     ses: "Possible sans SVT ni physique-chimie, mais le rattrapage scientifique est lourd. À bien peser.",
     w: { HUM: 1, CHIF: .2 }, kw: ["sante", "aider"],
     p: { enc: .4, conc: .2, intense: 1, maths: .5, ecrit: .3, oral: .2, bureau: .6, ouvert: .4, sortie: 6, concours: 1, fac: 1 } }
 ]);
-const BUT_COST = "Frais universitaires, gratuit en alternance";
+const BUT_COST = "Environ 280 €/an (0 € si boursier) ; frais de formation pris en charge en alternance";
 add("but", [
-  { id: "but_sd", nom: "BUT Science des données", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
-    desc: "Statistiques, programmation, bases de données, avec de l'économie et de la gestion. Beaucoup de projets et des stages.",
-    apres: "Data analyst, chargé d'études statistiques, ou poursuite en master ou en école d'ingénieurs.",
-    ses: "Un débouché très direct pour SES + maths, si coder un peu ne te fait pas peur.",
-    w: { CHIF: 1, TECH: .7, ECO: .3 }, kw: ["data", "dev"],
-    p: { enc: .9, conc: .8, intense: .5, maths: .8, ecrit: .2, oral: .3, bureau: .9, ouvert: .6, sortie: 3 } },
   { id: "but_gea", nom: "BUT GEA (gestion des entreprises et des administrations)", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
     desc: "Comptabilité, contrôle de gestion, finance, ressources humaines, droit, avec un parcours à choisir.",
     apres: "Gestion, comptabilité, RH, contrôle de gestion ; poursuite en master ou en école.",
     ses: "Le profil type SES + maths ; la SES aide pour l'éco et la gestion.",
     w: { ECO: 1, CHIF: .5, DROIT: .3 }, kw: ["entreprise", "finance", "logistique"],
     p: { enc: .9, conc: .8, intense: .5, maths: .4, ecrit: .3, oral: .4, bureau: .9, ouvert: .6, sortie: 3 } },
+  { id: "but_gaco", nom: "BUT GACO (gestion administrative et commerciale des organisations)", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
+    desc: "Gestion, comptabilité, marketing, vente, droit et management, pensés pour les PME et les associations. Un parcours au choix : commercial et marketing, entrepreneuriat et projets, fonctions support, ou culture, sport et tourisme.",
+    apres: "Gestionnaire polyvalent, assistant manager, chargé de clientèle, création d'entreprise ; poursuite en master ou en école de commerce.",
+    ses: "SES et maths font partie des spécialités conseillées. Le parcours culture, sport et tourisme n'existe que dans 6 IUT : vérifie où.",
+    w: { ECO: 1, COM: .4, DROIT: .2, HUM: .2 }, kw: ["entreprise", "vente", "culture", "tourisme"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .3, ecrit: .3, oral: .5, vente: .5, bureau: .7, terrain: .3, ouvert: .6, sortie: 3 } },
   { id: "but_tc", nom: "BUT Techniques de commercialisation", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
-    desc: "Marketing, vente, négociation, communication commerciale, beaucoup de projets en groupe.",
-    apres: "Commercial, chef de produit, business developer, marketing digital ; poursuite en école de commerce.",
-    ses: "Pour ceux qui aiment convaincre et bosser en équipe.",
-    w: { ECO: .8, COM: .6 }, kw: ["vente", "entreprise", "communication"],
+    desc: "Marketing, vente, négociation, communication commerciale, beaucoup de projets en groupe. En 2e année, un parcours au choix, par exemple business international, marketing digital ou stratégie de marque et événementiel.",
+    apres: "Commercial, chef de produit, business developer, marketing digital, export, événementiel ; poursuite en école de commerce ou en master, y compris dans le luxe.",
+    ses: "Pour ceux qui aiment convaincre et bosser en équipe. Une voie publique vers le marketing, l'export ou le luxe.",
+    w: { ECO: .8, COM: .6 }, kw: ["vente", "entreprise", "communication", "luxe"],
     p: { enc: .9, conc: .8, intense: .5, maths: .2, ecrit: .3, oral: .8, vente: 1, bureau: .5, terrain: .5, ouvert: .5, sortie: 3 } },
+  { id: "but_sd", nom: "BUT Science des données", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .8,
+    desc: "Statistiques, programmation, bases de données, avec de l'économie et de la gestion. Beaucoup de projets et des stages.",
+    apres: "Data analyst, chargé d'études statistiques, ou poursuite en master ou en école d'ingénieurs.",
+    ses: "Un débouché très direct pour SES + maths, si coder un peu ne te fait pas peur.",
+    w: { CHIF: 1, TECH: .7, ECO: .3 }, kw: ["data", "dev"],
+    p: { enc: .9, conc: .8, intense: .5, maths: .8, ecrit: .2, oral: .3, bureau: .9, ouvert: .6, sortie: 3 } },
   { id: "but_info", nom: "BUT Informatique", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .7,
     desc: "Développement, bases de données, réseaux, gestion de projet.",
     apres: "Développeur, administrateur systèmes, ou poursuite en école d'ingénieurs.",
@@ -667,9 +742,9 @@ add("but", [
     p: { enc: .9, conc: .9, intense: .5, maths: .2, ecrit: .3, oral: .4, bureau: .8, ouvert: .5, sortie: 3 } },
   { id: "but_infocom", nom: "BUT Information-communication", duree: "3 ans", sel: 3, cout: BUT_COST, alt: .6,
     desc: "Un parcours au choix : journalisme, communication des organisations, publicité, métiers du livre, information numérique.",
-    apres: "Chargé de communication, journaliste, chef de publicité, bibliothécaire.",
-    ses: "La SES et l'écrit sont des atouts. Les parcours journalisme sont très sélectifs.",
-    w: { COM: 1, SOC: .4 }, kw: ["medias", "communication", "culture"],
+    apres: "Chargé de communication, journaliste, chef de publicité, chargé de relations publiques ou d'événements, bibliothécaire.",
+    ses: "SES fait partie des spécialités conseillées et l'écrit est un atout. Très sélectif : souvent plus de 30 candidats par place.",
+    w: { COM: 1, SOC: .4 }, kw: ["medias", "communication", "culture", "evenement"],
     p: { enc: .9, conc: .8, intense: .5, maths: .1, ecrit: .8, oral: .5, bureau: .6, ouvert: .5, sortie: 3 } },
   { id: "but_cj", nom: "BUT Carrières juridiques", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .7,
     desc: "Du droit appliqué : entreprise, banque, assurance, immobilier, administration.",
@@ -677,15 +752,15 @@ add("but", [
     ses: "Du droit concret, plus encadré qu'à la fac.",
     w: { DROIT: 1, ECO: .4 }, kw: ["droit", "publique", "finance"],
     p: { enc: .9, conc: .8, intense: .5, maths: .1, ecrit: .7, oral: .4, bureau: .9, ouvert: .5, sortie: 3 } },
-  { id: "but_mlt", nom: "BUT MLT (management de la logistique et des transports)", duree: "3 ans", sel: 1, cout: BUT_COST, alt: .9,
+  { id: "but_mlt", nom: "BUT MLT (management de la logistique et des transports)", duree: "3 ans", sel: 1, selNote: "Accessible en région, très demandé en Île-de-France", cout: BUT_COST, alt: .9, side: true,
     desc: "Organiser les flux de marchandises et de personnes : transport, achats, entrepôts, international.",
     apres: "Logisticien, affréteur, responsable d'entrepôt, supply chain.",
-    ses: "Souvent plus de places qu'ailleurs, beaucoup d'alternance, des débouchés solides.",
+    ses: "Souvent plus de places qu'ailleurs en région, beaucoup d'alternance, des débouchés solides.",
     w: { ECO: .6, INTL: .4, CHIF: .4 }, kw: ["logistique", "international"],
     p: { enc: .9, conc: .9, intense: .4, maths: .4, ecrit: .2, oral: .4, bureau: .5, terrain: .6, ouvert: .5, sortie: 3 } },
   { id: "but_cs", nom: "BUT Carrières sociales", duree: "3 ans", sel: 2, cout: BUT_COST, alt: .5,
-    desc: "Éducation spécialisée, animation sociale et socioculturelle, gestion urbaine, services à la personne.",
-    apres: "Animateur, coordinateur de projets sociaux, gestionnaire en collectivité.",
+    desc: "Un parcours au choix selon l'IUT : animation sociale et socioculturelle, éducation spécialisée, assistance sociale, gestion des établissements sanitaires et sociaux, villes et territoires durables.",
+    apres: "Animateur, coordinateur de projets sociaux, gestionnaire en collectivité ; dans certains IUT, les parcours éducation spécialisée ou assistance sociale préparent aussi le diplôme d'État correspondant.",
     ses: "La SES socio donne des bases utiles.",
     w: { HUM: 1, SOC: .6 }, kw: ["aider", "ville"],
     p: { enc: .9, conc: .8, intense: .4, maths: .1, ecrit: .5, oral: .6, bureau: .3, terrain: .9, ouvert: .5, sortie: 3 } }
@@ -699,82 +774,124 @@ add("bts", [
     ses: "Les maths aident, la SES aussi pour l'éco.",
     w: { ECO: .7, CHIF: .7 }, kw: ["finance", "entreprise"],
     p: { enc: 1, conc: .9, intense: .4, maths: .4, ecrit: .2, oral: .2, bureau: 1, ouvert: .3, sortie: 2 } },
-  { id: "bts_banque", nom: "BTS Banque ou Assurance", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
+  { id: "bts_banque", nom: "BTS Banque ou BTS Assurance", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
     desc: "Relation client, produits bancaires ou contrats d'assurance, droit, économie. Très souvent en alternance.",
     apres: "Conseiller clientèle ; poursuite en licence pro ou bachelor.",
     ses: "La SES donne de l'avance sur l'éco et la monnaie.",
     w: { ECO: .8, HUM: .3, DROIT: .2 }, kw: ["finance", "vente"],
     p: { enc: 1, conc: .9, intense: .4, maths: .2, ecrit: .2, oral: .6, vente: .7, bureau: .8, ouvert: .3, sortie: 2 } },
+  { id: "bts_vente", nom: "BTS NDRC ou MCO (vente, relation client, management)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
+    desc: "Négociation, vente, relation client, gestion d'une équipe ou d'un magasin.",
+    apres: "Commercial, manager en magasin, chargé de clientèle ; poursuite en bachelor.",
+    ses: "Pour ceux qui aiment le contact et le challenge. Le BTS MCO est aussi une porte d'entrée vers la vente dans le luxe.",
+    w: { ECO: .6, COM: .4, HUM: .2 }, kw: ["vente", "entreprise", "luxe"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .2, oral: .8, vente: 1, bureau: .3, terrain: .7, ouvert: .2, sortie: 2 } },
   { id: "bts_ci", nom: "BTS Commerce international", duree: "2 ans", sel: 2, cout: BTS_COST, alt: .6,
-    desc: "Prospection à l'étranger, import-export, deux langues vivantes, stage à l'étranger.",
+    desc: "Prospection à l'étranger, import-export, deux langues vivantes, et au moins 4 semaines de stage à l'étranger.",
     apres: "Assistant export, achats internationaux ; poursuite en école ou en licence.",
     ses: "Pour les profils langues + éco.",
     w: { INTL: 1, ECO: .6 }, kw: ["international", "vente", "logistique"],
     p: { enc: 1, conc: .8, intense: .4, maths: .2, ecrit: .3, oral: .6, vente: .6, bureau: .6, ouvert: .3, sortie: 2 } },
-  { id: "bts_vente", nom: "BTS NDRC ou MCO (vente, relation client, management)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .9,
-    desc: "Négociation, vente, relation client, gestion d'une équipe ou d'un magasin.",
-    apres: "Commercial, manager en magasin, chargé de clientèle ; poursuite en bachelor.",
-    ses: "Pour ceux qui aiment le contact et le challenge.",
-    w: { ECO: .6, COM: .4, HUM: .2 }, kw: ["vente", "entreprise"],
-    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .2, oral: .8, vente: 1, bureau: .3, terrain: .7, ouvert: .2, sortie: 2 } },
-  { id: "bts_sio", nom: "BTS SIO (services informatiques aux organisations)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .7,
-    desc: "Option développement d'applications ou option réseaux et cybersécurité.",
-    apres: "Développeur, technicien réseau ; poursuite en licence pro ou en école.",
-    ses: "Accessible sans NSI si la motivation est là.",
-    w: { TECH: 1, CHIF: .3 }, kw: ["dev"],
-    p: { enc: 1, conc: .9, intense: .4, maths: .4, ecrit: .1, oral: .2, bureau: 1, ouvert: .3, sortie: 2 } },
+  { id: "bts_tour", core: ["tourisme", "international"], nom: "BTS Tourisme", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .6, side: true,
+    desc: "Création et vente de voyages, accueil, marketing, deux langues vivantes dont l'anglais, outils numériques.",
+    apres: "Agent de voyage, conseiller en séjour, office de tourisme, parcs de loisirs, événementiel ; poursuite en licence pro ou en bachelor.",
+    ses: "Pour les profils langues et contact.",
+    w: { INTL: .9, HUM: .4, COM: .3 }, kw: ["tourisme", "international", "culture"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .3, oral: .7, vente: .5, bureau: .4, terrain: .6, ouvert: .2, sortie: 2 } },
+  { id: "bts_mhr", core: ["tourisme", "international"], nom: "Mise à niveau + BTS Management en hôtellerie-restauration", duree: "3 ans (1 an de mise à niveau, puis 2 ans de BTS)", sel: 1, cout: "Gratuit en lycée public (tenues et matériel à prévoir)", alt: .5, side: true,
+    desc: "Avec un bac général, tu commences par une année de mise à niveau (cuisine, service, hébergement, gestion, deux langues, 8 semaines de stage), puis 2 ans de BTS : management, gestion, marketing, langues et stages.",
+    apres: "Réception, hébergement, restauration, assistant de direction, y compris dans l'hôtellerie de luxe ; poursuite en licence pro ou en bachelor.",
+    ses: "L'année de mise à niveau est obligatoire sans bac hôtellerie : c'est là que tu découvres le terrain. L'alternance devient possible pendant le BTS.",
+    w: { ECO: .6, INTL: .5, HUM: .4 }, kw: ["tourisme", "international", "entreprise"],
+    p: { enc: 1, conc: 1, intense: .6, maths: .2, ecrit: .2, oral: .7, vente: .5, bureau: .1, terrain: 1, ouvert: .2, sortie: 3, niv: 2 } },
   { id: "bts_com", nom: "BTS Communication", duree: "2 ans", sel: 2, cout: BTS_COST, alt: .6,
-    desc: "Stratégie de communication, création de contenus, relation avec les agences et les médias.",
-    apres: "Chargé de communication, assistant en agence ; poursuite en bachelor.",
+    desc: "Stratégie de communication, création de contenus, événements, relation avec les agences et les médias.",
+    apres: "Chargé de communication, assistant en agence ; poursuite en bachelor ou en licence pro.",
     ses: "La SES aide à comprendre les publics.",
-    w: { COM: 1, ECO: .2 }, kw: ["communication", "medias", "culture"],
+    w: { COM: 1, ECO: .2 }, kw: ["communication", "medias", "culture", "evenement"],
     p: { enc: 1, conc: .8, intense: .4, maths: .1, ecrit: .6, oral: .6, bureau: .7, ouvert: .3, sortie: 2 } },
-  { id: "bts_pi", nom: "BTS Professions immobilières", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .8,
+  { id: "bts_mav", core: ["culture", "medias"], nom: "BTS Métiers de l'audiovisuel, option gestion de la production", duree: "2 ans", sel: 3, cout: BTS_COST, alt: .2, side: true,
+    desc: "Organiser des tournages : budgets, plannings, contrats, droits, recherche de financements, avec beaucoup d'économie, de gestion et d'anglais.",
+    apres: "Assistant ou chargé de production (cinéma, télé, pub, clips) ; poursuite en licence pro ou en école. Beaucoup de contrats d'intermittent.",
+    ses: "Économie, gestion et anglais pèsent lourd : ça colle à SES + maths. Très peu de places (une douzaine par lycée public) : montre ta motivation (projets vidéo, tournages).",
+    w: { COM: .9, ECO: .5 }, kw: ["culture", "medias", "entreprise"],
+    p: { enc: 1, conc: .9, intense: .6, maths: .2, ecrit: .3, oral: .5, bureau: .6, terrain: .4, ouvert: .2, sortie: 2 } },
+  { id: "bts_pi", nom: "BTS Professions immobilières", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .8, side: true,
     desc: "Transaction, gestion locative, copropriété, droit de l'immobilier.",
     apres: "Agent immobilier, gestionnaire locatif, syndic de copropriété.",
     ses: "Un mélange de droit, d'éco et de commercial.",
     w: { ECO: .5, DROIT: .5, HUM: .2 }, kw: ["ville", "vente", "droit"],
     p: { enc: 1, conc: .9, intense: .4, maths: .2, ecrit: .3, oral: .6, vente: .7, bureau: .4, terrain: .6, ouvert: .2, sortie: 2 } },
-  { id: "bts_tour", nom: "BTS Tourisme", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .6,
-    desc: "Conception de voyages, accueil, deux langues, outils numériques.",
-    apres: "Agent de voyage, conseiller en séjour, office de tourisme.",
-    ses: "Pour les profils langues et contact.",
-    w: { INTL: .9, HUM: .4, COM: .3 }, kw: ["international", "culture"],
-    p: { enc: 1, conc: .9, intense: .4, maths: .1, ecrit: .3, oral: .7, vente: .5, bureau: .4, terrain: .6, ouvert: .2, sortie: 2 } }
+  { id: "bts_sio", nom: "BTS SIO (services informatiques aux organisations)", duree: "2 ans", sel: 1, cout: BTS_COST, alt: .7,
+    desc: "Option développement d'applications ou option réseaux et cybersécurité.",
+    apres: "Développeur, technicien réseau ; poursuite en licence pro ou en école.",
+    ses: "Accessible sans NSI si la motivation est là.",
+    w: { TECH: 1, CHIF: .3 }, kw: ["dev"],
+    p: { enc: 1, conc: .9, intense: .4, maths: .4, ecrit: .1, oral: .2, bureau: 1, ouvert: .3, sortie: 2 } }
 ]);
 
 add("ecole", [
+  { id: "ecole_com", nom: "Écoles de commerce post-bac", duree: "3 à 5 ans", sel: 2, cout: "Souvent 8 000 à 15 000 €/an, parfois plus", alt: .6,
+    desc: "Bachelors en 3 ou 4 ans, ou programmes en 4 à 5 ans, recrutés via des concours communs sur Parcoursup (Sésame, Accès, Ecricome Bachelor, Pass…), avec des frais d'inscription au concours.",
+    apres: "Marketing, finance, commerce, management, souvent à l'international.",
+    ses: "Aucune spé exigée ; la SES et les langues aident. Vérifie les labels (visa, grade de licence ou de master).",
+    w: { ECO: 1, INTL: .6, COM: .5 }, kw: ["entreprise", "international", "vente", "finance"],
+    p: { enc: .7, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .8, vente: .5, bureau: .7, ouvert: .5, sortie: 3, concours: 1, prive: 1 } },
   { id: "dcg", nom: "DCG (diplôme de comptabilité et de gestion)", duree: "3 ans", sel: 2, cout: "Gratuit en lycée public, ou en alternance", alt: .8,
     desc: "Comptabilité, droit, gestion, finance, économie : la première étape de la filière expertise comptable.",
     apres: "Comptable, contrôleur de gestion, puis DSCG et expertise comptable.",
     ses: "Une filière où l'on trouve du travail facilement.",
     w: { ECO: .8, CHIF: .7, DROIT: .5 }, kw: ["finance", "entreprise"],
     p: { enc: .9, conc: .7, intense: .6, maths: .4, ecrit: .4, oral: .2, bureau: 1, ouvert: .4, sortie: 3 } },
-  { id: "ecole_com", nom: "Écoles de commerce post-bac", duree: "3 à 5 ans", sel: 2, cout: "Souvent 8 000 à 15 000 €/an, parfois plus", alt: .6,
-    desc: "Bachelors en 3 ou 4 ans, ou programmes grande école en 5 ans, recrutés via des concours communs (Sésame, Accès…) sur Parcoursup.",
-    apres: "Marketing, finance, commerce, management, souvent à l'international.",
-    ses: "Aucune spé exigée ; la SES et les langues aident. Vérifier les labels (visa, grade de licence ou de master).",
-    w: { ECO: 1, INTL: .6, COM: .5 }, kw: ["entreprise", "international", "vente", "finance"],
-    p: { enc: .7, conc: .6, intense: .5, maths: .3, ecrit: .4, oral: .8, vente: .5, bureau: .7, ouvert: .5, sortie: 3, concours: 1, prive: 1 } },
-  { id: "archi", nom: "Écoles d'architecture (ENSA)", duree: "5 ans", sel: 3, cout: "Frais d'école publique", alt: 0,
-    desc: "Projet, dessin, histoire de l'art, urbanisme, construction. Sélection sur dossier, souvent avec un entretien.",
-    apres: "Architecte, urbaniste, scénographe, design d'espace.",
-    ses: "Ouvert à tous les bacs ; il faut une vraie fibre créative et de la curiosité pour la ville.",
-    w: { COM: .8, SOC: .4, CHIF: .3 }, kw: ["ville", "culture"],
-    p: { enc: .6, conc: .7, intense: .9, maths: .3, ecrit: .4, oral: .5, bureau: .6, ouvert: .4, sortie: 5 } },
-  { id: "dnmade", nom: "DN MADE (métiers d'art et design)", duree: "3 ans", sel: 3, cout: "Gratuit en lycée public", alt: 0,
-    desc: "Design graphique, d'objet, d'espace, mode, numérique… surtout en lycée public.",
+  { id: "ecole_comm", nom: "Écoles de communication et de publicité", duree: "3 ans (bachelor) ou 5 ans", sel: 2, cout: "Environ 8 500 à 10 500 €/an (plus en 5e année), gratuit les années en alternance", alt: .5,
+    desc: "Stratégie de communication, publicité, marketing digital, événementiel, relations presse, avec beaucoup de projets pour de vrais clients. Écoles privées (ISCOM, Sup de Pub, EFAP…) qui recrutent sur écrits et entretien, le plus souvent hors Parcoursup : vérifie sur le site de chaque école.",
+    apres: "Chargé de communication, chef de projet en agence, chef de publicité, community manager, événementiel.",
+    ses: "La SES aide à comprendre les publics. Ces écoles délivrent des titres RNCP, pas des diplômes nationaux : vérifie-les sur francecompetences.fr. Le métier demande d'écrire ; l'événementiel et le marketing digital en demandent moins.",
+    w: { COM: 1, ECO: .4, SOC: .2 }, kw: ["communication", "medias", "evenement", "culture"],
+    p: { enc: .7, conc: .8, intense: .5, maths: .1, ecrit: .6, oral: .7, vente: .4, bureau: .7, terrain: .3, ouvert: .4, sortie: 3, concours: 1, prive: 1 } },
+  { id: "luxe", core: ["luxe", "vente"], nom: "Écoles et bachelors du luxe et de la mode", duree: "3 ans (bac+5 possible)", sel: 2, cout: "Environ 9 000 à 14 000 €/an", alt: .4, side: true,
+    desc: "Marketing, vente, gestion de marque, retail haut de gamme, culture du luxe et de la mode, langues. Écoles privées (Sup de Luxe, Institut français de la mode, Mod'Art…) qui recrutent sur dossier, tests et entretien, le plus souvent hors Parcoursup.",
+    apres: "Conseiller de vente et manager en boutique, chef de produit, marketing, merchandising, événementiel de marque, en France ou à l'étranger.",
+    ses: "Aucune spé exigée ; l'anglais et l'aisance relationnelle comptent. Les diplômes vont du bachelor visé par l'État au simple certificat d'école : vérifie le titre RNCP ou le visa. Voie publique possible : BUT TC, LEA ou BTS MCO, puis un master spécialisé.",
+    w: { ECO: .8, COM: .7, INTL: .6 }, kw: ["luxe", "vente", "international", "communication"],
+    p: { enc: .7, conc: .8, intense: .5, maths: .2, ecrit: .3, oral: .8, vente: .8, bureau: .4, terrain: .5, ouvert: .4, sortie: 3, concours: 1, prive: 1 } },
+  { id: "ecole_hotel", core: ["tourisme", "international"], nom: "Écoles et bachelors de management hôtelier", duree: "3 à 4 ans (MBA ou master possible ensuite)", sel: 2, cout: "Environ 11 000 à 14 000 €/an en France, bien plus en Suisse", alt: .4, side: true,
+    desc: "Gestion hôtelière, accueil, revenue management, restauration, événementiel et langues, avec de longs stages en hôtel, souvent à l'étranger. Écoles privées (Vatel, Institut Lyfe, Ferrandi…) qui recrutent sur tests et entretien, parfois via Parcoursup.",
+    apres: "Réception et hébergement, revenue management, direction d'hôtel ou de restaurant, événementiel, service client haut de gamme, partout dans le monde.",
+    ses: "Aucune spé exigée ; les langues, l'aisance à l'oral et le goût du service comptent. L'Institut Lyfe et Ferrandi délivrent un bachelor visé par l'État. À l'EHL de Lausanne, compte 35 000 à 60 000 francs suisses par an. Moins cher : la mise à niveau + BTS MHR, ou la licence Tourisme à Angers.",
+    w: { INTL: .8, ECO: .7, HUM: .3 }, kw: ["tourisme", "international", "entreprise"],
+    p: { enc: .8, conc: .9, intense: .6, maths: .2, ecrit: .2, oral: .8, vente: .5, bureau: .2, terrain: .9, ouvert: .4, sortie: 3, concours: 1, prive: 1 } },
+  { id: "culture_event", core: ["culture", "evenement"], nom: "Écoles de management de la culture et de l'événementiel", duree: "3 ans (bac+5 possible, dont le management de la musique)", sel: 2, cout: "Environ 7 000 à 9 700 €/an", alt: .4, side: true,
+    desc: "Économie et gestion de la culture, production de concerts, de festivals et de spectacles, marché de l'art, événementiel, communication. Écoles privées (ICART, IESA, EAC, ISEFAC…) qui recrutent sur dossier, écrits et entretien, le plus souvent hors Parcoursup : vérifie sur le site de chaque école.",
+    apres: "Chargé de production ou de diffusion (concerts, festivals, spectacles), chef de projet événementiel, communication culturelle ; label ou booking après une spécialisation en bac+5.",
+    ses: "Aucune pratique artistique exigée : on juge la motivation, la culture générale, l'oral et l'anglais. Ces écoles délivrent des titres RNCP, pas des diplômes nationaux : vérifie-les sur francecompetences.fr. Voies publiques : BUT GACO (parcours culture), BUT Information-communication, licence Arts.",
+    w: { COM: 1, ECO: .6, SOC: .2 }, kw: ["evenement", "culture", "entreprise", "communication"],
+    p: { enc: .7, conc: .8, intense: .5, maths: .1, ecrit: .4, oral: .7, vente: .3, bureau: .5, terrain: .6, ouvert: .4, sortie: 3, concours: 1, prive: 1 } },
+  { id: "sport_mgmt", core: ["sport"], nom: "Écoles de management du sport", duree: "3 ans (bac+5 possible)", sel: 2, cout: "Environ 7 000 à 10 000 €/an", alt: .4, side: true,
+    desc: "Marketing et événementiel sportif, gestion de clubs et de structures, sponsoring, communication. Écoles privées (AMOS, Sports Management School, ESG Sport…) qui recrutent sur dossier, écrits et entretien. À la fac, la licence STAPS a aussi un parcours management du sport.",
+    apres: "Chargé de marketing ou d'événementiel sportif, gestion de club ou de salle, partenariats, vente d'articles de sport.",
+    ses: "Aucune spé exigée. Parmi ces écoles, la Sports Management School délivre un diplôme visé par l'État ; AMOS et ESG Sport délivrent des titres RNCP. La STAPS coûte bien moins cher, mais demande de la biologie et une pratique sportive.",
+    w: { ECO: .7, COM: .5, HUM: .3 }, kw: ["sport", "evenement", "entreprise", "vente"],
+    p: { enc: .7, conc: .8, intense: .4, maths: .2, ecrit: .3, oral: .7, vente: .5, bureau: .5, terrain: .6, ouvert: .3, sortie: 3, concours: 1, prive: 1 } },
+  { id: "dnmade", nom: "DN MADE (métiers d'art et design)", duree: "3 ans (grade licence)", sel: 3, cout: "Gratuit en lycée public", alt: 0, side: true,
+    desc: "Design graphique, d'objet, d'espace, mode, événement, numérique… surtout en lycée public.",
     apres: "Designer, graphiste, directeur artistique ; poursuite en DSAA ou en master.",
     ses: "Sélection sur dossier et projets perso : à envisager si tu crées déjà.",
     w: { COM: 1, TECH: .3 }, kw: ["culture", "communication"],
     p: { enc: .8, conc: .9, intense: .6, maths: .1, ecrit: .3, oral: .4, bureau: .6, ouvert: .3, sortie: 3 } },
-  { id: "social", nom: "Diplômes d'État du travail social", duree: "3 ans (grade licence)", sel: 2, cout: "Variable selon l'école (souvent prise en charge par la région)", alt: .4,
-    desc: "Éducateur spécialisé, assistant de service social, éducateur de jeunes enfants… Beaucoup de stages sur le terrain.",
+  { id: "archi", nom: "Écoles d'architecture (ENSA)", duree: "5 ans (+ 1 an pour exercer en ton nom)", sel: 3, cout: "Environ 400 à 500 €/an", alt: 0, side: true,
+    desc: "Projet, dessin, histoire de l'art, urbanisme, construction. Candidature sur Parcoursup : dossier, puis entretien pour les candidats retenus.",
+    apres: "Architecte, urbaniste, scénographe, design d'espace.",
+    ses: "Ouvert à tous les bacs ; il faut une vraie fibre créative et de la curiosité pour la ville.",
+    w: { COM: .8, SOC: .4, CHIF: .3 }, kw: ["ville", "culture"],
+    p: { enc: .6, conc: .7, intense: .9, maths: .3, ecrit: .4, oral: .5, bureau: .6, ouvert: .4, sortie: 5 } },
+  { id: "social", nom: "Diplômes d'État du travail social", duree: "3 ans (grade licence)", sel: 2, cout: "Selon l'école : de moins de 200 € à plus de 1 000 €/an", alt: .4,
+    desc: "Éducateur spécialisé, assistant de service social, éducateur de jeunes enfants… Beaucoup de stages sur le terrain. Candidature sur Parcoursup, le plus souvent avec un oral.",
     apres: "Protection de l'enfance, handicap, insertion, hôpitaux, collectivités.",
     ses: "La SES socio est un vrai atout pour comprendre les situations.",
     w: { HUM: 1, SOC: .6 }, kw: ["aider", "psycho"],
     p: { enc: .8, conc: .9, intense: .5, maths: .1, ecrit: .5, oral: .6, bureau: .2, terrain: 1, ouvert: .3, sortie: 3 } },
-  { id: "ifsi", nom: "Soins infirmiers (IFSI)", duree: "3 ans", sel: 2, cout: "Frais universitaires", alt: 0,
+  { id: "ifsi", nom: "Soins infirmiers (IFSI)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: 0,
     desc: "Formation d'infirmier : la moitié du temps en cours, l'autre en stage à l'hôpital ou en libéral.",
     apres: "Infirmier, puis spécialisations (bloc, puériculture, anesthésie).",
     ses: "Pas de spé scientifique obligatoire ; la motivation et le dossier comptent.",
@@ -783,51 +900,96 @@ add("ecole", [
 ]);
 
 add("autre", [
-  { id: "cesure", nom: "Année de césure", duree: "6 mois à 1 an", sel: 1, cout: "Selon le projet", alt: 0,
-    desc: "Tu demandes la césure sur Parcoursup avec tes vœux. Ta place est gardée pendant que tu fais un service civique, un job, un voyage ou un projet.",
+  { id: "cesure", nom: "Année de césure", duree: "1 ou 2 semestres", sel: 1, cout: "Droits d'inscription réduits, plus ton projet", alt: 0,
+    desc: "Sur Parcoursup, tu peux demander une césure. Une fois ta place acceptée, tu présentes ton projet (service civique, job, voyage…) à l'établissement, qui peut dire oui ou non. Si c'est oui, une convention te garantit ta place au retour.",
     apres: "Tu reprends dans la formation acceptée, souvent avec des idées plus claires.",
     ses: "Ce n'est pas une année perdue si elle est construite.",
     w: {}, kw: [],
     p: { enc: .2, conc: 1, intense: .2, ouvert: .8, sortie: 1 } },
-  { id: "etranger", nom: "Étudier à l'étranger dès le bac", duree: "3 ans le plus souvent", sel: 2, cout: "Très variable, de presque gratuit à très cher", alt: 0,
-    desc: "Bachelors en anglais en Belgique, aux Pays-Bas, en Espagne, au Canada… Candidatures hors Parcoursup, avec leurs propres calendriers.",
+  { id: "etranger", nom: "Étudier à l'étranger dès le bac", duree: "3 ou 4 ans selon le pays", sel: 2, selNote: "Très variable : souvent ouvert en Belgique, sélectif ailleurs", cout: "Très variable, de presque gratuit à très cher", alt: 0,
+    desc: "Bachelors en anglais (Pays-Bas, Royaume-Uni, Espagne…) ou en français (Belgique, Suisse romande, Québec). Candidatures hors Parcoursup, avec leurs propres calendriers.",
     apres: "Masters en France ou à l'étranger.",
-    ses: "Il faut un bon niveau d'anglais et préparer les dossiers dès l'automne.",
+    ses: "Un bon niveau d'anglais est indispensable pour les cursus en anglais ; en Belgique ou au Québec, tu étudies en français. Prépare les dossiers dès l'automne.",
     w: { INTL: 1, ECO: .3, SOC: .3 }, kw: ["international"],
     p: { enc: .4, conc: .4, intense: .5, maths: .3, ecrit: .5, oral: .5, bureau: .6, ouvert: .6, sortie: 3 } },
   { id: "securite", nom: "Sécurité et défense (police, gendarmerie, armées, douanes)", duree: "Concours puis formation payée", sel: 2, cout: "Formation rémunérée", alt: 0,
-    desc: "Concours accessibles avec le bac (gardien de la paix, sous-officier de gendarmerie, contrôleur des douanes…), ou écoles d'officiers après une prépa ou une licence.",
+    desc: "Concours accessibles avec le bac (gardien de la paix, sous-officier de gendarmerie, contrôleur des douanes…), ou écoles d'officiers après une prépa, une licence ou un master selon l'école. Épreuves sportives en police et en gendarmerie.",
     apres: "Carrière dans la fonction publique, avec des concours internes pour évoluer.",
-    ses: "La SES et le droit aident aux épreuves écrites ; il y a aussi des épreuves sportives.",
+    ses: "La SES et le droit aident aux épreuves écrites.",
     w: { DROIT: .8, HUM: .4, SOC: .3 }, kw: ["publique", "droit", "sport"],
     p: { enc: 1, conc: .9, intense: .7, maths: .2, ecrit: .4, oral: .5, bureau: .3, terrain: 1, ouvert: .2, sortie: 1, concours: 1 } }
 ]);
 
 const HARD = [
-  { t: "Prépas scientifiques et écoles d'ingénieurs post-bac", d: "MPSI, PCSI, MP2I et la plupart des écoles d'ingénieurs demandent physique-chimie (ou NSI). Avec SES + maths, ce n'est pas la voie naturelle. Par contre, beaucoup d'écoles d'ingénieurs recrutent après un BUT Science des données ou Informatique, ou une licence de maths, d'info ou MIASHS." },
+  { t: "Prépas scientifiques, CUPGE et écoles d'ingénieurs post-bac", d: "MPSI, PCSI, MP2I, les CUPGE (cycles universitaires scientifiques) et la plupart des écoles d'ingénieurs demandent physique-chimie (ou NSI). Avec SES + maths, ce n'est pas la voie naturelle. Par contre, beaucoup d'écoles d'ingénieurs recrutent après un BUT Science des données ou Informatique, ou une licence de maths, d'info ou MIASHS." },
   { t: "Prépa ECT", d: "Réservée aux élèves de STMG. La version pour un bac général, c'est l'ECG." }
 ];
-
-add("fac", [
-  { id: "llcer", nom: "Licence LLCER (langues, littératures et civilisations étrangères)", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
-    desc: "Une langue (anglais, espagnol, allemand, italien…) étudiée en profondeur : langue, littérature, histoire et culture du pays. Beaucoup de lecture et d'écrit.",
-    apres: "Enseignement (master MEEF), traduction, édition, médiation culturelle, métiers de l'international.",
-    ses: "Un bon niveau dans la langue choisie est attendu ; les maths et la SES comptent peu ici. Un séjour à l'étranger est possible en cours de licence.",
-    w: { INTL: 1, COM: .5, SOC: .2 }, kw: ["international", "culture", "enseigner"],
-    p: { enc: .2, conc: .1, intense: .4, maths: .05, ecrit: .9, oral: .4, bureau: .7, ouvert: .6, sortie: 3, fac: 1 } },
-  { id: "arts", nom: "Licence Arts (cinéma, spectacle, musicologie, arts plastiques)", duree: "3 ans", sel: 2, cout: FAC_COST, alt: 0,
-    desc: "Histoire, analyse et pratique d'un art au choix : cinéma et audiovisuel, spectacle vivant, musicologie, arts plastiques.",
-    apres: "Médiation et gestion culturelle, enseignement, production, métiers de l'audiovisuel, via un master ou une école.",
-    ses: "La SES aide pour l'approche sociale de la culture ; le dossier et la motivation comptent plus que les spécialités.",
-    w: { COM: 1, SOC: .4 }, kw: ["culture", "communication", "medias"],
-    p: { enc: .2, conc: .4, intense: .4, maths: .05, ecrit: .7, oral: .4, bureau: .6, ouvert: .5, sortie: 3, fac: 1 } },
-  { id: "educ", nom: "Licence Sciences de l'éducation", duree: "3 ans", sel: 1, cout: FAC_COST, alt: 0,
-    desc: "Apprentissage, école, formation des adultes, éducation spécialisée : sociologie, psychologie et histoire de l'éducation.",
-    apres: "Enseignement (master MEEF), formation, éducation spécialisée, ressources humaines, après un master.",
-    ses: "La SES socio donne de bonnes bases. Un bon complément si l'idée de professeur des écoles te tente.",
-    w: { HUM: 1, SOC: .6 }, kw: ["enseigner", "aider", "psycho"],
-    p: { enc: .2, conc: .4, intense: .4, maths: .2, ecrit: .7, oral: .5, bureau: .5, terrain: .4, ouvert: .5, sortie: 3, fac: 1 } }
-]);
+/* Liens officiels (Onisep surtout), vérifiés le 5 octobre 2026 */
+const LINKS = {
+  "ecg": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/classe-preparatoire-economique-et-commerciale-generale-1re-annee","l":"Fiche Onisep"},
+  "bl": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/classe-preparatoire-de-lettres-et-sciences-sociales-b-l-1re-annee","l":"Fiche Onisep"},
+  "d1": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/classe-preparatoire-economie-et-gestion-option-economie-droit-et-gestion-ens-rennes-d1-1re-annee","l":"Fiche Onisep"},
+  "d2": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/classe-preparatoire-economie-et-gestion-option-economie-methodes-quantitatives-et-gestion-ens-paris-saclay-d2-1re-annee","l":"Fiche Onisep"},
+  "dl": {"u":"https://www.onisep.fr/formation/apres-le-bac-les-etudes-superieures/les-principales-filieres-d-etudes-superieures/les-licences-renforcees-a-l-universite-cupge-cursus-ou-parcours-renforces","l":"Onisep"},
+  "cpes": {"u":"https://www.onisep.fr/formation/apres-le-bac-les-etudes-superieures/les-principales-filieres-d-etudes-superieures/les-cycles-pluridisciplinaires-d-etudes-superieures-cpes","l":"Onisep"},
+  "iep": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-iep-instituts-d-etudes-politiques","l":"Onisep"},
+  "eco": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-economie-et-gestion","l":"Fiche Onisep"},
+  "aes": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-administration-economique-et-sociale2","l":"Fiche Onisep"},
+  "miashs": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-mathematiques-et-informatique-appliquees-aux-sciences-humaines-et-sociales","l":"Fiche Onisep"},
+  "maths": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-mathematiques","l":"Fiche Onisep"},
+  "info": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-informatique","l":"Fiche Onisep"},
+  "droit": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-droit","l":"Fiche Onisep"},
+  "socio": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-sociologie","l":"Fiche Onisep"},
+  "scpo": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-science-politique","l":"Fiche Onisep"},
+  "histoire": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-histoire","l":"Fiche Onisep"},
+  "philo": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-philosophie","l":"Fiche Onisep"},
+  "lea": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-langues-etrangeres-appliquees","l":"Fiche Onisep"},
+  "psycho": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-psychologie","l":"Fiche Onisep"},
+  "geo": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-geographie-et-amenagement","l":"Fiche Onisep"},
+  "staps": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-formations-en-sport/j-opte-pour-les-formations-sport-a-l-universite/les-licences-staps","l":"Onisep"},
+  "infocom": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-information-communication","l":"Fiche Onisep"},
+  "lpe": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-professorat-des-ecoles","l":"Fiche Onisep"},
+  "las": {"u":"https://www.service-public.gouv.fr/particuliers/actualites/A18890","l":"Service-public.fr"},
+  "llcer": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-langues-litteratures-et-civilisations-etrangeres-et-regionales","l":"Fiche Onisep"},
+  "arts": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-arts","l":"Fiche Onisep"},
+  "educ": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-sciences-de-l-education-et-de-la-formation","l":"Fiche Onisep"},
+  "tourisme_lic": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-tourisme","l":"Fiche Onisep"},
+  "but_sd": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-science-des-donnees-parcours-exploration-et-modelisation-statistique","l":"Fiche Onisep"},
+  "but_gea": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-gestion-des-entreprises-et-des-administrations-parcours-gestion-comptable-fiscale-et-financiere","l":"Fiche Onisep"},
+  "but_gaco": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-gestion-administrative-et-commerciale-des-organisations-parcours-management-des-activites-culturelles-artistiques-sportives-et-de-tourisme","l":"Fiche Onisep"},
+  "but_tc": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-techniques-de-commercialisation-parcours-business-developpement-et-management-de-la-relation-client","l":"Fiche Onisep"},
+  "but_info": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-informatique-parcours-realisation-d-applications-conception-developpement-validation","l":"Fiche Onisep"},
+  "but_mmi": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-metiers-du-multimedia-et-de-l-internet-parcours-creation-numerique","l":"Fiche Onisep"},
+  "but_infocom": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-information-communication-parcours-communication-des-organisations","l":"Fiche Onisep"},
+  "but_cj": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-carrieres-juridiques-parcours-entreprise-et-association","l":"Fiche Onisep"},
+  "but_mlt": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-management-de-la-logistique-et-des-transports-parcours-mobilite-et-supply-chain-durables","l":"Fiche Onisep"},
+  "but_cs": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/but-carrieres-sociales-parcours-animation-sociale-et-socio-culturelle","l":"Fiche Onisep"},
+  "bts_cg": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-comptabilite-et-gestion","l":"Fiche Onisep"},
+  "bts_banque": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-banque","l":"Fiche Onisep"},
+  "bts_ci": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-commerce-international","l":"Fiche Onisep"},
+  "bts_vente": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-negociation-et-digitalisation-de-la-relation-client","l":"Fiche Onisep"},
+  "bts_sio": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-services-informatiques-aux-organisations-option-b-solutions-logicielles-et-applications-metiers","l":"Fiche Onisep"},
+  "bts_com": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-communication","l":"Fiche Onisep"},
+  "bts_pi": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-professions-immobilieres","l":"Fiche Onisep"},
+  "bts_tour": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-tourisme","l":"Fiche Onisep"},
+  "bts_mhr": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-management-en-hotellerie-restauration-option-a-management-d-unite-de-restauration","l":"Fiche Onisep"},
+  "bts_mav": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/bts-metiers-de-l-audiovisuel-option-gestion-de-production","l":"Fiche Onisep"},
+  "dcg": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/diplome-de-comptabilite-et-de-gestion","l":"Fiche Onisep"},
+  "ecole_com": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-ecoles-de-commerce","l":"Onisep"},
+  "ecole_hotel": {"u":"https://www.onisep.fr/metier/decouvrir-le-monde-professionnel/hotellerie-restauration/les-formations-pour-exercer-dans-l-hotellerie-et-la-restauration","l":"Onisep"},
+  "luxe": {"u":"https://www.onisep.fr/metier/decouvrir-le-monde-professionnel/mode-et-luxe/les-formations-pour-exercer-dans-la-mode-et-le-luxe","l":"Onisep"},
+  "culture_event": {"u":"https://www.onisep.fr/ressources/univers-metier/metiers/charge-chargee-de-projet-evenementiel","l":"Onisep"},
+  "ecole_comm": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-ecoles-de-communication","l":"Onisep"},
+  "sport_mgmt": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/licence-mention-sciences-et-techniques-des-activites-physiques-et-sportives-management-du-sport","l":"Fiche Onisep"},
+  "archi": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-ecoles-d-architecture","l":"Onisep"},
+  "dnmade": {"u":"https://www.onisep.fr/formation/apres-le-bac-les-etudes-superieures/les-principales-filieres-d-etudes-superieures/le-dn-made","l":"Onisep"},
+  "social": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-ecoles-du-social","l":"Onisep"},
+  "ifsi": {"u":"https://www.onisep.fr/ressources/univers-formation/formations/post-bac/diplome-d-etat-d-infirmier","l":"Fiche Onisep"},
+  "cesure": {"u":"https://www.parcoursup.gouv.fr/faq/thematiques/autres-sujets/demande-de-cesure","l":"Parcoursup"},
+  "etranger": {"u":"https://www.onisep.fr/formation/partir-a-l-etranger/les-etudes-a-l-etranger","l":"Onisep"},
+  "securite": {"u":"https://www.onisep.fr/formation/les-principaux-domaines-de-formation/les-ecoles-de-police","l":"Onisep"}
+};
+F.forEach(f => { f.src = LINKS[f.id] || null; });
 /* ===== Calcul du profil et des pistes (fonctions pures) ===== */
 const SUBJ = {
   m_maths: { CHIF: 1, TECH: .3, ECO: .2 }, m_seseco: { ECO: 1, CHIF: .2 }, m_sessoc: { SOC: 1, HUM: .3 },
@@ -841,7 +1003,8 @@ const INT = {
   politique: { SOC: 1, DROIT: .3, INTL: .2 }, international: { INTL: 1 }, droit: { DROIT: 1 }, aider: { HUM: 1 },
   sante: { HUM: 1 }, enseigner: { HUM: .7, SOC: .2 }, medias: { COM: 1, SOC: .4 }, communication: { COM: 1, ECO: .2 },
   vente: { ECO: .6, COM: .4 }, environnement: { SOC: .5, CHIF: .2 }, sport: { HUM: .4 }, culture: { COM: .7 },
-  ville: { SOC: .4, ECO: .3 }, psycho: { HUM: .7, SOC: .4 }, publique: { DROIT: .6, SOC: .5 }, logistique: { ECO: .6, CHIF: .3 }
+  ville: { SOC: .4, ECO: .3 }, psycho: { HUM: .7, SOC: .4 }, publique: { DROIT: .6, SOC: .5 }, logistique: { ECO: .6, CHIF: .3 },
+  tourisme: { INTL: .8, HUM: .3, ECO: .2 }, luxe: { ECO: .5, COM: .5, INTL: .3 }, evenement: { COM: .7, ECO: .4 }
 };
 const SCENE = {
   chiffres: [{ CHIF: 1, ECO: .4 }, ["data", "finance"]], reunion: [{ ECO: .8, COM: .3 }, ["entreprise", "vente"]],
@@ -854,6 +1017,22 @@ const VAL = {
   liberte: [{ ECO: .3 }, ["entreprise"]], reconnaissance: [{}, []], creativite: [{ COM: .6 }, ["culture"]],
   voyage: [{ INTL: .6 }, ["international"]], equilibre: [{}, []], apprendre: [{}, []], impact: [{ SOC: .4, DROIT: .2 }, ["politique"]]
 };
+
+/* Spécialité arrêtée en fin de première : ce qu'elle dit des goûts, et les formations qu'elle prépare */
+const SPE3 = {
+  hggsp: [{ SOC: .6, INTL: .4, DROIT: .2 }, "politique"], hlp: [{ COM: .4, SOC: .4, HUM: .2 }, null],
+  langue: [{ INTL: 1 }, "international"], svt: [{ HUM: .6 }, "sante"], pc: [{ CHIF: .3, TECH: .3 }, null],
+  nsi: [{ TECH: 1, CHIF: .2 }, "dev"], arts: [{ COM: .8 }, "culture"], autre: [{}, null]
+};
+const SPE3_FIT = {
+  hggsp: ["iep", "scpo", "histoire", "bl", "d1", "geo", "droit", "tourisme_lic"],
+  hlp: ["philo", "bl", "infocom", "arts", "llcer", "histoire", "lpe"],
+  langue: ["lea", "llcer", "bts_ci", "bts_tour", "tourisme_lic", "etranger", "ecole_hotel", "luxe", "bts_mhr"],
+  svt: ["las", "staps", "ifsi", "psycho", "geo"], pc: ["las", "maths", "staps"],
+  nsi: ["info", "but_info", "bts_sio", "but_sd", "miashs", "but_mmi"],
+  arts: ["dnmade", "archi", "arts", "but_mmi", "bts_mav", "culture_event"]
+};
+const SPE3_SHORT = { hggsp: "HGGSP", hlp: "HLP", langue: "de langue", svt: "SVT", pc: "physique-chimie", nsi: "NSI", arts: "arts" };
 
 function qById(id) { for (const b of BLOCKS) for (const q of b.qs) if (q.id === id) return q; return null; }
 function optLabel(id, v) { const q = qById(id); const o = q && q.options && q.options.find(o => o.v === v); return o ? o.label : ""; }
@@ -879,6 +1058,11 @@ function computeProfile(A) {
     const s = SCALE.find(s => s.v === v); if (!s) continue;
     addW(SUBJ[id], s.w);
     if (SUBJ_KW[id] && Number(v) >= (id === "m_info" || id === "m_lang" ? 3 : 2)) addKw(SUBJ_KW[id], .5);
+  }
+  const s3 = A.spe3, g3 = A.spe3_gout;
+  if (s3 && SPE3[s3] && g3 !== undefined && g3 !== "?") {
+    const sc = SCALE.find(x => x.v === g3);
+    if (sc) { addW(SPE3[s3][0], .7 * sc.w); if (SPE3[s3][1] && Number(g3) >= 2) addKw(SPE3[s3][1], .4); }
   }
   arr(A.interets).forEach(k => { if (INT[k]) addW(INT[k], 1); addKw(k, 1); });
   arr(A.f_scene).forEach(k => { const s = SCENE[k]; if (!s) return; addW(s[0], 1.2); s[1].forEach(x => addKw(x, .8)); });
@@ -909,15 +1093,18 @@ function scoreFormation(f, A, P) {
   s += .22 * S.enc * (2 * p.enc - 1) + .18 * S.conc * (2 * p.conc - 1) + .2 * S.calc * (p.maths - p.ecrit);
   s += .15 * S.terr * (p.terrain - p.bureau) + .1 * S.team * (p.oral - .4) + .2 * S.eff * (p.intense - .5);
   // études
-  const du = A.e_duree;
+  const du = A.e_duree, niv = p.niv || p.sortie;
   if (du === "court") s += p.sortie <= 3 ? .25 : -.3;
   else if (du === "b3") s += p.sortie <= 3 ? .1 : -.1;
-  else if (du === "b5" || du === "long") s += p.sortie >= 5 ? .2 : p.sortie <= 2 ? -.3 : (p.ouvert >= .8 ? .1 : 0);
+  else if (du === "b5" || du === "long") s += p.sortie >= 5 ? .2 : niv <= 2 ? -.3 : (p.ouvert >= .8 ? .1 : 0);
   else if (du === "?") s += .25 * (p.ouvert - .5);
   if (p.prepa) s += { envie: .35, peut: 0, non: -.6, "?": -.05 }[A.e_prepa] || 0;
   if (p.fac) s += p.fac * ({ ok: .12, bof: -.12, non: -.45 }[A.e_fac] || 0);
   s += f.alt * ({ oui: .35, peut: .12 }[A.e_alt] || 0);
-  if (p.prive) s += { aide: -.15, non: -.6, "?": -.15 }[A.e_budget] || 0;
+  if (p.prive) s += { aide: -.15, non: -.6, "?": -.15, undefined: -.08 }[A.e_budget] || 0;
+  // Voies très thématiques : sans aucun signal d'intérêt pour leur thème, elles descendent
+  const coreMiss = f.core && !f.core.some(k => P.kwW[k]);
+  if (coreMiss) s -= .25;
   if (p.concours) s += ({ ok: .05, bof: -.1, non: -.3 }[A.e_conc] || 0) + (av.includes("concours") ? -.25 : 0);
   if (f.id === "etranger") s += { etranger: .3, parents: -.4, region: -.2 }[A.e_mob] || 0;
   else if (A.e_mob === "etranger" && f.kw.includes("international")) s += .15;
@@ -925,6 +1112,8 @@ function scoreFormation(f, A, P) {
   if (p.maths >= .7 && lm !== null) s += lm <= 1 ? -.35 : lm === 2 ? -.1 : .08;
   if (p.maths >= .8 && A.maths_opt === "expertes") s += .08;
   if (f.sel === 3 && lg !== null) s += lg <= 1 ? -.3 : lg === 2 ? -.1 : lg >= 4 ? .08 : 0;
+  const g3 = lvl(A, "spe3_gout"), s3fit = !!(A.spe3 && SPE3_FIT[A.spe3] && SPE3_FIT[A.spe3].includes(f.id)) && g3 !== null && g3 >= 2;
+  if (s3fit) s += .1;
   // ce qu'il veut éviter
   if (av.includes("vente")) s -= .45 * p.vente;
   if (av.includes("ecrit")) s -= .45 * Math.max(0, p.ecrit - .3);
@@ -948,6 +1137,7 @@ function scoreFormation(f, A, P) {
   if (S.calc >= .5 && p.maths >= .7) why.push("Tu préfères calculer : il y a pas mal de maths");
   if (S.calc <= -.5 && p.ecrit >= .8) why.push("Tu préfères écrire et argumenter : c'est le cœur du programme");
   if (S.terr >= .5 && p.terrain >= .8) why.push("Du terrain et du contact");
+  if (s3fit) why.push("Tu aimais ta spé " + SPE3_SHORT[A.spe3] + " en première");
   if (A.e_alt === "oui" && f.alt >= .6) why.push("Faisable en alternance");
   if (du === "court" && p.sortie <= 3) why.push("Un diplôme en " + p.sortie + " ans");
   if ((du === "?" || P.nspRatio >= .3) && p.ouvert >= .9) why.push("Garde beaucoup de portes ouvertes");
@@ -957,12 +1147,12 @@ function scoreFormation(f, A, P) {
   if ((du === "b5" || du === "long") && p.sortie >= 5) why.push("Tu vises bac+5 : ce parcours y mène directement");
 
   // points d'attention
-  if (f.id === "las") care.push("Sans SVT ni physique-chimie, c'est un pari");
+  if (f.id === "las") care.push(["svt", "pc"].includes(A.spe3) ? "Ta spé scientifique de première aide, mais le rattrapage reste lourd" : "Sans SVT ni physique-chimie, c'est un pari");
   if (p.prepa && A.e_prepa === "non") care.push("Tu as dit non à la prépa");
   if (p.prepa && S.eff <= -.5) care.push("Rythme très soutenu, peu de temps à côté");
   if (p.fac === 1 && A.e_fac === "non") care.push("Tu n'es pas fan de la fac");
   else if (p.fac === 1 && S.enc >= .5) care.push("Peu d'encadrement : il faut s'organiser seul");
-  if (p.prive && A.e_budget !== "oui") care.push("Payant : " + f.cout.toLowerCase());
+  if (p.prive && A.e_budget !== "oui") care.push("Payant : " + f.cout.charAt(0).toLowerCase() + f.cout.slice(1));
   if (p.concours && (A.e_conc === "non" || av.includes("concours"))) care.push("Sélection par concours ou oral");
   if (p.maths >= .7 && lm !== null && lm <= 1) care.push("Demande un bon niveau en maths");
   else if (p.maths >= .6 && av.includes("maths")) care.push("Beaucoup de maths");
@@ -970,37 +1160,111 @@ function scoreFormation(f, A, P) {
   if (p.vente >= .6 && av.includes("vente")) care.push("Beaucoup de commercial");
   if (f.sel === 3 && lg !== null && lg <= 2) care.push("Très sélectif : il faut un dossier solide");
   if (p.sortie >= 5 && (du === "court" || av.includes("long"))) care.push("Des études longues");
-  if (p.sortie <= 2 && (du === "b5" || du === "long")) care.push("Diplôme en 2 ans : il faudra poursuivre pour viser bac+5");
+  if (niv <= 2 && (du === "b5" || du === "long")) care.push("Diplôme bac+2 : il faudra poursuivre pour viser bac+5");
   if (p.oral >= .7 && av.includes("oral")) care.push("Beaucoup d'oral");
   if (p.intense >= .8 && av.includes("stress")) care.push("Grosse pression");
   if (f.id === "etranger" && (A.e_mob === "parents" || A.e_mob === "region")) care.push("Il faut partir loin");
   if (p.bureau >= .9 && av.includes("assis")) care.push("Beaucoup de temps assis");
 
-  return { f, s, why: why.slice(0, 4), care: care.slice(0, 3) };
+  return { f, s, miss: coreMiss, why: why.slice(0, 4), care: care.slice(0, 3) };
 }
 
+const SIDE_RANK = 24;
 function computeResults(A) {
   const P = computeProfile(A);
   const scored = F.filter(f => f.id !== "cesure").map(f => scoreFormation(f, A, P)).sort((a, b) => b.s - a.s);
   const hi = scored[0].s, lo = scored[scored.length - 1].s;
   scored.forEach(r => r.dots = Math.max(1, Math.min(5, 1 + Math.round(4 * (r.s - lo) / ((hi - lo) || 1)))));
-  const lead = scored.slice(0, 5), also = scored.slice(5, 12);
+  scored.forEach((r, i) => r.rank = i);
+  // Variété : pas plus de 2 pistes du même type de formation dans le top 5
+  // Budget pas tranché : pas plus de 3 écoles payantes dans les 12 premières pistes
+  const lead = [], also = [], nLead = {}, nAlso = {}, privCap = A.e_budget === "oui" ? 99 : 3;
+  let nPriv = 0;
+  const take = (list, n, r) => { list.push(r); n[r.f.fam] = (n[r.f.fam] || 0) + 1; if (r.f.p.prive) nPriv++; };
+  for (const r of scored) { if (lead.length >= 5) break; if ((nLead[r.f.fam] || 0) < 2 && (!r.f.p.prive || nPriv < privCap)) take(lead, nLead, r); }
+  for (const r of scored) { if (also.length >= 7) break; if (lead.includes(r) || (r.f.p.prive && nPriv >= privCap)) continue; take(also, nAlso, r); }
+  const shown = new Set(lead.concat(also));
+  // À côté : des voies moins connues, assez bien classées, qui n'apparaissent pas déjà plus haut
+  const side = scored.filter(r => r.f.side && !r.miss && !shown.has(r) && r.rank < SIDE_RANK).slice(0, 3);
+  side.forEach(r => shown.add(r));
   const showOpen = P.nspRatio >= .25 || A.e_duree === "?";
   const lg = lvl(A, "moy");
-  const open = showOpen ? scored.filter(r => (r.f.p.ouvert || 0) >= .8 && !lead.includes(r) && !(r.f.sel === 3 && lg !== null && lg <= 1)).slice(0, 3) : [];
+  const open = showOpen ? scored.filter(r => (r.f.p.ouvert || 0) >= .8 && !shown.has(r) && !(r.f.sel === 3 && lg !== null && lg <= 1)).slice(0, 3) : [];
   const topDims = Object.keys(P.raw).filter(d => P.raw[d] > 0).sort((a, b) => P.raw[b] - P.raw[a]);
-  return { P, scored, lead, also, open, topDims };
+  return { P, scored, lead, also, side, open, topDims };
+}
+
+/* ===== Synthèse rédigée : portrait en 2-3 phrases et tensions repérées ===== */
+const DIM_TXT = {
+  CHIF: "les chiffres et les données", ECO: "l'économie et l'entreprise", SOC: "la société et la politique",
+  DROIT: "le droit et les institutions", HUM: "l'humain, le social et le soin", COM: "la communication et la création",
+  TECH: "le numérique et l'informatique", INTL: "l'international et les langues"
+};
+function joinFr(list) { return list.length <= 1 ? (list[0] || "") : list.slice(0, -1).join(", ") + " et " + list[list.length - 1]; }
+function portrait(R, A) {
+  const P = R.P, S = P.style, out = [];
+  const first = R.topDims[0] ? P.raw[R.topDims[0]] : 0;
+  const top = R.topDims.filter((d, i) => i < 2 || P.raw[d] >= .75 * first).slice(0, 3).filter(d => P.raw[d] >= .4);
+  const tx = top.map(d => DIM_TXT[d]);
+  out.push(top.length ? "Ce qui ressort le plus chez toi : " + (tx.length === 1 ? tx[0] : "d'abord " + tx[0] + ", puis " + tx[1] + (tx[2] ? ", et aussi " + tx[2] : "")) + "."
+    : "Aucun domaine ne ressort nettement pour l'instant. C'est fréquent, et c'est justement à ça que servent les voies qui gardent des portes ouvertes.");
+  const st = [];
+  if (S.enc >= .5) st.push("un cadre qui te suit"); else if (S.enc <= -.5) st.push("être autonome");
+  if (S.conc >= .5) st.push("le concret"); else if (S.conc <= -.5) st.push("comprendre la théorie");
+  if (S.calc >= .5) st.push("calculer plutôt qu'écrire"); else if (S.calc <= -.5) st.push("argumenter plutôt que calculer");
+  if (S.team >= .5) st.push("le travail en équipe"); else if (S.team <= -.5) st.push("le travail en solo");
+  if (S.terr >= .5) st.push("le contact avec les gens"); else if (S.terr <= -.5) st.push("le calme d'un bureau");
+  if (S.eff >= .5) st.push("mettre le paquet quelques années"); else if (S.eff <= -.5) st.push("garder du temps pour toi");
+  out.push(st.length ? "Tu préfères " + joinFr(st) + "." : "Côté façon de bosser, rien de très marqué : plusieurs formats peuvent te convenir.");
+  const e = [];
+  const du = { court: "tu vises des études courtes", b3: "tu vises un bac+3 pour commencer", b5: "tu vises un bac+5", long: "des études longues ne te font pas peur si ça te passionne" }[A.e_duree];
+  if (du) e.push(du);
+  if (A.e_prepa === "non") e.push("pas de prépa"); else if (A.e_prepa === "envie") e.push("la prépa te motive");
+  if (A.e_fac === "non") e.push("pas la fac"); else if (A.e_fac === "bof") e.push("la fac te tente peu"); else if (A.e_fac === "ok") e.push("la fac te va");
+  if (A.e_alt === "oui") e.push("l'alternance te plaît");
+  if (A.e_mob === "etranger") e.push("partir à l'étranger ne te fait pas peur"); else if (A.e_mob === "parents") e.push("tu préfères rester chez tes parents");
+  if (A.e_budget === "non") e.push("plutôt le public");
+  if (e.length) out.push("Côté études : " + joinFr(e) + ".");
+  return out;
+}
+function tensionsList(R, A) {
+  const S = R.P.style, av = arr(A.eviter), it = arr(A.interets), val = arr(A.f_val), sc = arr(A.f_scene), du = A.e_duree, out = [];
+  const lm = lvl(A, "niv_maths");
+  if ((du === "b5" || du === "long") && A.e_prepa === "non" && (A.e_fac === "non" || A.e_fac === "bof"))
+    out.push({ k: "b5", t: "Tu vises bac+5, sans prépa et sans trop de fac. Restent surtout les écoles (souvent payantes, sauf en alternance) ou un BUT suivi d'un master ou d'une école. Lequel des deux chemins te parle ?" });
+  if (S.calc <= -.5 && av.includes("ecrit"))
+    out.push({ k: "ecrit", t: "Tu préfères argumenter plutôt que calculer, mais tu veux éviter d'écrire beaucoup. Ce qui te plaît, c'est peut-être l'oral et le débat plus que la rédaction ?" });
+  if ((it.includes("finance") || it.includes("data")) && (av.includes("maths") || (lm !== null && lm <= 1)))
+    out.push({ k: "maths", t: "La finance ou les données t'attirent, mais pas les maths poussées. C'est le sujet qui te plaît, ou ce qu'on peut en faire ?" });
+  if ((it.includes("politique") || it.includes("droit")) && av.includes("ecrit"))
+    out.push({ k: "polecrit", t: "La politique ou le droit t'intéressent, mais ces études demandent beaucoup d'écrit. C'est le fond qui te plaît, ou surtout le débat ?" });
+  if (val.includes("argent") && val.includes("sens"))
+    out.push({ k: "argsens", t: "Bien gagner ta vie et être utile : quand les deux tirent dans des sens opposés, lequel gagne ?" });
+  if ((it.includes("international") || it.includes("tourisme") || sc.includes("voyage")) && A.e_mob === "parents")
+    out.push({ k: "mob", t: "L'international t'attire, mais tu te vois rester chez tes parents. Un semestre ou un stage à l'étranger pendant les études, ça te tenterait ?" });
+  if (A.e_prepa === "envie" && av.includes("stress"))
+    out.push({ k: "prepastress", t: "La prépa te motive, mais tu veux éviter une grosse pression. Tu sais à quoi ressemble une semaine type en prépa ?" });
+  if ((it.includes("vente") || sc.includes("reunion")) && av.includes("oral"))
+    out.push({ k: "oral", t: "Convaincre t'attire, mais parler en public te freine. Le face-à-face te va peut-être mieux que la scène ?" });
+  if (S.team <= -.5 && av.includes("seul"))
+    out.push({ k: "seul", t: "Tu préfères bosser dans ton coin, mais tu veux éviter de travailler seul. C'est le cadre qui compte, ou les gens autour ?" });
+  return out;
 }
 /* ===== Interface ===== */
 const KEY = "boussole-ses-maths-v1";
-let A = {}, cur = 0, tab = "q", famFilter = "all", lastRes = null;
+/* Version du questionnaire : 2 = spé arrêtée en première + 3 centres d'intérêt (tourisme, luxe, événements) */
+const SCHEMA = 2;
+let A = {}, cur = 0, tab = "q", famFilter = "all", lastRes = null, savedSchema = SCHEMA;
 const $ = id => document.getElementById(id);
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const escA = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+/* Typographie française : espaces insécables avant ? ! : ; », après « et dans les nombres (9 000), pour éviter les signes orphelins en bout de ligne */
+const nbsp = s => s.replace(/ ([?!:;»])/g, "\u00a0$1").replace(/« /g, "«\u00a0").replace(/(\d) (?=\d{3}\b)/g, "$1\u00a0");
+const esc = s => nbsp(escA(s));
 const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const reduce = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function save() { try { localStorage.setItem(KEY, JSON.stringify({ A, cur })); } catch (e) {} }
-function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d && d.A) { A = d.A; cur = Math.min(d.cur || 0, BLOCKS.length - 1); } } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ A, cur, v: SCHEMA })); } catch (e) {} }
+function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d && d.A) { A = d.A; cur = Math.min(d.cur || 0, BLOCKS.length - 1); savedSchema = d.v || 1; } } catch (e) {} }
 
 function blockAnswered(b) { return b.qs.some(q => q.type === "multi" ? arr(A[q.id]).length : (A[q.id] !== undefined && A[q.id] !== "")); }
 
@@ -1022,7 +1286,7 @@ function optBtn(q, o, role) {
 function renderQ(q, n) {
   let ctl = "";
   if (q.type === "text") {
-    ctl = `<input type="text" id="q-${q.id}" data-text="${q.id}" value="${esc(A[q.id] || "")}" autocomplete="off">`;
+    ctl = `<input type="text" id="q-${q.id}" data-text="${q.id}" value="${escA(A[q.id] || "")}" autocomplete="off">`;
   } else if (q.type === "scale") {
     ctl = `<div class="seg" role="radiogroup" aria-label="${esc(q.label)}">${SCALE.map(o => optBtn(q, o, "radio")).join("")}</div>`;
   } else if (q.type === "single") {
@@ -1042,7 +1306,7 @@ function renderQ(q, n) {
   const label = q.type === "bip" ? "" : `<label class="q-label"${q.type === "text" ? ` for="q-${q.id}"` : ""}>${esc(q.label)}</label>`;
   return `<div class="q" data-qwrap="${q.id}"><span class="q-num" aria-hidden="true">${n}.</span>${label}
     ${q.hint ? `<p class="q-hint">${esc(q.hint)}</p>` : ""}${ctl}
-    ${q.oral ? `<p class="oral"><span class="hand">À l'oral :</span><span>${esc(q.oral)}</span></p>` : ""}</div>`;
+    ${q.oral ? `<p class="oral"><span class="hand">À te demander :</span><span>${esc(q.oral)}</span></p>` : ""}</div>`;
 }
 
 function renderBlock() {
@@ -1050,7 +1314,7 @@ function renderBlock() {
   $("block").innerHTML = `<div class="sheet"><div class="block-head"><span class="eyebrow">Bloc ${cur + 1} sur ${BLOCKS.length}</span>
     <h2>${esc(b.title)}</h2><p>${esc(b.intro)}</p></div>
     ${b.qs.map((q, i) => renderQ(q, i + 1)).join("")}
-    ${b.oral ? `<p class="oral" style="margin-top:14px"><span class="hand">À l'oral :</span><span>${esc(b.oral)}</span></p>` : ""}</div>`;
+    ${b.oral ? `<p class="oral" style="margin-top:14px"><span class="hand">À te demander :</span><span>${esc(b.oral)}</span></p>` : ""}</div>`;
   $("prev").disabled = cur === 0;
   $("next").textContent = cur === BLOCKS.length - 1 ? "Voir les pistes →" : "Suivant →";
   renderSteps();
@@ -1101,10 +1365,13 @@ const STYLE_TAGS = [
 function styleTags(P) { return STYLE_TAGS.map(([k, a, b]) => P.style[k] >= .5 ? a : P.style[k] <= -.5 ? b : null).filter(Boolean); }
 function avoidTags() { return arr(A.eviter).map(v => optLabel("eviter", v)); }
 function altLabel(f) { return f.alt >= .6 ? "Alternance fréquente" : f.alt >= .3 ? "Alternance possible" : ""; }
+function selLabel(f) { return f.selNote || SELEC[f.sel]; }
+function srcText(f) { return /^Fiche/.test(f.src.l) ? "Voir la " + f.src.l.toLowerCase().replace("onisep", "Onisep") : "En savoir plus : " + f.src.l; }
+function srcLink(f) { return f.src ? `<a class="src" href="${esc(f.src.u)}" target="_blank" rel="noopener">${esc(srcText(f))} ↗</a>` : ""; }
 function dotsHtml(n) { return `<span class="meter" title="Affinité ${n} sur 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`; }
 function facts(f) {
   const alt = altLabel(f);
-  return `<p class="facts"><span><b>${esc(f.duree)}</b></span><span>${SELEC[f.sel]}</span><span>${esc(f.cout)}</span>${alt ? `<span>${alt}</span>` : ""}</p>`;
+  return `<p class="facts"><span><b>${esc(f.duree)}</b></span><span>${esc(selLabel(f))}</span><span>${esc(f.cout)}</span>${alt ? `<span>${alt}</span>` : ""}</p>`;
 }
 function pisteCard(r, lead, open) {
   const f = r.f;
@@ -1114,22 +1381,24 @@ function pisteCard(r, lead, open) {
     ${r.care.length ? `<ul class="care">${r.care.map(w => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
     <p class="desc">${esc(f.desc)}</p>${facts(f)}
     <details class="more"${open ? " open" : ""}><summary>Débouchés et accès avec SES + maths</summary>
-      <p class="desc" style="margin-top:8px"><b>Après :</b> ${esc(f.apres)}</p><p class="desc" style="margin-top:6px"><b>Avec SES + maths :</b> ${esc(f.ses)}</p></details>
+      <p class="desc" style="margin-top:8px"><b>Après :</b> ${esc(f.apres)}</p><p class="desc" style="margin-top:6px"><b>Avec SES + maths :</b> ${esc(f.ses)}</p>
+      ${f.src ? `<p class="desc" style="margin-top:6px">${srcLink(f)}</p>` : ""}</details>
   </article>`;
 }
 
+/* Questions pour aller plus loin : les tensions qui ne sont pas déjà dans le profil, puis des relances */
 function talkList(R) {
   const P = R.P, out = [], has = id => R.lead.concat(R.also).some(r => r.f.id === id);
+  const T = tensionsList(R, A), extra = T.slice(2);
   if (P.nspRatio >= .3) out.push("Beaucoup de « ? » : est-ce que tu ne connais pas ces trucs, ou est-ce que rien ne t'emballe vraiment ? Ce n'est pas la même chose.");
   if (R.topDims[0]) out.push(`C'est le côté « ${DIMS[R.topDims[0]]} » qui ressort le plus. Qu'est-ce qui te plaît dedans : les sujets, ou la façon de réfléchir ?`);
   if (A.e_prepa === "non" && (has("dl") || has("cpes"))) out.push("Tu ne veux pas de prépa, mais une double licence ou un CPES a un rythme proche, sans concours. Qu'est-ce qui te refroidit : la charge de travail ou la compétition ?");
   else if (A.e_prepa === "envie") out.push("La prépa te tente : tu te vois tenir le rythme pendant 2 ans ? Qu'est-ce qui te motive : les écoles derrière, ou le défi ?");
   if (A.e_duree === "court" && (A.e_alt === "oui" || A.e_alt === "peut")) out.push("Études courtes + alternance : un BTS ou un BUT en alternance ne coûte rien et paie. Tu te vois en entreprise dès 18 ans ?");
-  if (arr(A.interets).includes("data") && ((lvl(A, "niv_maths") !== null && lvl(A, "niv_maths") <= 1) || arr(A.eviter).includes("maths"))) out.push("La data t'attire mais les maths te pèsent : c'est les chiffres eux-mêmes qui te plaisent, ou ce qu'on peut en tirer ?");
-  if (A.f_metier) out.push(`Tu as cité « ${A.f_metier} » : qu'est-ce qui t'attire là-dedans ? On peut chercher ensemble la formation qui y mène.`);
+  extra.forEach(t => out.push(t.t));
+  if (A.f_metier) out.push(`Tu as cité « ${A.f_metier} » : qu'est-ce qui t'attire là-dedans ? Cherche les formations qui y mènent dans « Tout ce qui existe ».`);
   if (A.f_non) out.push(`Tu ne veux surtout pas : « ${A.f_non} ». C'est le métier lui-même, ou l'ambiance que tu imagines ?`);
-  if (arr(A.f_val).includes("argent") && arr(A.f_val).includes("sens")) out.push("Bien gagner sa vie et être utile : quand les deux tirent dans des sens opposés, lequel gagne ?");
-  if (A.e_mob === "parents") out.push("Rester chez les parents réduit la carte des formations. C'est un choix ou une contrainte (budget, envie) ?");
+  if (A.e_mob === "parents" && !T.some(t => t.k === "mob")) out.push("Rester chez les parents réduit la carte des formations. C'est un choix ou une contrainte (budget, envie) ?");
   out.push("Si tu pouvais faire un stage d'une semaine n'importe où, ce serait où ?");
   out.push("Qu'est-ce que tes profs disent de toi en conseil de classe ? Tu es d'accord avec eux ?");
   return out.slice(0, 6);
@@ -1142,24 +1411,34 @@ const TIMELINE = [
   ["Jusqu'au 1er avril 2027", "Compléter chaque dossier (projet de formation motivé) et confirmer les vœux."],
   ["À partir du 2 juin 2027", "Premières réponses des formations. La phase complémentaire ouvre le 11 juin."]
 ];
-const TIMELINE_NOTE = "Dates du calendrier annoncé pour 2027, à revérifier sur parcoursup.gouv.fr. Les études à l'étranger et quelques écoles se candidatent hors Parcoursup, souvent dès l'automne.";
+const TIMELINE_NOTE = "Dates du calendrier annoncé pour 2027, à revérifier sur parcoursup.gouv.fr. Les études à l'étranger et beaucoup d'écoles privées (communication, luxe, hôtellerie, culture) recrutent hors Parcoursup, souvent dès l'automne.";
+
+const LEAD_INTRO = "Les cinq qui collent le mieux, avec au plus deux du même type de formation.";
+const SIDE_INTRO = "Des voies moins connues qui collent à ta façon de bosser et à une partie de tes goûts. Elles valent un coup d'œil, même si tu n'y avais jamais pensé.";
+const OPEN_INTRO = "Ces voies retardent le moment de choisir sans rien fermer.";
 
 /* Le cœur des résultats, partagé par l'onglet Pistes et la page HTML téléchargée */
 function resultsCore(R, open) {
   const P = R.P, maxRaw = Math.max(...R.topDims.map(d => P.raw[d]), .01);
   const dims = Object.keys(DIMS).sort((a, b) => P.raw[b] - P.raw[a]);
-  const st = styleTags(P), av = avoidTags();
+  const dimRow = (d, i) => `<div class="dim${i < 3 && P.raw[d] > 0 ? " top" : ""}"><span>${esc(DIMS[d])}</span><span class="bar"><i style="width:${Math.round(100 * Math.max(0, P.raw[d]) / maxRaw)}%"></i></span></div>`;
+  const st = styleTags(P), av = avoidTags(), T = tensionsList(R, A).slice(0, 2);
   const ces = (A.e_cesure === "oui" || A.e_cesure === "peut") ? F.find(f => f.id === "cesure") : null;
+  const group = (title, intro, list, lead) => list.length ? `<div class="pistes"><h2>${esc(title)}</h2>${intro ? `<p class="desc">${esc(intro)}</p>` : ""}${list.map(r => pisteCard(r, lead, open)).join("")}</div>` : "";
   return `${P.nspRatio >= .3 ? `<div class="notice warn"><p>Beaucoup de « ? » dans les réponses. C'est normal à ce stade : les voies qui gardent des portes ouvertes remontent un peu plus dans la liste.</p></div>` : ""}
     <div class="panel"><h3>Ton profil</h3>
-      <div class="dims">${dims.map((d, i) => `<div class="dim${i < 3 && P.raw[d] > 0 ? " top" : ""}"><span>${esc(DIMS[d])}</span><span class="bar"><i style="width:${Math.round(100 * Math.max(0, P.raw[d]) / maxRaw)}%"></i></span></div>`).join("")}</div>
+      <p class="portrait">${portrait(R, A).map(esc).join(" ")}</p>
+      <div class="dims">${dims.slice(0, 3).map(dimRow).join("")}</div>
+      <details class="more dims-more"${open ? " open" : ""}><summary>Les ${dims.length - 3} autres axes</summary><div class="dims">${dims.slice(3).map((d, i) => dimRow(d, i + 3)).join("")}</div></details>
       ${st.length ? `<div class="tags">${st.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
-      ${av.length ? `<div class="tags">${av.map(t => `<span class="tag neg">Éviter : ${esc(t)}</span>`).join("")}</div>` : ""}</div>
-    <div class="pistes"><h2>Ce qui coche le plus de cases</h2>${R.lead.map(r => pisteCard(r, true, open)).join("")}</div>
-    <div class="pistes"><h2>À creuser aussi</h2>${R.also.map(r => pisteCard(r, false, open)).join("")}</div>
-    ${R.open.length ? `<div class="pistes"><h2>Si tu ne sais vraiment pas encore</h2><p class="desc">Ces voies retardent le moment de choisir sans rien fermer.</p>${R.open.map(r => pisteCard(r, false, open)).join("")}</div>` : ""}
+      ${av.length ? `<div class="tags">${av.map(t => `<span class="tag neg">Éviter : ${esc(t)}</span>`).join("")}</div>` : ""}
+      ${T.length ? `<div class="tension"><h4>Ce qui tiraille</h4><ul>${T.map(t => `<li>${esc(t.t)}</li>`).join("")}</ul></div>` : ""}</div>
+    ${group("Ce qui coche le plus de cases", LEAD_INTRO, R.lead, true)}
+    ${group("À creuser aussi", "", R.also, false)}
+    ${group("À côté de ce que tu imagines", SIDE_INTRO, R.side || [], false)}
+    ${group("Si tu ne sais vraiment pas encore", OPEN_INTRO, R.open, false)}
     ${ces ? `<div class="notice"><p><b>Et la césure ?</b> ${esc(ces.desc)} ${esc(ces.ses)}</p></div>` : ""}
-    <div class="panel"><h3>À discuter à deux</h3><ol class="talk">${talkList(R).map((t, i) => `<li><span class="hand">${i + 1}.</span><span>${esc(t)}</span></li>`).join("")}</ol></div>
+    <div class="panel"><h3>Questions pour aller plus loin</h3><ol class="talk">${talkList(R).map((t, i) => `<li><span class="hand">${i + 1}.</span><span>${esc(t)}</span></li>`).join("")}</ol></div>
     <div class="panel"><h3>Les prochaines étapes</h3><ol class="timeline">${TIMELINE.map(([w, t]) => `<li><span class="when">${esc(w)}</span><span>${esc(t)}</span></li>`).join("")}</ol>
       <p class="sub">${esc(TIMELINE_NOTE)}</p></div>`;
 }
@@ -1289,10 +1568,11 @@ function loadPdfLib() {
   return pdfLoading;
 }
 const PC = { ink: "#1a2142", soft: "#5a6383", rule: "#dde2f2", strong: "#c3cbea", margin: "#e0737f", bic: "#2441c7", good: "#16784f", warn: "#9a5a00", warnWash: "#fff4e0", fluo: "#fff07a" };
-const pt = s => String(s == null ? "" : s).replace(/→/g, "–");
+const pt = s => nbsp(String(s == null ? "" : s).replace(/→/g, "–"));
 function pMark(mark, color, text) { return { columns: [{ text: mark, width: 10, bold: true, color }, { text: pt(text), width: "*" }], columnGap: 2, margin: [0, 2, 0, 0] }; }
 function pDots(n) { return { canvas: [0, 1, 2, 3, 4].map(i => ({ type: "ellipse", x: 4 + i * 10.5, y: 5, r1: 3.4, r2: 3.4, color: i < n ? PC.bic : PC.rule })) }; }
-function pFacts(f) { return { text: [pt(f.duree), SELEC[f.sel], pt(f.cout), altLabel(f)].filter(Boolean).join("   ·   "), fontSize: 8, color: PC.soft, margin: [0, 6, 0, 0] }; }
+function pFacts(f) { return { text: [pt(f.duree), pt(selLabel(f)), pt(f.cout), altLabel(f)].filter(Boolean).join("   ·   "), fontSize: 8, color: PC.soft, margin: [0, 6, 0, 0] }; }
+function pSrc(f) { return f.src ? { text: pt(srcText(f)) + " (" + f.src.u.replace(/^https:\/\/(www\.)?/, "").split("/")[0] + ")", link: f.src.u, fontSize: 8, color: PC.bic, decoration: "underline", margin: [0, 4, 0, 0] } : null; }
 function pBox(stack, color, fill) {
   return { table: { widths: ["*"], dontBreakRows: true, body: [[{ stack, fillColor: fill }]] }, margin: [0, 0, 0, 8],
     layout: { hLineWidth: () => .8, vLineWidth: () => .8, hLineColor: () => color, vLineColor: () => color,
@@ -1307,10 +1587,11 @@ function pPiste(r, lead) {
   r.care.forEach(w => s.push(pMark("!", PC.warn, w)));
   s.push({ text: pt(f.desc), color: PC.soft, margin: [0, 6, 0, 0] });
   if (lead) {
-    s.push({ text: [{ text: "Après : ", bold: true, color: PC.ink }, pt(f.apres)], color: PC.soft, margin: [0, 4, 0, 0] });
-    s.push({ text: [{ text: "Avec SES + maths : ", bold: true, color: PC.ink }, pt(f.ses)], color: PC.soft, margin: [0, 4, 0, 0] });
+    s.push({ text: [{ text: pt("Après : "), bold: true, color: PC.ink }, pt(f.apres)], color: PC.soft, margin: [0, 4, 0, 0] });
+    s.push({ text: [{ text: pt("Avec SES + maths : "), bold: true, color: PC.ink }, pt(f.ses)], color: PC.soft, margin: [0, 4, 0, 0] });
   }
   s.push(pFacts(f));
+  if (f.src) s.push(pSrc(f));
   return pBox(s, lead ? PC.bic : PC.strong);
 }
 function pRules(widths, body) {
@@ -1328,10 +1609,11 @@ function pProfile(P) {
   }) }, layout: "noBorders" };
 }
 function pdfDoc(R) {
-  const P = R.P, name = (A.prenom || "").trim(), date = todayFr(), st = styleTags(P), av = avoidTags();
+  const P = R.P, name = (A.prenom || "").trim(), date = todayFr(), st = styleTags(P), av = avoidTags(), T = tensionsList(R, A).slice(0, 2);
   const ces = (A.e_cesure === "oui" || A.e_cesure === "peut") ? F.find(f => f.id === "cesure") : null;
   const h2 = text => ({ text, style: "h2" });
   const keep = (head, node) => ({ stack: [head, node], unbreakable: true });
+  const brief = (label, list) => list.length ? { text: [{ text: pt(label + " : "), bold: true }, list.map(r => pt(r.f.nom.replace(/ \(.*\)$/, ""))).join("  ·  ")], margin: [0, 0, 0, 5] } : null;
   const group = (title, list, lead, intro) => list.length ? [keep(intro ? { stack: [h2(title), intro] } : h2(title), pPiste(list[0], lead)), ...list.slice(1).map(r => pPiste(r, lead))] : [];
   const answers = BLOCKS.map((b, i) => {
     const head = { text: pt(b.title), style: "h3" };
@@ -1342,16 +1624,25 @@ function pdfDoc(R) {
     { text: "BOUSSOLE SES-MATHS · RÉSULTATS", style: "eyebrow" },
     { text: name ? ["Les pistes de ", { text: " " + pt(name) + " ", background: PC.fluo }] : "Mes pistes", style: "h1" },
     { text: `Rempli le ${date}   ·   ${P.answered} réponses sur ${P.total}   ·   Terminale SES + maths`, fontSize: 8.5, color: PC.soft, margin: [0, 5, 0, 12] },
-    { text: "Les formations sont classées par affinité avec les réponses. Ce n'est pas un verdict : le plus utile, c'est le « pourquoi » de chaque piste et ce qui fait réagir, en bien comme en mal.", color: PC.soft },
-    P.nspRatio >= .3 ? pBox([{ text: "Beaucoup de « ? » dans les réponses. C'est normal à ce stade : les voies qui gardent des portes ouvertes remontent un peu plus dans la liste." }], PC.warn, PC.warnWash) : null,
-    keep(h2("Ton profil"), { stack: [pProfile(P),
-      st.length ? { text: [{ text: "Façon de bosser : ", bold: true }, st.join(" · ")], margin: [0, 8, 0, 0] } : null,
-      av.length ? { text: [{ text: "À éviter : ", bold: true, color: PC.warn }, av.join(" · ")], margin: [0, 4, 0, 0] } : null].filter(Boolean) }),
-    ...group("Ce qui coche le plus de cases", R.lead, true),
+    { text: pt("Les formations sont classées par affinité avec les réponses. Ce n'est pas un verdict : le plus utile, c'est le « pourquoi » de chaque piste et ce qui fait réagir, en bien comme en mal."), color: PC.soft },
+    P.nspRatio >= .3 ? pBox([{ text: pt("Beaucoup de « ? » dans les réponses. C'est normal à ce stade : les voies qui gardent des portes ouvertes remontent un peu plus dans la liste.") }], PC.warn, PC.warnWash) : null,
+    keep(h2("Ton profil"), { stack: [
+      { text: pt(portrait(R, A).join(" ")), fontSize: 10.5, margin: [0, 0, 0, 10] },
+      pProfile(P),
+      st.length ? { text: [{ text: pt("Façon de bosser : "), bold: true }, st.join(" · ")], margin: [0, 8, 0, 0] } : null,
+      av.length ? { text: [{ text: pt("À éviter : "), bold: true, color: PC.warn }, av.join(" · ")], margin: [0, 4, 0, 0] } : null,
+      T.length ? { stack: [{ text: "Ce qui tiraille", bold: true, margin: [0, 0, 0, 3] }, { ul: T.map(t => ({ text: pt(t.t), margin: [0, 0, 0, 3] })), markerColor: PC.margin }], margin: [0, 10, 0, 0] } : null].filter(Boolean) }),
+    keep(h2("En bref"), { stack: [
+      brief("Ce qui coche le plus de cases", R.lead), brief("À creuser aussi", R.also),
+      brief("À côté de ce que tu imagines", R.side || []), brief("Si tu ne sais vraiment pas encore", R.open),
+      { text: "Le détail de chaque piste (le pourquoi, les points d'attention, les débouchés) suit, puis toutes tes réponses.", color: PC.soft, fontSize: 8.5, margin: [0, 4, 0, 0] }].filter(Boolean) }),
+    { text: "", pageBreak: "after" },
+    ...group("Ce qui coche le plus de cases", R.lead, true, { text: LEAD_INTRO, color: PC.soft, margin: [0, 0, 0, 6] }),
     ...group("À creuser aussi", R.also, false),
-    ...group("Si tu ne sais vraiment pas encore", R.open, false, { text: "Ces voies retardent le moment de choisir sans rien fermer.", color: PC.soft, margin: [0, 0, 0, 6] }),
-    ces ? pBox([{ text: [{ text: "Et la césure ? ", bold: true }, pt(ces.desc) + " " + pt(ces.ses)] }], PC.strong) : null,
-    keep(h2("À discuter à deux"), { ol: talkList(R).map(t => ({ text: pt(t), margin: [0, 0, 0, 5] })), markerColor: PC.margin }),
+    ...group("À côté de ce que tu imagines", R.side || [], false, { text: SIDE_INTRO, color: PC.soft, margin: [0, 0, 0, 6] }),
+    ...group("Si tu ne sais vraiment pas encore", R.open, false, { text: OPEN_INTRO, color: PC.soft, margin: [0, 0, 0, 6] }),
+    ces ? pBox([{ text: [{ text: pt("Et la césure ? "), bold: true }, pt(ces.desc) + " " + pt(ces.ses)] }], PC.strong) : null,
+    keep(h2("Questions pour aller plus loin"), { ol: talkList(R).map(t => ({ text: pt(t), margin: [0, 0, 0, 5] })), markerColor: PC.margin }),
     keep(h2("Les prochaines étapes"), { stack: [
       pRules([112, "*"], TIMELINE.map(([w, t]) => [{ text: pt(w), bold: true }, { text: pt(t) }])),
       { text: pt(TIMELINE_NOTE), fontSize: 8, color: PC.soft, margin: [0, 6, 0, 0] }] }),
@@ -1425,21 +1716,29 @@ async function doDownload(kind, box) {
 }
 
 /* --- Lien de partage : les réponses voyagent dans le fragment de l'URL (#…), jamais envoyé au serveur --- */
-const ORDER = BLOCKS.flatMap(b => b.qs.map(q => q.id));
+/* Ordre figé des réponses dans le lien. Version 1 : les 37 questions d'origine.
+   Version 2 : on ajoute à la fin, sans jamais réordonner, pour que les anciens liens restent lisibles. */
+const ORDER_V1 = ["prenom", "maths_opt", "moy", "niv_maths", "niv_ses", "deja", "m_maths", "m_seseco", "m_sessoc", "m_hg", "m_philo",
+  "m_fr", "m_lang", "m_info", "m_sport", "m_arts", "s_enc", "s_conc", "s_calc", "s_team", "s_eff", "s_terr", "interets", "eviter",
+  "e_duree", "e_prepa", "e_fac", "e_alt", "e_mob", "e_budget", "e_conc", "e_cesure", "f_scene", "f_val", "f_metier", "f_flow", "f_non"];
+const ORDERS = { 1: ORDER_V1, 2: ORDER_V1.concat(["spe3", "spe3_gout"]) };
+const SHARE_VERSION = 2, ORDER = ORDERS[SHARE_VERSION];
+function tokenVersion(token) { try { const l = JSON.parse(unb64url(token.slice(3))); return Array.isArray(l) ? l[0] : 0; } catch (e) { return 0; } }
 function b64url(str) { const bytes = new TextEncoder().encode(str); let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
 function unb64url(s) { const b = s.replace(/-/g, "+").replace(/_/g, "/"); const bin = atob(b + "=".repeat((4 - b.length % 4) % 4)); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
 function encodeAnswers(ans) {
   const vals = ORDER.map(id => { const v = ans[id]; return v === undefined || v === "" || (Array.isArray(v) && !v.length) ? 0 : v; });
   while (vals.length && vals[vals.length - 1] === 0) vals.pop();
-  return "r1." + b64url(JSON.stringify([1].concat(vals)));
+  return "r1." + b64url(JSON.stringify([SHARE_VERSION].concat(vals)));
 }
 function decodeAnswers(token) {
   if (!/^r1\.[A-Za-z0-9_-]{4,}$/.test(token)) return null;
   try {
     const list = JSON.parse(unb64url(token.slice(3)));
-    if (!Array.isArray(list) || list[0] !== 1) return null;
+    const order = Array.isArray(list) && ORDERS[list[0]];
+    if (!order) return null;
     const out = {};
-    ORDER.forEach((id, i) => {
+    order.forEach((id, i) => {
       const v = list[i + 1], q = qById(id);
       if (v === 0 || v === undefined || v === null) return;
       if (q.type === "text") { if (typeof v === "string") out[id] = v.slice(0, 300); return; }
@@ -1468,9 +1767,9 @@ async function shareLink(box) {
   }
 }
 /* --- Catalogue --- */
-function selDots(n) { return `<span class="meter" title="${SELEC[n]}">${[1, 2, 3].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")} ${SELEC[n]}</span>`; }
+function selDots(f) { return `<span class="meter" title="${esc(SELEC[f.sel])}">${[1, 2, 3].map(i => `<i class="${i <= f.sel ? "on" : ""}"></i>`).join("")} ${esc(selLabel(f))}</span>`; }
 function renderCatalogFilters() {
-  const opts = [["all", "Tout"]].concat(Object.keys(FAMS).map(k => [k, FAMS[k].replace(/ \(.*\)$/, "")]));
+  const opts = [["all", "Tout"], ["side", "Moins connues"]].concat(Object.keys(FAMS).map(k => [k, FAMS[k].replace(/ \(.*\)$/, "")]));
   $("cat-filters").innerHTML = opts.map(([k, l]) => `<button type="button" class="opt" data-fam="${k}" aria-pressed="${famFilter === k}">${esc(l)}</button>`).join("");
 }
 function renderCatalog() {
@@ -1478,20 +1777,20 @@ function renderCatalog() {
   const qn = norm($("cat-search").value.trim());
   const P = computeProfile(A);
   const RR = P.answered >= 8 ? computeResults(A) : null;
-  const mine = new Set(RR ? RR.lead.concat(RR.also).map(r => r.f.id) : []);
+  const mine = new Set(RR ? RR.lead.concat(RR.also, RR.side).map(r => r.f.id) : []);
   const intLabels = f => qById("interets").options.filter(o => f.kw.includes(o.v)).map(o => o.label).join(" ");
   const match = f => !qn || norm([f.nom, f.desc, f.apres, f.ses, f.duree, f.cout, FAMS[f.fam], intLabels(f), f.alt >= .3 ? "alternance" : ""].join(" ")).includes(qn);
   let html = "";
   Object.keys(FAMS).forEach(k => {
-    if (famFilter !== "all" && famFilter !== k) return;
-    const list = F.filter(f => f.fam === k && match(f));
+    if (famFilter !== "all" && famFilter !== "side" && famFilter !== k) return;
+    const list = F.filter(f => f.fam === k && match(f) && (famFilter !== "side" || f.side));
     if (!list.length) return;
     html += `<section class="cat-group"><h2>${esc(FAMS[k])} <small>${list.length}</small></h2><div class="cat-grid">${list.map(f => `
       <article class="card">${mine.has(f.id) ? `<span class="in">Dans tes pistes</span>` : ""}<h3>${esc(f.nom)}</h3>
-        <p class="facts"><span><b>${esc(f.duree)}</b></span>${selDots(f.sel)}</p>
+        <p class="facts"><span><b>${esc(f.duree)}</b></span>${selDots(f)}</p>
         <p>${esc(f.desc)}</p><p class="after"><b>Après :</b> ${esc(f.apres)}</p>
         <p class="facts"><span>${esc(f.cout)}</span>${altLabel(f) ? `<span>${altLabel(f)}</span>` : ""}</p>
-        <p class="ses"><b>Avec SES + maths :</b> ${esc(f.ses)}</p></article>`).join("")}</div></section>`;
+        <p class="ses"><b>Avec SES + maths :</b> ${esc(f.ses)}</p>${f.src ? `<p>${srcLink(f)}</p>` : ""}</article>`).join("")}</div></section>`;
   });
   if ((famFilter === "all" || famFilter === "autre") && (!qn || norm(HARD.map(h => h.t + h.d).join(" ")).includes(qn)))
     html += `<section class="cat-group"><h2>Plus compliqué avec SES + maths</h2><div class="cat-grid">${HARD.map(h => `<div class="hard"><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join("")}</div></section>`;
@@ -1509,20 +1808,24 @@ function showBanner(msg, acts) {
 function hideBanner() { $("banner").hidden = true; bannerActs = []; }
 function hasOwnAnswers() { return Object.keys(A).some(k => Array.isArray(A[k]) ? A[k].length : (A[k] !== undefined && A[k] !== "")); }
 function clearHash() { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
-function adoptShared(shared) {
+const NEWS = "La boussole a été mise à jour : une question sur ta spé arrêtée en première (bloc « Les cours ») et trois centres d'intérêt (tourisme, luxe, événements) dans « Ce qui t'attire ».";
+function showNews() { hideBanner(); setTab("q"); goBlock(1); }
+function adoptShared(shared, oldLink) {
   A = shared; cur = 0; save(); renderBlock(); updateCounts(); setTab("r");
-  showBanner(`Réponses ${shared.prenom ? "de " + shared.prenom + " " : ""}ouvertes depuis un lien. Elles sont maintenant enregistrées sur cet appareil.`, [["Fermer", hideBanner]]);
+  const msg = `Réponses ${shared.prenom ? "de " + shared.prenom + " " : ""}ouvertes depuis un lien. Elles sont maintenant enregistrées sur cet appareil.`;
+  if (oldLink) showBanner(msg + " " + NEWS, [["Voir les nouveautés", showNews], ["Fermer", hideBanner]]);
+  else showBanner(msg, [["Fermer", hideBanner]]);
 }
 function handleSharedHash() {
   const h = (location.hash || "").slice(1);
   if (!h.startsWith("r1.")) return false;
-  const shared = decodeAnswers(h);
+  const shared = decodeAnswers(h), oldLink = tokenVersion(h) < SHARE_VERSION;
   clearHash();
   if (!shared) { showBanner("Ce lien de résultats est incomplet : il a peut-être été coupé en le copiant.", [["Fermer", hideBanner]]); return true; }
-  if (!hasOwnAnswers() || JSON.stringify(A) === JSON.stringify(shared)) { adoptShared(shared); return true; }
+  if (!hasOwnAnswers() || JSON.stringify(A) === JSON.stringify(shared)) { adoptShared(shared, oldLink); return true; }
   const who = shared.prenom ? "de " + shared.prenom : "de quelqu'un";
   showBanner(`Ce lien contient les réponses ${who}. Les afficher remplace les réponses déjà enregistrées sur cet appareil.`,
-    [["Afficher ces réponses", () => adoptShared(shared)], ["Garder les miennes", hideBanner]]);
+    [["Afficher ces réponses", () => adoptShared(shared, oldLink)], ["Garder les miennes", hideBanner]]);
   return true;
 }
 
@@ -1541,8 +1844,11 @@ function bannerAskReset() {
 function welcomeBack() {
   if (!hasOwnAnswers()) return;
   const P = computeProfile(A);
-  showBanner(`Tes réponses de la dernière visite sont encore là (${P.answered} sur ${P.total}${A.prenom ? ", " + A.prenom : ""}). Elles sont enregistrées sur cet appareil.`,
-    [["Continuer", hideBanner], ["Recommencer à zéro", bannerAskReset]]);
+  const msg = `Tes réponses de la dernière visite sont encore là (${P.answered} sur ${P.total}${A.prenom ? ", " + A.prenom : ""}). Elles sont enregistrées sur cet appareil.`;
+  if (savedSchema < SCHEMA) {
+    showBanner(msg + " " + NEWS, [["Voir les nouveautés", showNews], ["Continuer", hideBanner], ["Recommencer à zéro", bannerAskReset]]);
+    savedSchema = SCHEMA; save();
+  } else showBanner(msg, [["Continuer", hideBanner], ["Recommencer à zéro", bannerAskReset]]);
 }
 
 /* --- Démarrage --- */
