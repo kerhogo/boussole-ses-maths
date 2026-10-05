@@ -1189,7 +1189,7 @@ function renderResults() {
       <p class="sub">Le PDF se lit partout et s'imprime bien. La page HTML garde la mise en page du site et toutes tes réponses. Tu peux joindre l'un ou l'autre à une conversation avec Claude pour construire ta liste de vœux.${shareBase() ? " Ton lien contient tes réponses : il sert à les retrouver sur un autre appareil, ou à les montrer à qui tu veux. Ne l'envoie qu'à des gens de confiance." : ""}</p>
       ${dlBar()}
       <p class="hint">Sur téléphone, le fichier arrive dans Téléchargements (Android) ou dans l'app Fichiers (iPhone).</p>
-      <div class="copy-row"><button class="btn small" type="button" data-go="q">Revoir les réponses</button></div></div>
+      <div class="copy-row"><button class="btn small" type="button" data-go="q">Revoir les réponses</button><button class="btn small" type="button" data-action="reset">Recommencer à zéro</button></div></div>
   </div>`;
 }
 /* ===== Exports : page HTML, PDF, lien de partage =====
@@ -1529,8 +1529,20 @@ function handleSharedHash() {
 /* --- Remise à zéro --- */
 function askReset(show) { $("reset-confirm").hidden = !show; $("reset-btn").hidden = show; $("reset-msg").textContent = ""; }
 function doReset() {
-  A = {}; cur = 0; save(); renderBlock(); updateCounts(); askReset(false);
+  A = {}; cur = 0; save(); renderBlock(); updateCounts(); askReset(false); hideBanner(); setTab("q");
   $("reset-msg").textContent = "Réponses effacées.";
+  showBanner("Réponses effacées sur cet appareil. Tu repars de zéro.", [["Fermer", hideBanner]]);
+}
+function bannerAskReset() {
+  window.scrollTo(0, 0);
+  showBanner("Tout effacer sur cet appareil ? Les réponses enregistrées ici seront perdues. Si tu veux les garder, télécharge d'abord le PDF ou copie ton lien depuis l'onglet Pistes.",
+    [["Oui, tout effacer", doReset], ["Annuler", hideBanner]]);
+}
+function welcomeBack() {
+  if (!hasOwnAnswers()) return;
+  const P = computeProfile(A);
+  showBanner(`Tes réponses de la dernière visite sont encore là (${P.answered} sur ${P.total}${A.prenom ? ", " + A.prenom : ""}). Elles sont enregistrées sur cet appareil.`,
+    [["Continuer", hideBanner], ["Recommencer à zéro", bannerAskReset]]);
 }
 
 /* --- Démarrage --- */
@@ -1545,7 +1557,7 @@ function bind() {
     const act = e.target.closest("[data-action]");
     if (act) {
       const box = act.closest(".dl-box"), k = act.dataset.action;
-      if (k === "link") shareLink(box); else doDownload(k, box);
+      if (k === "reset") bannerAskReset(); else if (k === "link") shareLink(box); else doDownload(k, box);
       return;
     }
     const g = e.target.closest("[data-go]"); if (g) setTab(g.dataset.go);
@@ -1564,6 +1576,7 @@ function start(data) {
   const h = (location.hash || "").replace("#", "");
   if (h === "pistes") setTab("r"); else if (h === "catalogue") setTab("c");
   if (data && data.tab && data.tab !== "q") setTab(data.tab);
+  else if (!(data && data.A)) welcomeBack();
 }
 if (typeof document !== "undefined") {
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ A, cur, tab }));
