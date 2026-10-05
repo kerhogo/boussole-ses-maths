@@ -1753,9 +1753,10 @@ async function shareLink(box) {
   const base = shareBase(); if (!base) return;
   const url = base + "#" + encodeAnswers(A);
   const title = "Boussole SES-Maths : " + (A.prenom ? "les pistes de " + A.prenom : "mes pistes");
-  const touch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-  if (navigator.share && touch) {
-    try { await navigator.share({ title, url }); setStatus(box, "Lien partagé.", "ok"); return; }
+  /* Feuille de partage du système (iPhone, Android, Windows, macOS) ; sinon copie du lien. */
+  const data = { title, text: (A.prenom ? "Les pistes d'orientation de " + A.prenom : "Mes pistes d'orientation") + " (Boussole SES-Maths) :", url };
+  if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+    try { await navigator.share(data); setStatus(box, "Lien partagé.", "ok"); return; }
     catch (e) { if (e && e.name === "AbortError") return; }
   }
   try { await navigator.clipboard.writeText(url); setStatus(box, "Lien copié : colle-le dans un message.", "ok"); }
